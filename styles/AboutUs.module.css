@@ -1,0 +1,139 @@
+/* ======================================
+   About Us 页面样式
+   ====================================== */
+
+/* Clients Swiper 样式 */
+.clientsSwiper :global(.swiper-pagination) {
+  bottom: 0;
+}
+
+.clientsSwiper :global(.swiper-pagination-bullet) {
+  opacity: 1;
+  width: 8px;
+  height: 8px;
+  background: #cbd5e1;
+  margin: 0 4px;
+}
+
+.clientsSwiper :global(.swiper-pagination-bullet-active) {
+  background: #3b82f6;
+  transform: scale(1.3);
+}
+
+.clientsSwiper :global(.swiper-slide) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Custom Navigation Buttons */
+.clientsSwiper :global(.clients-swiper-button-prev),
+.clientsSwiper :global(.clients-swiper-button-next) {
+  transition: all 0.3s ease;
+}
+
+.clientsSwiper :global(.clients-swiper-button-prev:hover),
+.clientsSwiper :global(.clients-swiper-button-next:hover) {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Hero Section 样式增强 */
+.heroSection {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.contentArea {
+  position: relative;
+}
+
+.contentArea::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* 响应式图片容器 */
+.imageContainer {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease;
+}
+
+.imageContainer:hover {
+  transform: translateY(-4px);
+}
+
+/* 客户Logo卡片 */
+.clientCard {
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.clientCard:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1);
+}
+
+/* 内容排版 */
+.prose h2 {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.prose h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 1.5rem;
+  background: #3b82f6;
+  border-radius: 2px;
+}
+
+/* 占位符样式 */
+.placeholderNotice {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 打字机效果（可选） */
+@keyframes typewriter {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.typewriter {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typewriter 2s steps(20) 1s forwards;
+  width: 0;
+}
+
+

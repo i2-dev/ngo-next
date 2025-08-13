@@ -50,12 +50,12 @@ const HomepageSwiper = ({
     }
 
     return (
-        <div className={`homepage-swiper relative ${className}`}>
+        <div className={`homepage-swiper relative ${className} pt-20 pb-20`}>
             <Swiper
                 modules={[Navigation, Pagination, Autoplay, EffectFade]}
                 spaceBetween={swiperConfig.spaceBetween || 0}
                 slidesPerView={swiperConfig.slidesPerView || 1}
-                navigation={navigation}
+                //navigation={navigation}
                 pagination={{
                     clickable: true,
                     dynamicBullets: true,
@@ -77,7 +77,7 @@ const HomepageSwiper = ({
             >
                 {slidesToShow.map((slide) => {
                     // 获取正确的 Strapi 图片 URL
-                    const backgroundImageUrl = slide.image ? getStrapiMedia(slide.image) : null;
+                    //const backgroundImageUrl = slide.image ? getStrapiMedia(slide.image) : null;
                     return (
                         <SwiperSlide key={slide.id}>
                             <div className="relative w-full h-full">
@@ -86,14 +86,14 @@ const HomepageSwiper = ({
                                     <Link className="max-md:flex max-md:flex-col-reverse" href={slide.buttonLink}>                                    
                                         <div className={styles.homeBannerCardBodyShadow}></div>
                                         <div className={styles.homeBannerCardBody}>                                       
-                                            {slide.icon && (                                                
+                                            {slide.icon && (                                             
                                                 <StrapiImage
                                                     image={slide.icon}
                                                     className={styles.homeBannerCardIcon}
                                                     width={135}
                                                     height={110}
                                                     alt={slide.title}
-                                                />                                                
+                                                />                                          
                                             )}
                                             <h2 className="text-[#3e3978] text-[46px]/[1.2] font-medium mb-[15px] max-lg:text-[28px]">
                                                 <span className="block text-2xl font-normal mb-[15px] max-lg:text-base max-lg:mb-2.5">NGO服務AI數碼化方案</span>
@@ -102,16 +102,18 @@ const HomepageSwiper = ({
                                             <p className="text-[#ff6800] text-2xl/[1.23] mb-auto max-md:mb-[50px]"><strong className="font-medium">附送NGO首年 AI Chatbot!</strong></p>
                                             <div className={styles.button}>閱讀更多</div>
                                         </div>
-                                        <div className={styles.homeBannerCardImageContainer}>
-                                            {/* <img src="/images/homepage/NGO-CMS.jpg" alt="NGO服務AI數碼化方案 - 個案管理系統"/> */}
+                                        <div className={styles.homeBannerCardImageContainer}>                                            
                                             {/* Background Image or Default Background */}
-                                                  <StrapiImage
-                                                    image={backgroundImageUrl}
-                                                    className={styles.homeBannerCardIcon}
-                                                    width={135}
-                                                    height={110}
+                                            {slide.image? (
+                                                <StrapiImage
+                                                    image={slide.image}                                                    
+                                                    width={slide.image.width}
+                                                    height={slide.image.height}
                                                     alt={slide.title}
-                                                />                                          
+                                                /> 
+                                            ) : (
+                                                <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800"></div>
+                                            )}                                            
                                         </div>
                                     </Link>
                                 </div>

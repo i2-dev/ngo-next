@@ -49,33 +49,8 @@
     z-index: 2;
 }
 .homeBannerCardIcon {
-    @apply w-[135px] h-[110px] absolute left-[40px] top-[-44px];
+    @apply w-[135px] h-[110px] absolute left-[13px] top-[-55px];
     @apply max-lg:w-[88px] max-lg:h-[72px] max-lg:left-[30px] max-lg:top-[-36px];    
-}
-.homeBannerCardIcon1 {
-    @apply w-[83px] h-[100px] bg-contain bg-no-repeat absolute left-[40px] top-[-44px];
-    @apply max-lg:w-[54px] max-lg:h-[65px] max-lg:left-[30px] max-lg:top-[-36px];
-    background-image: url('/images/global/banner-card-icon1.png');
-}
-.homeBannerCardIcon2 {
-    @apply w-[113px] h-[72px] bg-contain bg-no-repeat absolute left-[30px] top-[-38px];
-    @apply max-lg:w-[75px] max-lg:h-[48px] max-lg:left-[20px] max-lg:top-[-24px];
-    background-image: url('/images/global/banner-card-icon2.png');
-}
-.homeBannerCardIcon3 {
-    @apply w-[83px] h-[100px] bg-contain bg-no-repeat absolute left-[32px] top-[-50px];
-    @apply max-lg:w-[62px] max-lg:h-[66px] max-lg:left-[22px] max-lg:top-[-32px];
-    background-image: url('/images/global/banner-card-icon3.png');
-}
-.homeBannerCardIcon4 {
-    @apply w-[133px] h-[75px] bg-contain bg-no-repeat absolute left-[20px] top-[-39px];
-    @apply max-lg:w-[88px] max-lg:h-[50px] max-lg:left-[10px] max-lg:top-[-23px];
-    background-image: url('/images/global/banner-card-icon4.png');
-}
-.homeBannerCardIcon5 {
-    @apply w-[83px] h-[100px] bg-contain bg-no-repeat absolute left-[41px] top-[-53px];
-    @apply max-lg:w-[55px] max-lg:h-[68px] max-lg:left-[31px] max-lg:top-[-33px];
-    background-image: url('/images/global/banner-card-icon5.png');
 }
 .homeBannerCardImageContainer {
     @apply w-[calc(100%-170px)] ml-[170px];
@@ -517,10 +492,10 @@
 }
 
 /* Solution 樣式 */
-.solutionSection {
+/* .solutionSection {
   min-height: 100vh;
   padding: 60px 0;
-}
+} */
 
 .solutionContainer {
   max-width: 1200px;
@@ -754,7 +729,7 @@
 } */
 
 /* 按鈕樣式 */
-.button {
+/* .button {
   display: inline-block;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
@@ -772,7 +747,7 @@
 .button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-}
+} */
 
 /* ======================================
    響應式設計
@@ -893,12 +868,12 @@
    ====================================== */
 
 /* Solution 容器 */
-.solutionContainer {
+/* .solutionContainer {
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
   position: relative;
-}
+} */
 
 /* Solution 標題區域 */
 .solutionHeaderSection {
@@ -1143,7 +1118,7 @@
 }
 
 /* 移動端優化 (小於768px) */
-@media (max-width: 767px) {
+/* @media (max-width: 767px) {
   .solutionHeaderSection {
     margin-bottom: 40px;
     padding: 0 20px;
@@ -1205,7 +1180,7 @@
     width: 40px;
     height: 40px;
   }
-}
+} */
 
 /* 超小屏 (小於480px) */
 @media (max-width: 479px) {

@@ -296,6 +296,42 @@ export async function getServicesPageData(locale = 'en') {
   return await getPageSpecificData('services', locale);
 }
 
+// 🛠️ 數碼方案頁面專用加載器
+export async function getDigitalSolutionsPageData(locale = 'en') {
+  const rawData = await getPageSpecificData('digital-solutions', locale);
+  
+  // 處理數碼方案數據，按Order排序
+  if (rawData.plans?.data) {
+    const sortedPlans = rawData.plans.data
+      .sort((a, b) => (a.Order || 0) - (b.Order || 0))
+      .map(plan => ({
+        id: plan.id,
+        documentId: plan.documentId,
+        title: plan.Title,
+        order: plan.Order,
+        content: plan.Content,
+        createdAt: plan.createdAt,
+        updatedAt: plan.updatedAt,
+        publishedAt: plan.publishedAt,
+        locale: plan.locale,
+        icon: plan.icon,
+        image: plan.Image,
+        button: plan.Button,
+        blocks: plan.Blocks || []
+      }));
+    
+    return {
+      ...rawData,
+      processedData: {
+        plans: sortedPlans,
+        menus: rawData.menus
+      }
+    };
+  }
+  
+  return rawData;
+}
+
 // 🔧 輔助工具函數
 
 // 為不可用的API提供後備數據
@@ -427,6 +463,9 @@ export async function getDataForRoute(pathname, locale = 'en', options = {}) {
     
     case 'services':
       return await getServicesPageData(locale);
+    
+    case 'digital-solutions':
+      return await getDigitalSolutionsPageData(locale);
     
     default:
       console.warn(`Unknown page type: ${pageName}, loading default data`);

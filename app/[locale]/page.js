@@ -6,12 +6,13 @@ import AwardsSwiper from "@/components/homepage/AwardsSwiper";
 import Card from "@/components/blocks/Card";
 import { getHomepagePageData } from "@/data/page-loaders";
 import styles from "@/styles/Homepage.module.css";
-
+import PageContainer from "@/components/blocks/PageContainer";
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
+import PageSection from "@/components/blocks/PageSection";
 
 export default async function HomePage({ params }) {
   // Fix Next.js 15 params async requirement
@@ -51,7 +52,7 @@ export default async function HomePage({ params }) {
   };
 
   return (
-    <div className="min-h-screen">
+    <PageContainer className={'mt-12'}> 
       {/* Hero Swiper Section */}
       <HomepageSwiper
         slides={bannerSlides}
@@ -91,13 +92,15 @@ export default async function HomePage({ params }) {
 
       {/* AI² Card Section */}
       {cardData && (
-        <Card 
-          Title={cardData.Title}
-          Content={cardData.Content}
-          icon={cardData.icon}
-          Button={cardData.Button}
-        />
+        <PageSection>        
+          <Card 
+            Title={cardData.Title}
+            Content={cardData.Content}
+            icon={cardData.icon}
+            Button={cardData.Button}
+          />          
+        </PageSection>
       )}
-    </div>
+    </PageContainer>
   );
 }

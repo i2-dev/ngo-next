@@ -1,0 +1,19 @@
+@reference "tailwindcss";
+
+/* ======================================
+   news 頁面樣式
+   ====================================== */
+
+.categoryBadge {
+  margin-bottom: 12px;
+}
+
+.categoryBadge span {
+  display: inline-block;
+  background-color: #10b981;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}

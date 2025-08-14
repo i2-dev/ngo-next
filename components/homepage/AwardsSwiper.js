@@ -25,26 +25,26 @@ const AwardsSwiper = ({
   const { Title: sectionTitle, introduction } = awardsData;
   const awardsArray = awardsData.awardslogo || awardsData.awardsLogo || awardsData.awards;
   return (
-    <section className={`py-16 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 ${className}`}>
-      <div className={`max-w-7xl mx-auto px-4 ${containerClassName}`}>
+    <section className="py-[100px]">
+      <div className="xl:container xl:max-w-[1280px] xl:mx-auto px-5">
         
         {/* 標題區域 */}
-        <div className="text-center mb-16">
-          {sectionTitle && (
-            <h2 className={`text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-4 ${titleClassName}`}>
+        <div className="text-center mb-12">
+          {sectionTitle && (            
+            <h2 className="text-[42px]/[calc(100%+10px)] font-medium mb-5 max-lg:text-4xl max-md:text-3xl">
               {sectionTitle}
             </h2>
           )}
           
           {introduction && (
-            <p className={`text-lg md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed ${introClassName}`}>
+            <p>
               {introduction}
             </p>
           )}
         </div>
 
         {/* Awards Swiper */}
-        <div className={`relative ${swiperClassName}`}>
+        <div>
           <Swiper
             modules={[Navigation, Pagination, Autoplay]}
             spaceBetween={30}
@@ -77,42 +77,35 @@ const AwardsSwiper = ({
                 spaceBetween: 40,
               },
             }}
-            className="awards-swiper"
+            className="awards-swiper cursor-grab"
           >
             {awardsArray.map((award, index) => (
-              <SwiperSlide key={award.id || index}>
-                <div className={`bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 min-h-[400px] flex flex-col ${slideClassName}`}>
-                  
+              <SwiperSlide key={award.id || index}>                  
                   {/* 獲獎圖片 */}
                   {award.Image && (
-                    <div className="flex-shrink-0 mb-6">
-                      <div className="w-48 h-48 mx-auto bg-gray-50 rounded-2xl flex items-center justify-center p-4 shadow-inner">
+                    <div>                      
                         <StrapiImage
                           image={Array.isArray(award.Image) ? award.Image[0] : award.Image}
                           alt={award.name || 'Award'}
-                          width={200}
-                          height={200}
-                          className="object-contain max-w-full max-h-full"
-                        />
-                      </div>
+                          width={award.Image.width}
+                          height={award.Image.height}
+                          className="max-w-[220px] rounded-full mx-auto mb-6"
+                        />                      
                     </div>
                   )}
 
-                  {/* 獲獎名稱 */}
-                  <div className="flex-grow flex items-center justify-center">
-                    {award.name && (
-                      <h3 className="text-lg md:text-xl font-semibold text-gray-800 text-center leading-tight">
-                        {award.name}
-                      </h3>
-                    )}
-                  </div>
-                </div>
+                  {/* 獲獎名稱 */}                  
+                  {award.name && (                      
+                    <p className='text-center'>
+                      {award.name}
+                    </p>
+                  )}                  
               </SwiperSlide>
             ))}
           </Swiper>
 
           {/* 自訂分頁指示器 */}
-          <div className="awards-swiper-pagination mt-8 m-auto text-center"></div>
+          <div className="awards-swiper-pagination mt-15 m-auto text-center !transform-[translateX(0)]"></div>
         </div>
       </div>
     </section>

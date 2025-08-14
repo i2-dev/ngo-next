@@ -51,6 +51,14 @@ export const PAGE_API_CONFIG = {
     description: '導航菜單 + 服務頁面內容',
     cacheDuration: 30 * 60 * 1000, // 30分鐘
     priority: 'medium'
+  },
+
+  // 數碼方案頁面
+  'digital-solutions': {
+    apis: ['menus', 'plans'],
+    description: '導航菜單 + 數碼方案內容',
+    cacheDuration: 30 * 60 * 1000, // 30分鐘
+    priority: 'medium'
   }
 };
 
@@ -96,6 +104,12 @@ export const API_ENDPOINTS = {
     endpoint: 'services-page',
     populateLevel: 4,
     description: '服務頁面內容'
+  },
+  
+  plans: {
+    endpoint: 'plans',
+    populateLevel: 5,
+    description: '數碼方案內容'
   }
 };
 
@@ -167,7 +181,8 @@ export function inferPageNameFromPath(pathname) {
     'aboutus': 'aboutus',
     'contact-us': 'contact-us',
     'news': 'news',
-    'services': 'services'
+    'services': 'services',
+    'digital-solutions': 'digital-solutions'
   };
   
   // 檢查動態路由（如 news/[slug]）

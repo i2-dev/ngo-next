@@ -1,0 +1,115 @@
+import { getDigitalSolutionsPageData } from "@/data/page-loaders";
+import PageContainer from "@/components/blocks/PageContainer";
+import DigitalSolutionHero from "@/components/digitalsolutions/DigitalSolutionHero";
+import BlockRenderer from "@/components/digitalsolutions/BlockRenderer";
+import { notFound } from 'next/navigation';
+
+export default async function AISolutionPage({ params }) {
+  const resolvedParams = await params;
+  const locale = resolvedParams?.locale || 'en';
+
+  // 獲取數碼方案頁面數據
+  const pageData = await getDigitalSolutionsPageData(locale);
+  const { plans } = pageData.processedData || {};
+  
+  // 根據Order找到第一個方案 (data[0] - AI為你解決實際問題)
+  const plan = plans?.find(plan => plan.order === 0);
+  
+  if (!plan) {
+    notFound();
+  }
+
+  return (
+    <PageContainer className="mt-12">
+      {/* 方案標題區域 */}
+      <DigitalSolutionHero 
+        plan={plan}
+        locale={locale}
+      />
+
+      {/* 方案內容區塊 */}
+      {plan.blocks && plan.blocks.length > 0 && (
+        <div className="py-16">
+          <div className="xl:container xl:max-w-[1280px] xl:mx-auto px-5">
+            <BlockRenderer 
+              blocks={plan.blocks}
+              locale={locale}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* 返回上一頁按鈕 */}
+      <div className="py-8">
+        <div className="xl:container xl:max-w-[1280px] xl:mx-auto px-5 text-center">
+          <a 
+            href={`/${locale}/digital-solutions`}
+            className="inline-flex items-center px-6 py-3 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-200"
+          >
+            <svg 
+              className="mr-2 w-4 h-4" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth={2} 
+                d="M10 19l-7-7m0 0l7-7m0 0h18" 
+              />
+            </svg>
+            返回數碼方案列表
+          </a>
+        </div>
+      </div>
+
+      {/* 聯絡我們區塊 */}
+      <div className="py-16 bg-gray-50">
+        <div className="xl:container xl:max-w-[1280px] xl:mx-auto px-5 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">
+            對此方案感興趣？
+          </h2>
+          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+            我們的專業團隊隨時為您提供詳細諮詢，了解如何在您的機構實施此解決方案
+          </p>
+          <a 
+            href={`/${locale}/contact-us`}
+            className="inline-flex items-center px-8 py-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors duration-200"
+          >
+            聯絡我們
+          </a>
+        </div>
+      </div>
+    </PageContainer>
+  );
+}
+
+// 生成元數據
+export async function generateMetadata({ params }) {
+  const resolvedParams = await params;
+  const locale = resolvedParams?.locale || 'en';
+
+  try {
+    const pageData = await getDigitalSolutionsPageData(locale);
+    const { plans } = pageData.processedData || {};
+    const plan = plans?.find(plan => plan.order === 0);
+
+    if (!plan) {
+      return {
+        title: '方案未找到 - I2NGO',
+        description: '請求的數碼方案不存在。'
+      };
+    }
+
+    return {
+      title: `${plan.title} - I2NGO`,
+      description: plan.content || `了解更多關於 ${plan.title} 的數碼化解決方案`,
+    };
+  } catch (error) {
+    return {
+      title: 'AI為你解決實際問題 - I2NGO',
+      description: 'AI落地應用，為你解決實際問題'
+    };
+  }
+}

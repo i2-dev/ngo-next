@@ -192,13 +192,6 @@ function processHomepageData(rawData, locale) {
   }
 
   const blocks = rawData.data.Blocks;
-  // console.log('📦 Available Blocks:', blocks.map(block => ({
-  //   component: block.__component,
-  //   id: block.id,
-  //   hasTitle: !!block.Title,
-  //   hasBanner: !!block.Banner,
-  //   hasSolutionSection: !!block.SolutionSection
-  // })));
 
   // 處理 Banner 數據
   const bannerBlock = blocks.find(
@@ -584,13 +577,7 @@ export async function getOptimizedPageData(locale = 'en') {
     
     // 一次性處理並提取所有需要的數據
     const processedData = processHomepageData(homepageData, locale);
-    
-    // console.log('✅ Optimized page data loaded in single call:', {
-    //   locale: processedData.meta.locale,
-    //   bannerCount: processedData.bannerSlides.length,
-    //   hasSolution: processedData.meta.hasSolution,
-    //   hasMenu: !!menuData
-    // });
+
     
     return {
       // 完整的homepage數據

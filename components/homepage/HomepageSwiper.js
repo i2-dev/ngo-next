@@ -8,6 +8,7 @@ import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
 import StrapiImage from '@/components/StrapiImage';
 import { getStrapiMedia } from '@/utils/get-strapi-media';
 import styles from '@/styles/Homepage.module.css';
+import SharedButton from '../blocks/Button';
 
 const HomepageSwiper = ({
     slides = [],
@@ -50,7 +51,7 @@ const HomepageSwiper = ({
     }
 
     return (
-        <div className={`homepage-swiper relative ${className} pt-20 pb-20`}>
+        <div className={`homepage-swiper relative ${className} pt-20`}>
             <Swiper
                 modules={[Navigation, Pagination, Autoplay, EffectFade]}
                 spaceBetween={swiperConfig.spaceBetween || 0}
@@ -66,13 +67,13 @@ const HomepageSwiper = ({
                 //     disableOnInteraction: false,
                 //     ...swiperConfig.autoplay
                 // } : false}
-                effect={swiperConfig.effect || "fade"}
+                // effect={swiperConfig.effect || "fade"}
                 fadeEffect={{
                     crossFade: true,
                     ...swiperConfig.fadeEffect
                 }}
                 loop={swiperConfig.loop !== undefined ? swiperConfig.loop : true}
-                className={swiperConfig.swiperClassName || "h-[400px] md:h-[500px] lg:h-[600px] w-full"}
+                className={swiperConfig.swiperClassName || "h-[400px] md:h-[500px] lg:h-[600px] w-full pb-20"}
                 {...swiperConfig.extraProps}
             >
                 {slidesToShow.map((slide) => {
@@ -81,9 +82,9 @@ const HomepageSwiper = ({
                     return (
                         <SwiperSlide key={slide.id}>
                             <div className="relative w-full h-full">
-                                {/* Content */}
-                                <div className="w-full max-w-[1240px] my-0 mx-auto relative">
-                                    <Link className="max-md:flex max-md:flex-col-reverse" href={slide.buttonLink}>                                    
+                                {console.log('@@@@@@@',slide)}
+                                <div className="w-full max-w-[1280px] my-0 px-5 mx-auto relative">
+                                    <div className="max-md:flex max-md:flex-col-reverse">                                    
                                         <div className={styles.homeBannerCardBodyShadow}></div>
                                         <div className={styles.homeBannerCardBody}>                                       
                                             {slide.icon && (                                             
@@ -96,26 +97,28 @@ const HomepageSwiper = ({
                                                 />                                          
                                             )}
                                             <h2 className="text-[#3e3978] text-[46px]/[1.2] font-medium mb-[15px] max-lg:text-[28px]">
-                                                <span className="block text-2xl font-normal mb-[15px] max-lg:text-base max-lg:mb-2.5">NGO服務AI數碼化方案</span>
-                                                個案管理系統
+                                                <span className="block text-2xl font-normal mb-[15px] max-lg:text-base max-lg:mb-2.5">{slide.subtitle}</span>
+                                                {slide.title}
                                             </h2>
-                                            <p className="text-[#ff6800] text-2xl/[1.23] mb-auto max-md:mb-[50px]"><strong className="font-medium">附送NGO首年 AI Chatbot!</strong></p>
-                                            <div className={styles.button}>閱讀更多</div>
+                                            <p className="text-[#ff6800] text-2xl/[1.23] mb-auto max-md:mb-[50px]"><strong className="font-medium">{slide.content}</strong></p>                                                      
+                                            <SharedButton {...slide}/>                                                                              
                                         </div>
                                         <div className={styles.homeBannerCardImageContainer}>                                            
-                                            {/* Background Image or Default Background */}
+                                            {/* Background Image or Default Background */}                                            
                                             {slide.image? (
-                                                <StrapiImage
-                                                    image={slide.image}                                                    
-                                                    width={slide.image.width}
-                                                    height={slide.image.height}
-                                                    alt={slide.title}
-                                                /> 
+                                                <Link href={slide.buttonLink}> 
+                                                    <StrapiImage
+                                                        image={slide.image}                                                    
+                                                        width={slide.image.width}
+                                                        height={slide.image.height}
+                                                        alt={slide.title}
+                                                    />
+                                                </Link> 
                                             ) : (
                                                 <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800"></div>
                                             )}                                            
                                         </div>
-                                    </Link>
+                                    </div>                                    
                                 </div>
 
 

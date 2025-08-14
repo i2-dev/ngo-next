@@ -19,7 +19,7 @@
   }
 }
 
-/* @layer utilities {
+@layer utilities {
   .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -83,4 +83,4 @@
   .prose blockquote {
     @apply border-l-4 border-blue-500 pl-4 italic text-gray-600 mb-4;
   }
-} */
+}

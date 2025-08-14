@@ -28,54 +28,37 @@ const ClientLogoSection = ({
   const awards = logoArray;
 
   return (
-    <section className={`py-16 bg-gray-50 ${className}`}>
-      <div className={`max-w-6xl mx-auto px-4 ${containerClassName}`}>
+    <section className="py-[100px]">
+      <div className="xl:container xl:max-w-[1280px] xl:mx-auto px-5">
         
         {/* 標題區域 */}
         {sectionTitle && (
-          <div className="text-center mb-12">
-            <h2 className={`text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-4 ${titleClassName}`}>
+          <div className="text-center mb-12">            
+            <h2 className="text-[42px]/[calc(100%+10px)] font-medium max-lg:text-4xl max-md:text-3xl">
               {sectionTitle}
             </h2>
           </div>
         )}
 
         {/* 獲獎網格 */}
-        <div className={gridClassName}>
+        <div className="grid grid-cols-5 gap-y-20 gap-x-5 max-lg:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1">
           {awards.map((award, index) => (
-            <div 
-              key={award.id || index}
-              className={logoItemClassName}
-            >
+            <div key={award.id || index}>
               {/* 獲獎圖片 */}
               {award.Image ? (
-                <div className="mb-4 w-20 h-20 md:w-24 md:h-24 relative overflow-hidden rounded-xl bg-gray-50 flex items-center justify-center">
-                  {(() => {
-                      const imageData = Array.isArray(award.Image) ? award.Image[0] : award.Image;
-                      // console.log('🖼️ Image data for award', index + 1, ':', imageData);
-                      return (
-                        <StrapiImage
-                          image={imageData}
+                <StrapiImage
+                          image={award.Image}
                           alt={award.name || 'Award Logo'}
-                          width={96}
-                          height={96}
-                          className="object-contain transition-transform duration-300 group-hover:scale-110"
+                          width={award.Image.width}
+                          height={award.Image.height}
+                          className='rounded-full m-auto'
                         />
-                      );
-                    })()}
-                </div>
+                
               ) : (
                 <div className="mb-4 w-20 h-20 md:w-24 md:h-24 bg-red-200 rounded-xl flex items-center justify-center">
                   <span className="text-xs text-red-600">No Image</span>
                 </div>
-              )}
-
-              {/* 獲獎名稱 */}
-              {award.name && (
-                <h3 className="text-sm md:text-base font-medium text-gray-700 leading-tight">
-                  {award.name}
-                </h3>
-              )}
+              )}              
             </div>
           ))}
         </div>

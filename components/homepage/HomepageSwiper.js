@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import Link from 'next/link'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
@@ -81,8 +80,7 @@ const HomepageSwiper = ({
                     //const backgroundImageUrl = slide.image ? getStrapiMedia(slide.image) : null;
                     return (
                         <SwiperSlide key={slide.id}>
-                            <div className="relative w-full h-full">
-                                {console.log('@@@@@@@',slide)}
+                            <div className="relative w-full h-full">                                
                                 <div className="w-full max-w-[1280px] my-0 px-5 mx-auto relative">
                                     <div className="max-md:flex max-md:flex-col-reverse">                                    
                                         <div className={styles.homeBannerCardBodyShadow}></div>

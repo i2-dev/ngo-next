@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import ClientOnly from "@/components/ClientOnly";
 
 export default function MenuClient({ menuData, locale = 'en' }) {
   const [openSubMenu, setOpenSubMenu] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   if (!menuData || !menuData.data) {
     return null;
@@ -30,6 +32,25 @@ export default function MenuClient({ menuData, locale = 'en' }) {
     return `/${locale}/${url}`;
   };
 
+  // 檢查菜單項是否為當前活動頁面
+  const isActiveMenuItem = (menuUrl) => {
+    if (!menuUrl) return false;
+    
+    const formattedUrl = formatUrl(menuUrl);
+    
+    // 精確匹配當前路徑
+    if (pathname === formattedUrl) {
+      return true;
+    }
+    
+    // 對於首頁的特殊處理
+    if (formattedUrl === `/${locale}` && pathname === `/${locale}`) {
+      return true;
+    }
+    
+    return false;
+  };
+
   const toggleSubMenu = (index) => {
     setOpenSubMenu(openSubMenu === index ? null : index);
   };
@@ -43,13 +64,19 @@ export default function MenuClient({ menuData, locale = 'en' }) {
       <div className="relative">
         {/* 桌面菜单 */}
         <ul className="hidden md:flex items-center space-x-6">
-          {menuData.data.map((menuItem, index) => (
+          {menuData.data
+            .sort((a, b) => (a.Order || 0) - (b.Order || 0))
+            .map((menuItem, index) => (
             <li key={menuItem.id} className="relative group">
               {/* 主菜单项 */}
               {menuItem.URL ? (
                 <Link
                   href={formatUrl(menuItem.URL)}
-                  className="text-gray-700 hover:text-gray-900 font-medium text-sm transition-colors duration-200 whitespace-nowrap"
+                  className={`font-medium text-sm transition-colors duration-200 whitespace-nowrap ${
+                    isActiveMenuItem(menuItem.URL)
+                      ? 'text-blue-600 font-semibold'
+                      : 'text-gray-700 hover:text-gray-900'
+                  }`}
                 >
                   {menuItem.title}
                 </Link>
@@ -80,7 +107,11 @@ export default function MenuClient({ menuData, locale = 'en' }) {
                           <Link
                             href={formatUrl(subItem.url)}
                             target={subItem.Target || "_self"}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                            className={`block px-4 py-2 text-sm transition-colors duration-200 ${
+                              isActiveMenuItem(subItem.url)
+                                ? 'text-blue-600 bg-blue-50 font-semibold'
+                                : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600'
+                            }`}
                           >
                             {subItem.Label}
                           </Link>
@@ -114,13 +145,19 @@ export default function MenuClient({ menuData, locale = 'en' }) {
           {isMobileMenuOpen && (
             <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg border-t border-gray-200 z-50">
               <ul className="py-4 space-y-2 px-4">
-                {menuData.data.map((menuItem, index) => (
+                {menuData.data
+                  .sort((a, b) => (a.Order || 0) - (b.Order || 0))
+                  .map((menuItem, index) => (
                   <li key={menuItem.id}>
                     {/* 主菜单项 */}
                     {menuItem.URL ? (
                       <Link
                         href={formatUrl(menuItem.URL)}
-                        className="block py-2 text-gray-700 hover:text-gray-900 transition-colors duration-200"
+                        className={`block py-2 transition-colors duration-200 ${
+                          isActiveMenuItem(menuItem.URL)
+                            ? 'text-blue-600 font-semibold'
+                            : 'text-gray-700 hover:text-gray-900'
+                        }`}
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         {menuItem.title}
@@ -156,7 +193,11 @@ export default function MenuClient({ menuData, locale = 'en' }) {
                               <Link
                                 href={formatUrl(subItem.url)}
                                 target={subItem.Target || "_self"}
-                                className="block py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200"
+                                className={`block py-2 text-sm transition-colors duration-200 ${
+                                  isActiveMenuItem(subItem.url)
+                                    ? 'text-blue-600 font-semibold'
+                                    : 'text-gray-600 hover:text-gray-900'
+                                }`}
                                 onClick={() => {
                                   setOpenSubMenu(null);
                                   setIsMobileMenuOpen(false);

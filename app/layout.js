@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/styles/globals.css";
+import Script from "next/script";
 
 export const metadata = {
   title: "i2ngo - NGO Digital Services",
@@ -12,6 +13,12 @@ export default function RootLayout({ children }) {
     <html >
       <body className="flex flex-col min-h-screen" suppressHydrationWarning={true}>
         {children}
+        {/* 全局 JavaScript 文件 - 在所有頁面加載 */}
+        <Script 
+          src="/globals.js" 
+          strategy="afterInteractive"
+          id="globals-script"
+        />
       </body>
     </html>
   );

@@ -1,7 +1,14 @@
-import { getDigitalSolutionsPageData } from "@/data/page-loaders";
+import { getDigitalSolutionsPageData, getHomepagePageData } from "@/data/page-loaders";
 import PageContainer from "@/components/blocks/PageContainer";
+import PageSection from "@/components/blocks/PageSection";
 import DigitalSolutionHero from "@/components/digitalsolutions/DigitalSolutionHero";
 import BlockRenderer from "@/components/digitalsolutions/BlockRenderer";
+import ClientLogoSection from "@/components/homepage/ClientLogoSection";
+import InformationSection from "@/components/homepage/InformationSection";
+import AwardsSwiper from "@/components/homepage/AwardsSwiper";
+import Card from "@/components/blocks/Card";
+import styles from "@/styles/DigitalSolutions.module.css";
+import homepageStyles from "@/styles/Homepage.module.css";
 import { notFound } from 'next/navigation';
 
 export default async function AISolutionPage({ params }) {
@@ -11,10 +18,19 @@ export default async function AISolutionPage({ params }) {
   // 獲取數碼方案頁面數據
   const pageData = await getDigitalSolutionsPageData(locale);
   const { plans } = pageData.processedData || {};
-  
+
+  // 獲取首頁數據以獲取各種組件數據
+  const homepageData = await getHomepagePageData(locale);
+  const {
+    clientLogoData,
+    informationData,
+    awardsData,
+    cardData
+  } = homepageData.processedData || {};
+
   // 根據Order找到第一個方案 (data[0] - AI為你解決實際問題)
   const plan = plans?.find(plan => plan.order === 0);
-  
+
   if (!plan) {
     notFound();
   }
@@ -22,16 +38,17 @@ export default async function AISolutionPage({ params }) {
   return (
     <PageContainer className="mt-12">
       {/* 方案標題區域 */}
-      <DigitalSolutionHero 
+      <DigitalSolutionHero
         plan={plan}
         locale={locale}
+        variant="inline"
       />
 
       {/* 方案內容區塊 */}
       {plan.blocks && plan.blocks.length > 0 && (
         <div className="py-16">
           <div className="xl:container xl:max-w-[1280px] xl:mx-auto px-5">
-            <BlockRenderer 
+            <BlockRenderer
               blocks={plan.blocks}
               locale={locale}
             />
@@ -39,48 +56,36 @@ export default async function AISolutionPage({ params }) {
         </div>
       )}
 
-      {/* 返回上一頁按鈕 */}
-      <div className="py-8">
-        <div className="xl:container xl:max-w-[1280px] xl:mx-auto px-5 text-center">
-          <a 
-            href={`/${locale}/digital-solutions`}
-            className="inline-flex items-center px-6 py-3 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-200"
-          >
-            <svg 
-              className="mr-2 w-4 h-4" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M10 19l-7-7m0 0l7-7m0 0h18" 
-              />
-            </svg>
-            返回數碼方案列表
-          </a>
-        </div>
-      </div>
+      {/* Client Logo Section */}
+      <PageSection>
+        <ClientLogoSection
+          logoData={clientLogoData}
+        />
+      </PageSection>
 
-      {/* 聯絡我們區塊 */}
-      <div className="py-16 bg-gray-50">
-        <div className="xl:container xl:max-w-[1280px] xl:mx-auto px-5 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">
-            對此方案感興趣？
-          </h2>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            我們的專業團隊隨時為您提供詳細諮詢，了解如何在您的機構實施此解決方案
-          </p>
-          <a 
-            href={`/${locale}/contact-us`}
-            className="inline-flex items-center px-8 py-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors duration-200"
-          >
-            聯絡我們
-          </a>
-        </div>
-      </div>
+      {/* Information Section */}
+      <PageSection className={'bg-[rgba(247,242,244,0.5)] backdrop-filter-[blur(10px)]'}>
+        <InformationSection locale={locale} styles={homepageStyles} informationData={informationData} />
+      </PageSection>
+
+      {/* Awards Swiper Section */}
+      <PageSection>
+        <AwardsSwiper
+          awardsData={awardsData}
+        />
+      </PageSection>
+
+      {/* AI² Card Section */}
+      {cardData && (
+        <PageSection>
+          <Card
+            Title={cardData.Title}
+            Content={cardData.Content}
+            icon={cardData.icon}
+            Button={cardData.Button}
+          />
+        </PageSection>
+      )}
     </PageContainer>
   );
 }

@@ -1,6 +1,6 @@
 import StrapiImage from "@/components/StrapiImage";
 
-// 根據方案的 order 映射到正確的 URL（按照菜單中的實際URL）
+// 根據方案的 order 映射到正確的 URL（直接根目錄，與菜單URL一致）
 function getUrlForPlan(plan) {
   const urlMap = {
     0: '/ai-solution',                              // AI為你解決實際問題
@@ -11,7 +11,7 @@ function getUrlForPlan(plan) {
     5: '/institutional-online-learning-system'      // 機構網上學習管理系統
   };
   
-  return urlMap[plan.order] || `/digital-solutions/${plan.order}`;
+  return urlMap[plan.order] || `/plan-${plan.order}`;
 }
 
 export default function DigitalSolutionCard({ plan, index, locale }) {
@@ -47,11 +47,10 @@ export default function DigitalSolutionCard({ plan, index, locale }) {
           
           {/* 內容 */}
           {plan.content && (
-            <div className="prose prose-lg text-gray-600">
-              <p className="text-lg leading-relaxed">
-                {plan.content}
-              </p>
-            </div>
+            <div 
+              className="prose prose-lg text-gray-600 text-lg leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: plan.content }}
+            />
           )}
         </div>
 

@@ -92,7 +92,7 @@ export async function GET(request) {
       return NextResponse.json(fallbackData, {
         status: 200,
         headers: {
-          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600', // 5分鐘快取（後備數據）
+          'Cache-Control': 'public, s-maxage=300, ', // 5分鐘快取（後備數據）
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'GET, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type',
@@ -158,7 +158,7 @@ export async function GET(request) {
       return NextResponse.json(fallbackData, {
         status: 200,
         headers: {
-          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+          'Cache-Control': 'public, s-maxage=300, ',
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'GET, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type',

@@ -16,7 +16,7 @@ export async function GET(request) {
     return NextResponse.json(informationData, {
       status: 200,
       headers: {
-        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600', // 5分钟缓存
+        'Cache-Control': 'public, s-maxage=300, ', // 5分钟缓存
       },
     });
   } catch (error) {

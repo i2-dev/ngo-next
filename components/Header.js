@@ -4,8 +4,8 @@ import MenuWrapper from "./header/MenuWrapper";
 
 export default function Header({ locale = 'en', menuData = null }) {
   return (
-    <header className="w-full bg-white shadow-sm">
-      <div className="container mx-auto px-4 py-3">
+    <header id="header" className="w-full py-6 fixed z-50 transition duration-300 ease-in-out">
+      <div className="xl:container xl:max-w-[1280px] xl:mx-auto px-5">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0">
@@ -15,7 +15,7 @@ export default function Header({ locale = 'en', menuData = null }) {
               height={106}
               alt="I2NGO Logo"
               priority
-              className="h-auto max-w-[140px]"
+              className="logo max-w-[162px] h-auto transition-[all_.3s_cubic-bezier(.2,1,.2,1)]"
             />
           </Link>
           
@@ -30,7 +30,7 @@ export default function Header({ locale = 'en', menuData = null }) {
             {/* Social Media Icons */}
             <div className="hidden md:flex items-center space-x-3">
               <Link 
-                href="https://facebook.com" 
+                href="https://www.facebook.com/i2hongkong/" 
                 target="_blank" 
                 className="text-gray-600 hover:text-blue-600 transition-colors"
               >
@@ -39,7 +39,7 @@ export default function Header({ locale = 'en', menuData = null }) {
                 </svg>
               </Link>
               <Link 
-                href="https://youtube.com" 
+                href="https://www.youtube.com/channel/UCIs5MfXVvK-D-4CT3_vaAKg" 
                 target="_blank" 
                 className="text-gray-600 hover:text-red-600 transition-colors"
               >

@@ -17,9 +17,10 @@
   ul li::marker {
     color: #6ccb50;
   }
+  .text-\[36px\]\/\[1\.2\] { font-size: 36px; line-height: 1.2; }
 }
 
-/* @layer utilities {
+@layer utilities {
   .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;

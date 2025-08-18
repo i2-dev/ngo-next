@@ -22,7 +22,7 @@ export default function Footer({ locale = 'en' }) {
   const currentContent = content[locale] || content.en;
 
   return (
-    <footer className="bg-gray-100 border-t border-gray-200 py-4 mt-auto">
+    <footer className="bg-gray-100 border-t border-gray-200 py-5 mt-auto">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           {/* Copyright Information */}
@@ -31,9 +31,9 @@ export default function Footer({ locale = 'en' }) {
           </div>
           
           {/* Links and Social Media */}
-          <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
+          <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-5">
             {/* Website Guide and Accessibility Links */}
-            <div className="flex items-center space-x-4 text-sm">
+            <div className="flex items-center space-x-5 text-sm">
               <Link 
                 href="/sitemap" 
                 className="text-gray-600 hover:text-gray-900 transition-colors"
@@ -49,9 +49,9 @@ export default function Footer({ locale = 'en' }) {
             </div>
             
             {/* Social Media Icons */}
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-5">
               <Link 
-                href="https://facebook.com" 
+                href="https://www.facebook.com/i2hongkong/" 
                 target="_blank" 
                 className="text-gray-600 hover:text-blue-600 transition-colors"
                 aria-label="Facebook"
@@ -61,7 +61,7 @@ export default function Footer({ locale = 'en' }) {
                 </svg>
               </Link>
               <Link 
-                href="https://youtube.com" 
+                href="https://www.youtube.com/channel/UCIs5MfXVvK-D-4CT3_vaAKg" 
                 target="_blank" 
                 className="text-gray-600 hover:text-red-600 transition-colors"
                 aria-label="YouTube"

@@ -16,7 +16,9 @@ export default function Menu({ menuData }) {
           <nav className="bg-white shadow-lg">
                <div className="container mx-auto px-4">
                     <ul className="flex flex-wrap items-center justify-center space-x-8 py-4">
-                         {menuData.data.map((menuItem, index) => (
+                         {menuData.data
+                              .sort((a, b) => (a.Order || 0) - (b.Order || 0))
+                              .map((menuItem, index) => (
                               <li key={menuItem.id} className="relative group">
                                    {/* 主菜单项 */}
                                    {menuItem.URL ? (

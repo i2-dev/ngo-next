@@ -3,6 +3,10 @@ import CardItemBlock from "./blocks/CardItemBlock";
 import StoryCardBlock from "./blocks/StoryCardBlock";
 import FunctionalCardBlock from "./blocks/FunctionalCardBlock";
 import FaqCardBlock from "./blocks/FaqCardBlock";
+import WelfareCardBlock from "./blocks/WelfareCardBlock";
+import SwiperCardBlock from "./blocks/SwiperCardBlock";
+import TableCardBlock from "./blocks/TableCardBlock";
+import PromotionCardBlock from "./blocks/PromotionCardBlock";
 
 export default function BlockRenderer({ blocks, locale }) {
   if (!blocks || blocks.length === 0) {
@@ -53,6 +57,42 @@ export default function BlockRenderer({ blocks, locale }) {
           case 'digital-solutions.faq-card':
             return (
               <FaqCardBlock 
+                key={`${block.id}-${index}`}
+                block={block}
+                locale={locale}
+              />
+            );
+          
+          case 'digital-solutions.welfare-card':
+            return (
+              <WelfareCardBlock 
+                key={`${block.id}-${index}`}
+                block={block}
+                locale={locale}
+              />
+            );
+          
+          case 'digital-solutions.swiper-card':
+            return (
+              <SwiperCardBlock 
+                key={`${block.id}-${index}`}
+                block={block}
+                locale={locale}
+              />
+            );
+          
+          case 'digital-solutions.table-card':
+            return (
+              <TableCardBlock 
+                key={`${block.id}-${index}`}
+                block={block}
+                locale={locale}
+              />
+            );
+          
+          case 'digital-solutions.promotion-card':
+            return (
+              <PromotionCardBlock 
                 key={`${block.id}-${index}`}
                 block={block}
                 locale={locale}

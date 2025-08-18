@@ -1,5 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import BackToTop from "@/components/BackToTop";
+import PromoBanner from "@/components/PromoBanner";
 
 /**
  * 優化的語言區域布局
@@ -19,6 +21,11 @@ export default async function LocaleLayout({ children, params }) {
         {children}
       </main>
       <Footer locale={locale} />
+      
+      {/* 右下角固定組件 */}
+      <PromoBanner locale={locale} />
+      {/* 返回頂部按鈕 */}
+      <BackToTop />
     </>
   );
 }

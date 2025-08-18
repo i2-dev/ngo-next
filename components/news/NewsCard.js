@@ -5,17 +5,17 @@ import styles from "@/styles/News.module.css";
 
 export default function NewsCard({ article, locale }) {
   return (
-    <article className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+    <article className="group cursor-pointer">
       <Link href={`/${locale}/ngo-latest-news/${article.documentId}`}>
         <div className="flex flex-col md:flex-row">
           {/* Image Section - Left Side */}
-          <div className="md:w-1/2 relative h-64 md:h-auto">
+          <div className="aspect-3/2 rounded-md overflow-hidden relative md:w-1/3">
             {article.image && article.image.length > 0 ? (
               <StrapiImage
                 image={article.image[0]}
-                className="w-full h-full object-cover"
-                width={600}
-                height={400}
+                className="w-full h-full object-cover transition-[all_.3s_cubic-bezier(.2,1,.2,1)] group-hover:transform-[scale(1.05)]"
+                width={article.image[0].width}
+                height={article.image[0].height}
                 alt={article.Title || 'News image'}
               />
             ) : (
@@ -26,15 +26,16 @@ export default function NewsCard({ article, locale }) {
           </div>
 
           {/* Content Section - Right Side */}
-          <div className="md:w-1/2 p-6 flex flex-col justify-between">
+          <div className="flex flex-col py-6 px-7.5 md:w-2/3">
             <div>
               {/* Category Badge */}
               {article.information_category && (
-                <div className={styles.categoryBadge}>
+                <div className='group/category relative text-[#286e11] inline-block mb-2.5 text-sm font-bold'>
                   <CategoryBadgeInline category={article.information_category} locale={locale} />
+                  <div className='bg-[#286e11] w-full h-0.5 absolute transition-[all_.3s_cubic-bezier(.2,1,.2,1)] origin-left transform-[scaleX(0)] group-hover/category:transform-[scaleX(1)]'></div>
                 </div>
               )}
-              <h2 className="text-xl font-semibold text-gray-900 mb-3 line-clamp-2 hover:text-blue-600 transition-colors duration-200">
+              <h2 className="text-[#454176] text-[22px]">
                 {article.Title}
               </h2>
               {article.Author_Summary && (
@@ -43,15 +44,14 @@ export default function NewsCard({ article, locale }) {
                 </p>
               )}
               {article.Content && (
-                <p className="text-gray-700 text-sm line-clamp-3 mb-4">
+                <p className="text-gray-700 text-sm line-clamp-3">
                   {article.Content.replace(/<[^>]*>/g, '').substring(0, 200)}...
                 </p>
               )}
             </div>
 
-            <div className="flex items-center justify-between text-sm text-gray-500">
-              <span>{article.Publish}</span>
-              <span className="text-blue-600 font-medium">閱讀更多 →</span>
+            <div className="text-sm">
+              {article.Publish}
             </div>
           </div>
         </div>

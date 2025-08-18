@@ -17,9 +17,42 @@
   ul li::marker {
     color: #6ccb50;
   }
+  
+  #header.scrolled {
+    @apply !py-3 bg-[rgba(255,255,255,.95)] shadow-[0_3px_45px_rgba(0,0,0,.15)];
+  }
+
+  #header.scrolled .logo {
+    @apply w-37;
+  }
+
+  /* 菜單項 hover 隔離樣式 */
+  .menu-item-with-dropdown {
+    @apply isolate;
+  }
+  
+  .menu-item-with-dropdown::before {
+    content: '';
+    @apply absolute inset-0 -m-2 z-[-1];
+  }
+
+  .text-\[36px\]\/\[1\.2\] { font-size: 36px; line-height: 1.2; }
 }
 
-@layer utilities {
+@layer components {  
+  .text-\[\#286e11\] {
+    color: #286e11;
+  }  
+  .hover\:text-\[\#555\] {
+    &:hover {
+      @media (hover: hover) {
+        color: #555;
+      }
+    }
+  }
+}
+
+/* @layer utilities {
   .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -83,4 +116,4 @@
   .prose blockquote {
     @apply border-l-4 border-blue-500 pl-4 italic text-gray-600 mb-4;
   }
-}
+} */

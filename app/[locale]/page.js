@@ -4,15 +4,17 @@ import InformationSection from "@/components/homepage/InformationSection";
 import ClientLogoSection from "@/components/homepage/ClientLogoSection";
 import AwardsSwiper from "@/components/homepage/AwardsSwiper";
 import Card from "@/components/blocks/Card";
+
 import { getHomepagePageData } from "@/data/page-loaders";
 import styles from "@/styles/Homepage.module.css";
 import PageContainer from "@/components/blocks/PageContainer";
+import PageSection from "@/components/blocks/PageSection";
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
-import PageSection from "@/components/blocks/PageSection";
+
 
 export default async function HomePage({ params }) {
   // Fix Next.js 15 params async requirement
@@ -52,7 +54,7 @@ export default async function HomePage({ params }) {
   };
 
   return (
-    <PageContainer className={'mt-12'}> 
+    <PageContainer className={'!mt-22'}> 
       {/* Hero Swiper Section */}
       <HomepageSwiper
         slides={bannerSlides}
@@ -64,31 +66,28 @@ export default async function HomePage({ params }) {
       />
 
       {/* Solution Section */}
-      <Solution locale={locale} styles={styles} solutionData={solutionData} />
+      <PageSection>
+        <Solution locale={locale} styles={styles} solutionData={solutionData} />
+      </PageSection>
 
       {/* Information Section */}
-      <InformationSection locale={locale} styles={styles} informationData={informationData} />
+      <PageSection className={'bg-[rgba(247,242,244,0.5)] backdrop-filter-[blur(10px)]'}>
+        <InformationSection locale={locale} styles={styles} informationData={informationData} />
+      </PageSection>
 
       {/* Client Logo Section */}
-      <ClientLogoSection 
-        logoData={clientLogoData}
-        className={styles.clientLogoSection}
-        containerClassName={styles.clientLogoContainer}
-        titleClassName={styles.clientLogoSectionTitle}
-        gridClassName={styles.clientLogoAwardsGrid}
-        logoItemClassName={styles.clientLogoAwardItem}
-      />
+      <PageSection>
+        <ClientLogoSection 
+          logoData={clientLogoData}          
+        />
+      </PageSection>
 
       {/* Awards Swiper Section */}
-      <AwardsSwiper 
-        awardsData={awardsData}
-        className={styles.awardsSection}
-        containerClassName={styles.awardsContainer}
-        titleClassName={styles.awardsSectionTitle}
-        introClassName={styles.awardsIntroduction}
-        swiperClassName={styles.awardsSwiperContainer}
-        slideClassName={styles.awardsSlide}
-      />
+      <PageSection>
+        <AwardsSwiper 
+          awardsData={awardsData}          
+        />
+      </PageSection>
 
       {/* AI² Card Section */}
       {cardData && (
@@ -101,6 +100,8 @@ export default async function HomePage({ params }) {
           />          
         </PageSection>
       )}
+
+
     </PageContainer>
   );
 }

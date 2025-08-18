@@ -4,6 +4,8 @@ import CategoryBadge from '@/components/news/CategoryBadge';
 import ArticleNavigation from '@/components/news/ArticleNavigation';
 import { getAdjacentArticles } from '@/utils/get-adjacent-articles';
 import { notFound } from 'next/navigation';
+import PageContainer from '@/components/blocks/PageContainer';
+import PageSection from '@/components/blocks/PageSection';
 
 async function getArticleData(documentId) {
   try {
@@ -41,41 +43,41 @@ export default async function NewsDetailPage({ params }) {
   const { previous, next } = await getAdjacentArticles(documentId, locale);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Article Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <article className="bg-white rounded-lg shadow-lg overflow-hidden">
-          {/* Article Header */}
-          <div className="p-8 border-b">
-            {/* Category Badge */}
-            {article.information_category && (
-              <CategoryBadge category={article.information_category} locale={locale} />
+    <PageContainer className={'!mt-29'}>      
+      {/* Article Header */}
+      <div className="flex items-center text-center w-full min-h-[250px] md:min-h-[350px] py-12.5 bg-[rgba(247,242,244,0.5)] backdrop-filter-[blur(10px)]">
+        <div className="xl:container xl:max-w-[1040px] xl:mx-auto px-5">
+          {/* Category Badge */}
+          {article.information_category && (
+            <CategoryBadge category={article.information_category} locale={locale} />
+          )}
+
+          {/* Title */}
+          <h1 className="text-3xl text-[#272727] mb-5 md:text-[42px]">
+            {article.Title}
+          </h1>
+
+          {/* Meta Information */}
+          <div className="flex flex-wrap justify-center text-sm">            
+            {article.Publish && (
+              <div className="flex items-center">
+                <span className="font-medium">發布日期：</span>
+                <span>{article.Publish}</span>
+              </div>
             )}
-
-            {/* Title */}
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              {article.Title}
-            </h1>
-
-            {/* Meta Information */}
-            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-6">
-              {article.Author && (
-                <div className="flex items-center">
-                  <span className="font-medium">作者：</span>
-                  <span>{article.Author}</span>
-                </div>
-              )}
-              {article.Publish && (
-                <div className="flex items-center">
-                  <span className="font-medium">發布日期：</span>
-                  <span>{article.Publish}</span>
-                </div>
-              )}
-            </div>
           </div>
+        </div>
+      </div>
 
+      <PageSection className={'!pt-12.5'}> 
+        {article.Author_Summary && (            
+            <h3 className="text-center text-[22px] mb-7.5">{article.Author_Summary}</h3>          
+        )}
+
+        {/* Article Content */}      
+        <article className="overflow-hidden xl:max-w-[1040px] xl:mx-auto px-5">
           {/* Featured Image */}
-          {article.image && article.image.length > 0 && (
+          {/* {article.image && article.image.length > 0 && (
             <div className="relative h-64 md:h-96 overflow-hidden">
               <StrapiImage
                 image={article.image[0]}
@@ -85,30 +87,29 @@ export default async function NewsDetailPage({ params }) {
                 alt={article.Title || 'Article image'}
               />
             </div>
-          )}
+          )} */}
 
-          {/* Article Content */}
-          <div className="p-8">
-            {article.Content ? (
-              <div
-                className="prose prose-lg max-w-none"
-                dangerouslySetInnerHTML={{ __html: article.Content }}
-              />
-            ) : (
-              <div className="text-center py-12">
-                <div className="text-gray-500 text-lg">內容正在準備中...</div>
-                <div className="text-gray-400 text-sm mt-2">Content is being prepared...</div>
-              </div>
-            )}
-          </div>
-        </article>
-      </div>
+          {/* Article Content */}          
+          {article.Content ? (
+            <div
+              className="prose prose-lg max-w-none"
+              dangerouslySetInnerHTML={{ __html: article.Content }}
+            />
+          ) : (
+            <div className="text-center py-12">
+              <div className="text-gray-500 text-lg">內容正在準備中...</div>
+              <div className="text-gray-400 text-sm mt-2">Content is being prepared...</div>
+            </div>
+          )}          
+        </article>        
+        
+      </PageSection>
       {/* Article Navigation */}
       <ArticleNavigation
         previous={previous}
         next={next}
         locale={locale}
       />
-    </div>
+    </PageContainer>
   );
 }

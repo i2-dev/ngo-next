@@ -59,6 +59,14 @@ export const PAGE_API_CONFIG = {
     description: '導航菜單 + 數碼方案內容',
     cacheDuration: 30 * 60 * 1000, // 30分鐘
     priority: 'medium'
+  },
+
+  // 成功案例個別頁面 (通過數碼方案類似的邏輯處理)
+  'success-case-detail': {
+    apis: ['menus', 'successfuls'],
+    description: '導航菜單 + 成功案例詳細內容',
+    cacheDuration: 30 * 60 * 1000, // 30分鐘
+    priority: 'medium'
   }
 };
 
@@ -110,6 +118,12 @@ export const API_ENDPOINTS = {
     endpoint: 'plans',
     populateLevel: 5,
     description: '數碼方案內容'
+  },
+  
+  successfuls: {
+    endpoint: 'successfuls',
+    populateLevel: 10,
+    description: '成功案例內容'
   }
 };
 
@@ -210,7 +224,7 @@ export const PERFORMANCE_CONFIG = {
 // 🛠️ 開發工具函數
 export function logApiConfig() {
   if (PERFORMANCE_CONFIG.enableLogging) {
-    console.group('🎯 API Configuration Summary');
+    // console.group('🎯 API Configuration Summary');
     
     console.table(Object.entries(PAGE_API_CONFIG).map(([page, config]) => ({
       頁面: page,

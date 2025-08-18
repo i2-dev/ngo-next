@@ -2,6 +2,8 @@ import { getAboutPageData } from "@/data/page-loaders";
 import StrapiImage from '@/components/StrapiImage';
 import ClientsSwiper from '@/components/aboutus/ClientsSwiper';
 import styles from '@/styles/AboutUs.module.css';
+import PageContainer from "@/components/blocks/PageContainer";
+import PageSection from "@/components/blocks/PageSection";
 
 export default async function AboutUsPage({ params }) {
   // Fix Next.js 15 params async requirement
@@ -35,103 +37,40 @@ export default async function AboutUsPage({ params }) {
 
   const contentLines = formatContent(rightContent);
 
-  return (
-    <div className="min-h-screen bg-white">
+  return (    
+    <PageContainer>    
       {/* Hero Section - 主要内容区域 */}
-      <section className={`py-16 lg:py-24 ${styles.heroSection}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            
-            {/* 左侧图片 */}
-            <div className="order-2 lg:order-1">
-              <div className="relative">
+        {/* 主标题 */}
+        <PageSection className={'text-center'}>
+          <h1 className='text-[42px] font-medium max-lg:text-5xl max-md:text-4xl'>{title}</h1>
+        </PageSection>
+
+        <PageSection className={'pt-0'}>
+          <div className="grid grid-cols-2 gap-y-12 gap-x-10 max-lg:grid-cols-1">
+              <div>                  
                 {leftImage ? (
-                  <div className={`relative overflow-hidden rounded-2xl shadow-2xl ${styles.imageContainer}`}>
-                    <StrapiImage
-                      image={leftImage}
-                      alt={title}
-                      width={600}
-                      height={500}
-                      className="w-full h-auto object-cover"
-                      priority={true}
-                    />
-                  </div>
-                ) : (
-                  <div className="w-full h-96 bg-gradient-to-br from-blue-100 to-indigo-200 rounded-2xl shadow-2xl flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="w-24 h-24 mx-auto mb-4 bg-blue-500 rounded-full flex items-center justify-center">
-                        <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H9m0 0H5m5 0l3-3m-3 3l3 3M9 5l3 3m0 0l3-3" />
-                        </svg>
-                      </div>
-                      <p className="text-gray-600 font-medium">NGO 服務形象</p>
-                    </div>
-                  </div>
-                )}
+                <StrapiImage
+                    image={leftImage}
+                    alt={title}
+                    width={leftImage.width}
+                    height={leftImage.height}
+                    className="w-full"
+                    priority={true}
+                  />
+                ) : ( null ) }
               </div>
-            </div>
-
-            {/* 右侧内容 */}
-            <div className="order-1 lg:order-2">
-              <div className={`space-y-6 ${styles.contentArea}`}>
-                {/* 主标题 */}
-                <div>
-                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-                    {title}
-                  </h1>
-                </div>
-
-                {/* 内容区域 */}
-                <div className={`prose prose-lg max-w-none ${styles.prose}`}>
-                  {contentLines.map((line, index) => {
-                    // 检查是否为标题行（以##开头）
-                    if (line.startsWith('##')) {
-                      const titleText = line.replace(/^##\s*/, '');
-                      return (
-                        <h2 key={index} className="text-2xl md:text-3xl font-bold text-blue-600 mt-8 mb-4 first:mt-0">
-                          {titleText}
-                        </h2>
-                      );
-                    }
-                    
-                    // 普通段落
-                    if (line.trim() !== '') {
-                      return (
-                        <p 
-                          key={index} 
-                          className="text-lg text-gray-700 leading-relaxed mb-6"
-                          dangerouslySetInnerHTML={{ __html: line }}
-                        />
-                      );
-                    }
-                    return null;
-                  })}
-                </div>
-
-                {/* 联系我们按钮 */}
-                <div className="pt-8">
-                  <a 
-                    href="/contact-us" 
-                    className="inline-flex items-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors duration-300 shadow-lg hover:shadow-xl"
-                  >
-                    <span>聯絡我們</span>
-                    <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </a>
-                </div>
-              </div>
-            </div>
+              <div dangerouslySetInnerHTML={{ __html: rightContent }} />              
           </div>
-        </div>
-      </section>
+        </PageSection>      
 
       {/* 客户Logo轮播区域 */}
       {ourClients && (
-        <ClientsSwiper 
-          clientsData={ourClients}
-          className={`border-t border-gray-200 ${styles.clientsSwiper}`}
-        />
+        <PageSection className={'pt-0'}>
+          <ClientsSwiper 
+            clientsData={ourClients}
+            className={`border-t border-gray-200 ${styles.clientsSwiper}`}
+          />
+        </PageSection>
       )}
 
       {/* 占位符提示 */}
@@ -141,8 +80,8 @@ export default async function AboutUsPage({ params }) {
             ⚠️ 使用后备数据 - API 暂时不可用
           </p>
         </div>
-      )}
-    </div>
+      )}    
+    </PageContainer>
   );
 }
 

@@ -1630,14 +1630,14 @@
   margin-top: 2rem;
 } */
 
-.awardsSwiperContainer :global(.awards-swiper-pagination .swiper-pagination-bullet) {
+.awardsSwiper :global(.awards-swiper-pagination .swiper-pagination-bullet) {
   opacity: 1;
   width: 9px;
   height: 9px;
   background: rgba(0, 0, 0, .25);    
 }
 
-.awardsSwiperContainer :global(.awards-swiper-pagination .swiper-pagination-bullet-active) {
+.awardsSwiper :global(.awards-swiper-pagination .swiper-pagination-bullet-active) {
   background: rgb(40, 110, 17);
   transform: scale(1.2);
 }

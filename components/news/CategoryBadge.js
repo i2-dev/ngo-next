@@ -12,9 +12,9 @@ export default function CategoryBadge({ category, locale }) {
   };
 
   return (
-    <div className="mb-4">
+    <div className="inline-block mx-auto rounded-md mb-5 py-1 px-2.5 border border-gray-50 hover:bg-[#286e11] hover:text-white transition-colors duration-200 cursor-pointer">
       <span 
-        className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-600 transition-colors duration-200 cursor-pointer"
+        className="rounded-full text-sm font-medium"
         onClick={handleCategoryClick}
       >
         {category.name}

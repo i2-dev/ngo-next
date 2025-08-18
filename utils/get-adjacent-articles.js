@@ -25,8 +25,10 @@ export async function getAdjacentArticles(currentDocumentId, locale = 'en') {
     }
 
     // 获取上一篇和下一篇文章
-    const previous = currentIndex < articles.length - 1 ? articles[currentIndex + 1] : null;
-    const next = currentIndex > 0 ? articles[currentIndex - 1] : null;
+    // previous: 更新的文章（時間軸上的上一篇）
+    // next: 更舊的文章（時間軸上的下一篇）
+    const previous = currentIndex > 0 ? articles[currentIndex - 1] : null;
+    const next = currentIndex < articles.length - 1 ? articles[currentIndex + 1] : null;
 
     return { previous, next };
   } catch (error) {

@@ -1,5 +1,6 @@
 import { getStrapiURL } from "@/utils/get-strapi-url";
 import qs from "qs";
+import { shouldUseCache, getCacheDuration } from "@/utils/cache-manager";
 
 // 通用的 Strapi 數據獲取函數（性能監控版）
 export async function fetchStrapiData(endpoint, options = {}) {
@@ -37,10 +38,60 @@ export async function fetchStrapiData(endpoint, options = {}) {
     const queryString = qs.stringify(queryConfig);
     const url = getStrapiURL(`/api/${endpoint}?${queryString}`);
 
-    const response = await fetch(url);
+    // 準備請求標頭，包含可選的 API 令牌
+    const headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    };
+
+    // 如果有 API 令牌，添加驗證標頭
+    if (process.env.STRAPI_API_TOKEN) {
+      headers['Authorization'] = `Bearer ${process.env.STRAPI_API_TOKEN}`;
+    }
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers,
+    });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch data from ${endpoint}: ${response.status}`);
+      let errorMessage = `Failed to fetch data from ${endpoint}: ${response.status}`;
+      
+      // 為不同的 HTTP 狀態碼提供更詳細的錯誤信息
+      switch (response.status) {
+        case 401:
+          errorMessage += ` (Unauthorized - API token may be missing or invalid)`;
+          break;
+        case 403:
+          errorMessage += ` (Forbidden - Check API permissions or add STRAPI_API_TOKEN to environment)`;
+          break;
+        case 404:
+          errorMessage += ` (Not Found - Endpoint '${endpoint}' may not exist)`;
+          break;
+        case 500:
+          errorMessage += ` (Internal Server Error - Strapi backend issue)`;
+          break;
+        case 502:
+          errorMessage += ` (Bad Gateway - Strapi server may be down)`;
+          break;
+        case 503:
+          errorMessage += ` (Service Unavailable - Strapi server overloaded)`;
+          break;
+        default:
+          break;
+      }
+
+      // 嘗試獲取詳細錯誤信息
+      try {
+        const errorData = await response.json();
+        if (errorData.error?.message) {
+          errorMessage += ` - ${errorData.error.message}`;
+        }
+      } catch (parseError) {
+        // 如果無法解析錯誤響應，忽略
+      }
+
+      throw new Error(errorMessage);
     }
 
     const data = await response.json();
@@ -67,7 +118,7 @@ export async function fetchStrapiData(endpoint, options = {}) {
 }
 
 // 改進的快取系統
-let homepageDataCache = new Map();
+export let homepageDataCache = new Map();
 const CACHE_DURATION = 15 * 60 * 1000; // 15分鐘快取
 const MAX_CACHE_SIZE = 50; // 最大快取條目數
 
@@ -125,8 +176,8 @@ async function fetchHomepageRawData(locale = 'en') {
   const normalizedLocale = normalizeLocale(locale);
   const cacheKey = `homepage_${normalizedLocale}`;
   
-  // 檢查快取
-  if (homepageDataCache.has(cacheKey)) {
+  // 檢查快取 (開發模式可以跳過)
+  if (shouldUseCache() && homepageDataCache.has(cacheKey)) {
     const cached = homepageDataCache.get(cacheKey);
     if (cached.expires > Date.now()) {
       // console.log('📦 Using cached homepage data for locale:', normalizedLocale);
@@ -148,12 +199,13 @@ async function fetchHomepageRawData(locale = 'en') {
       logData: false,
     });
 
-    // 存入快取
+    // 存入快取 (使用動態緩存時間)
+    const cacheDuration = getCacheDuration(CACHE_DURATION);
     cleanupCache();
     homepageDataCache.set(cacheKey, {
       data: data,
       timestamp: Date.now(),
-      expires: Date.now() + CACHE_DURATION
+      expires: Date.now() + cacheDuration
     });
     
     setTimeout(() => {
@@ -319,11 +371,11 @@ export async function getPageData(endpoint, slug = null) {
 }
 
 // 改進的Menu數據快取系統
-let menuDataCache = new Map();
+export let menuDataCache = new Map();
 const MENU_CACHE_DURATION = 30 * 60 * 1000; // 30分鐘快取（Menu變化較少）
 
 // 新聞/資訊數據快取系統
-let newsDataCache = new Map();
+export let newsDataCache = new Map();
 const NEWS_CACHE_DURATION = 10 * 60 * 1000; // 10分鐘快取（新聞更新較頻繁）
 
 // Function to fetch menu data from Strapi (帶快取優化)

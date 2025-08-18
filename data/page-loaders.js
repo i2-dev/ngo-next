@@ -3,16 +3,16 @@
  * 實現按需加載 - 只在訪問特定頁面時獲取該頁面所需的API數據
  */
 
-import { fetchStrapiData } from './loaders';
+import { fetchStrapiData } from './loaders.js';
 import { 
   getPageApiConfig, 
   getApiEndpointConfig, 
   inferPageNameFromPath,
   PERFORMANCE_CONFIG 
-} from './api-config';
+} from './api-config.js';
 
 // 📦 統一的頁面數據快取系統
-const pageDataCache = new Map();
+export const pageDataCache = new Map();
 const MAX_CACHE_SIZE = 100;
 
 // 🧹 智能快取清理
@@ -66,7 +66,7 @@ export async function getPageSpecificData(pageName, locale = 'en', options = {})
       cached.lastAccessed = Date.now(); // 更新訪問時間
       
       if (PERFORMANCE_CONFIG.enableLogging) {
-        console.log(`📦 Cache hit for ${pageName} (${normalizedLocale})`);
+        // console.log(`📦 Cache hit for ${pageName} (${normalizedLocale})`);
       }
       
       return cached.data;
@@ -76,7 +76,7 @@ export async function getPageSpecificData(pageName, locale = 'en', options = {})
   }
 
   if (PERFORMANCE_CONFIG.enableLogging) {
-    console.log(`🎯 Loading data for page: ${pageName} (APIs: ${pageConfig.apis.join(', ')})`);
+    // console.log(`🎯 Loading data for page: ${pageName} (APIs: ${pageConfig.apis.join(', ')})`);
   }
 
   try {
@@ -324,6 +324,50 @@ export async function getDigitalSolutionsPageData(locale = 'en') {
       ...rawData,
       processedData: {
         plans: sortedPlans,
+        menus: rawData.menus
+      }
+    };
+  }
+  
+  return rawData;
+}
+
+// 🛠️ 成功案例頁面專用加載器
+export async function getSuccessCasesPageData(locale = 'en') {
+  const rawData = await getPageSpecificData('success-case-detail', locale);
+  
+  // 處理成功案例數據，按Order排序
+  if (rawData.successfuls?.data) {
+
+    
+    const sortedCases = rawData.successfuls.data
+      .sort((a, b) => (a.Order || 0) - (b.Order || 0))
+      .map(successCase => {
+
+        
+        return {
+          id: successCase.id,
+          documentId: successCase.documentId,
+          title: successCase.Title,
+          order: successCase.Order,
+          content: successCase.Content,
+          createdAt: successCase.createdAt,
+          updatedAt: successCase.updatedAt,
+          publishedAt: successCase.publishedAt,
+          locale: successCase.locale,
+          icon: successCase.Icon,
+          background: successCase.Background,
+          button: successCase.Button,
+          card: successCase.Card || [],
+          // 修正：字段名稱是小寫的 image
+          screenshot: successCase.image || []
+        };
+      });
+    
+    return {
+      ...rawData,
+      processedData: {
+        successCases: sortedCases,
         menus: rawData.menus
       }
     };

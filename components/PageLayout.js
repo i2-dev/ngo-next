@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import BackToTop from "@/components/BackToTop";
 
 /**
  * 優化的頁面布局組件
@@ -31,6 +32,9 @@ export default function PageLayout({
       {showFooter && (
         <Footer locale={locale} />
       )}
+      
+      {/* 返回頂部按鈕 */}
+      <BackToTop />
     </>
   );
 }

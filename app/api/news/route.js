@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getNewsData } from '@/data/loaders';
+import { getCacheHeaders } from '@/utils/cache-manager';
 
 // GET /api/news
 export async function GET(request) {
@@ -35,7 +36,7 @@ export async function GET(request) {
     return NextResponse.json(newsData, {
       status: 200,
       headers: {
-        'Cache-Control': 'public, s-maxage=600, stale-while-revalidate=1200', // 10分鐘快取
+        ...getCacheHeaders(600), // 10分鐘快取 (開發模式會自動禁用)
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type',
@@ -75,6 +76,11 @@ export async function OPTIONS(request) {
     },
   });
 }
+
+
+
+
+
 
 
 

@@ -1,6 +1,10 @@
 import { getContactPageData } from "@/data/page-loaders";
 import ContactForm from "@/components/ContactForm";
+import ActiveCampaignForm from "@/components/ActiveCampaignForm";
 import StrapiImage from "@/components/StrapiImage";
+import PageContainer from "@/components/blocks/PageContainer";
+import PageSection from "@/components/blocks/PageSection";
+import GoogleMap from "@/components/GoogleMap";
 
 export default async function ContactUsPage({ params }) {
   // Fix Next.js 15 params async requirement
@@ -16,67 +20,63 @@ export default async function ContactUsPage({ params }) {
   
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-4xl mx-auto px-4 py-16">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center">
-          {contactPageData?.data?.Title || '聯絡我們'}
-        </h1>
-        
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="grid grid-cols-1 md:grid-cols-2">
-            {/* 左側：聯絡信息和圖片 */}
-            <div className="bg-teal-200 p-8 flex flex-col justify-between min-h-[500px]">
-              {/* 聯絡信息內容 */}
-              <div className="text-gray-800">
-                <div className="space-y-6">
-                  {contactPageData?.data?.EnquiryPhone && (
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-800 mb-2">查詢電話</h3>
-                      <p className="text-gray-700 text-lg">{contactPageData.data.EnquiryPhone}</p>
-                    </div>
-                  )}
-                  
-                  {contactPageData?.data?.Address && (
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-800 mb-2">地址</h3>
-                      <p className="text-gray-700">{contactPageData.data.Address}</p>
-                    </div>
-                  )}
-                  
-                  {!contactPageData?.data?.EnquiryPhone && !contactPageData?.data?.Address && (
-                    <div className="text-gray-500 italic">
-                      聯絡信息尚未配置
-                    </div>
-                  )}
-                </div>
+    <PageContainer>
+      {/* 主标题 */}
+      <PageSection className={'text-center'}>
+        <h1 className='text-[42px] font-medium max-lg:text-5xl max-md:text-4xl'>{contactPageData?.data?.Title || '聯絡我們'}</h1>
+      </PageSection> 
+
+      <PageSection className={'pt-0'}>                
+        <div className="grid grid-cols-2 gap-y-12 gap-x-10 max-lg:grid-cols-1">
+          {/* 左側：聯絡信息和圖片 */}
+          <div className="flex flex-col min-h-[500px]">
+            {/* 聯絡信息內容 */}                            
+            {contactPageData?.data?.EnquiryPhone && (
+              <div>
+                <h2 className="text-[#454176] text-[22px]">查詢電話</h2>
+                <p>{contactPageData.data.EnquiryPhone}</p>
               </div>
-              
-              {/* 底部圖片 */}
-              {contactPageData?.data?.Image && (
-                <div className="mt-8 flex justify-center">
-                  <StrapiImage 
-                    image={contactPageData.data.Image}
-                    className="max-w-full h-auto"
-                    alt="聯絡我們插圖"
-                    width={300}
-                    height={200}
+            )}
+            
+            {contactPageData?.data?.Address && (
+              <div className="mt-12">
+                <h2 className="text-[#454176] text-[22px]">地址</h2>
+                <p className="mb-4">{contactPageData.data.Address}</p>
+                
+                {/* Google Map */}
+                <div className="mt-4">
+                  <GoogleMap 
+                    address={contactPageData.data.Address}
+                    latitude={contactPageData.data.Latitude || "22.3134643"}
+                    longitude={contactPageData.data.Longitude || "114.2181358"}
+                    height="250px"
+                    zoom={16}
+                    className="shadow-md"
                   />
                 </div>
-              )}
-            </div>
-            
-            {/* 右側：聯絡表單 */}
-            <div className="p-8">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-6 border-b-2 border-black pb-2">
-                立即查詢
-              </h2>
-              
-              <ContactForm services={contactPageData?.data?.Services || []} />
-            </div>
+              </div>
+            )}
+            {/* 底部圖片 */}
+            {contactPageData?.data?.Image && (
+              <div className="mt-auto">
+                <StrapiImage 
+                  image={contactPageData.data.Image}
+                  className="max-w-full h-auto lg:w-[76%]"
+                  alt="聯絡我們插圖"
+                  width={contactPageData.data.Image.width}
+                  height={contactPageData.data.Image.height}
+                />
+              </div>
+            )}
           </div>
-        </div>
-      </div>
-    </div>
+          
+          {/* 右側：聯絡表單 */}
+          <div className="bg-white p-10">
+            <ActiveCampaignForm />
+          </div>
+        </div>        
+      </PageSection>            
+    </PageContainer>
   );
 }
 

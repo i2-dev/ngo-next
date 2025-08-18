@@ -12,10 +12,7 @@ export default function CategoryBadgeInline({ category, locale }) {
   };
 
   return (
-    <span 
-      className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium hover:bg-green-600 transition-colors duration-200 cursor-pointer"
-      onClick={handleCategoryClick}
-    >
+    <span onClick={handleCategoryClick} >
       {category.name}
     </span>
   );

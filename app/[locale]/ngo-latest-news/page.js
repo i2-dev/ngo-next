@@ -4,7 +4,7 @@ import Link from 'next/link';
 import PageContainer from '@/components/blocks/PageContainer';
 import PageSection from '@/components/blocks/PageSection';
 
-async function getNewsData(page = 1, sortBy = 'Publish:desc') {
+async function getInformationData(page = 1, sortBy = 'Publish:desc') {
   try {
     const response = await fetch(
       `${getStrapiURL()}/api/informations?pLevel=3&pagination[page]=${page}&pagination[pageSize]=10&sort=${sortBy}`,
@@ -36,7 +36,7 @@ export default async function NGOLatestNewsPage({ params, searchParams }) {
   const page = parseInt(searchParams?.page) || 1;
   const sortBy = 'Publish:desc'; // Fixed sorting by latest publish date
 
-  const { data: newsData, pagination } = await getNewsData(page, sortBy);
+  const { data: newsData, pagination } = await getInformationData(page, sortBy);
 
   return (
     <PageContainer className={'!mt-20'}>

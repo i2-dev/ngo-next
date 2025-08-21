@@ -9,6 +9,7 @@ const StrapiImage = ({
   format,
   alt,
   priority = false,
+  loading = "lazy",
 }) => {
   const imageUrl = getStrapiMedia(image, format);
 
@@ -26,6 +27,7 @@ const StrapiImage = ({
       className={className}
       alt={altText}
       priority={priority}
+      loading={priority ? "eager" : loading}
     />
   );
 };

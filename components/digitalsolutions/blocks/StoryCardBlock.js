@@ -1,62 +1,56 @@
 import StrapiImage from "@/components/StrapiImage";
+import Image from "next/image";
 
 export default function StoryCardBlock({ block, locale }) {
   if (!block) return null;
 
   return (
-    <div className="relative min-h-[500px] rounded-2xl overflow-hidden">
-      {/* 背景圖片 */}
-      {block.Image && (
-        <div className="absolute inset-0">
-          <StrapiImage
-            image={block.Image}
-            alt={block.Title}
-            className="w-full h-full object-cover"
-          />
-          {/* 漸層遮罩 */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent"></div>
-        </div>
-      )}
+    <div className="w-full relative max-lg:flex max-lg:flex-col-reverse">
+      <div className="w-[275px] h-[316px] bg-[url(/images/global/banner-body-bg-right.png)] bg-contain bg-no-repeat absolute left-[320px] top-[calc(15%+8px)] z-1 max-lg:hidden"></div>
 
       {/* 引言卡片 */}
-      <div className="relative z-10 p-8 h-full flex items-center">
-        <div className="bg-white rounded-3xl shadow-xl p-8 max-w-md relative">
-          {/* 引言圖標 */}
-          <div className="flex items-center gap-3 mb-6">
-            <div className="text-4xl text-blue-600">
-              <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/>
-              </svg>
-            </div>
-            <div>
-              <h3 className="text-lg font-bold text-gray-900">{block.Title}</h3>
-            </div>
-          </div>
+      <div className="bg-linear-[to_bottom,#FFFFFF_25%,#D7F3F2_100%] shadow-[0_8px_10px_rgba(0,0,0,0.1)] flex flex-col justify-between items-start w-[420px] rounded-[30px] p-10 absolute left-0 top-[15%] z-2 max-lg:w-[75%] max-lg:-mt-12 max-lg:p-8 max-lg:relative max-md:w-full max-md:-mt-5">
+          <h2 className='text-[#3e3978] text-2xl/[1.667] font-semibold mb-2.5'>{block.Title}</h2>          
           
           {/* 引言內容 */}
           {block.Content && (
-            <div className="mb-6">
+            <div className='p-[10px_58px] -mx-[50px] mb-5 relative max-lg:px-10 max-lg:-mx-10'>
+              <Image
+                src="/images/global/quotes-open.png"
+                alt=""
+                width="41"
+                height="33"
+                className="block absolute left-0 top-0 max-lg:w-8"
+              />
               <div 
-                className="text-gray-700 text-base leading-relaxed"
+                className="[&>*:last-child]:mb-0"
                 dangerouslySetInnerHTML={{ __html: block.Content }}
+              />
+              <Image
+                src="/images/global/quotes-close.png"
+                alt=""
+                width="41"
+                height="33"
+                className="block absolute right-0 bottom-0 max-lg:w-8"
               />
             </div>
           )}
 
-          {/* 人物信息 */}
-          <div className="pt-4 border-t border-gray-100">
-            <p className="font-semibold text-gray-900 mb-1">{block.name || block.Title}</p>
-            <p className="text-sm text-blue-600 font-medium">{block.Position}</p>
-          </div>
-
-          {/* 裝飾性引號 */}
-          <div className="absolute -bottom-2 -right-2 text-6xl text-purple-200 opacity-50">
-            <svg className="w-12 h-12" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/>
-            </svg>
-          </div>
-        </div>
+          {/* 人物信息 */}          
+          <p className="text-[#555bba] text-lg mb-2.5"><strong>{block.name || block.Title}</strong></p>
+          <p className="text-[#555bba] mb-0">{block.Position}</p>          
       </div>
+
+      {/* 背景圖片 */}
+      {block.Image && (
+        <div className="w-[calc(100%-170px)] ml-[170px] max-md:w-full max-md:ml-0 max-sm:h-[calc(80vw-90px)]">
+          <StrapiImage
+            image={block.Image}
+            alt={block.Title}
+            className="w-full rounded-[30px] w-full max-md:mb-0 max-sm:h-full max-sm:object-cover max-sm:object-[90%_90%]"
+          />          
+        </div>
+      )}
     </div>
   );
 }

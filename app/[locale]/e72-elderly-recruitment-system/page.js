@@ -1,4 +1,4 @@
-import { getSuccessCasesPageData } from "@/data/page-loaders";
+import { getSuccessCasesData } from "@/data/unified-loader";
 import PageContainer from "@/components/blocks/PageContainer";
 import SuccessCaseHero from "@/components/successcases/SuccessCaseHero";
 import SuccessCaseBlockRenderer from "@/components/successcases/SuccessCaseBlockRenderer";
@@ -9,7 +9,7 @@ export default async function E72ElderlyRecruitmentSystemPage({ params }) {
   const locale = resolvedParams?.locale || 'en';
 
   // 獲取成功案例頁面數據
-  const pageData = await getSuccessCasesPageData(locale);
+  const pageData = await getSuccessCasesData(locale);
   const { successCases, menus } = pageData.processedData || {};
   
   // 根據Order找到e72傲齡動力案例 (data[3] - 菜單第3個)
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const locale = resolvedParams?.locale || 'en';
   
-  const pageData = await getSuccessCasesPageData(locale);
+  const pageData = await getSuccessCasesData(locale);
   const { successCases } = pageData.processedData || {};
   const successCase = successCases?.find(successCase => successCase.order === 3);
   

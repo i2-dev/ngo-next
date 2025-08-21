@@ -39,7 +39,7 @@ function MenuPlaceholder() {
 async function MenuWithFallback({ locale }) {
   try {
     // 動態導入以避免循環依賴
-    const { getMenuData } = await import("@/data/loaders");
+    const { getMenuData } = await import("@/data/unified-loader");
     const menuData = await getMenuData(locale);
     return <MenuClient menuData={menuData} locale={locale} />;
   } catch (error) {

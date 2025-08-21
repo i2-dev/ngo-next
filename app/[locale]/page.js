@@ -5,10 +5,12 @@ import ClientLogoSection from "@/components/homepage/ClientLogoSection";
 import AwardsSwiper from "@/components/homepage/AwardsSwiper";
 import Card from "@/components/blocks/Card";
 
-import { getHomepagePageData } from "@/data/page-loaders";
+import { getHomepageData } from "@/data/unified-loader";
 import styles from "@/styles/Homepage.module.css";
 import PageContainer from "@/components/blocks/PageContainer";
 import PageSection from "@/components/blocks/PageSection";
+
+
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -22,16 +24,15 @@ export default async function HomePage({ params }) {
   const locale = resolvedParams?.locale || 'en';
 
   // 🎯 使用頁面特定的數據加載器，實現真正的按需加載
-  const pageData = await getHomepagePageData(locale);
-  
+  const pageData = await getHomepageData(locale);
   // 提取處理過的首頁數據
-  const { 
-    bannerSlides, 
-    solutionData, 
-    informationData, 
-    clientLogoData, 
-    awardsData, 
-    cardData 
+  const {
+    bannerSlides,
+    solutionData,
+    informationData,
+    clientLogoData,
+    awardsData,
+    cardData
   } = pageData.processedData || {};
 
 
@@ -54,7 +55,7 @@ export default async function HomePage({ params }) {
   };
 
   return (
-    <PageContainer className={'!mt-22'}> 
+    <PageContainer className={'!mt-22'}>
       {/* Hero Swiper Section */}
       <HomepageSwiper
         slides={bannerSlides}
@@ -77,31 +78,29 @@ export default async function HomePage({ params }) {
 
       {/* Client Logo Section */}
       <PageSection>
-        <ClientLogoSection 
-          logoData={clientLogoData}          
+        <ClientLogoSection
+          logoData={clientLogoData}
         />
       </PageSection>
 
       {/* Awards Swiper Section */}
       <PageSection>
-        <AwardsSwiper 
-          awardsData={awardsData}          
+        <AwardsSwiper
+          awardsData={awardsData}
         />
       </PageSection>
 
       {/* AI² Card Section */}
       {cardData && (
-        <PageSection>        
-          <Card 
+        <PageSection className={'last:pb-50'}>
+          <Card
             Title={cardData.Title}
             Content={cardData.Content}
             icon={cardData.icon}
             Button={cardData.Button}
-          />          
+          />
         </PageSection>
       )}
-
-
     </PageContainer>
   );
 }

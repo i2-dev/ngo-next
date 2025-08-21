@@ -32,30 +32,22 @@ export default function PromoBanner({
   const t = text[locale] || text.en;
 
   return (
-    <div className={`${isFixed ? 'fixed bottom-24 right-4 z-40' : ''} ${className}`}>
-      <div className="flex flex-col gap-4 w-[175px]">
+    <div className={`${isFixed ? 'fixed bottom-30 right-8 z-40' : ''} ${className}`}>
+      <div className="flex flex-col space-y-10 w-[175px]">
         {/* 促銷按鈕 - 橙色 */}
         <Link
           href="/contact-us"
-          className="group bg-[#ef8d4a] hover:bg-[#c65200] text-white rounded-[8px_8px_0] p-[0_11px_15px_18px] relative  shadow-lg transition-all duration-300 transform"
+          className="group bg-[#ef8d4a] hover:bg-[#c65200] text-white text-[18px]/[1.2] rounded-[8px_8px_0] p-[0_11px_15px_18px] relative transition-all duration-300 transform"
           title={t.chatbotTitle}
         >
           {/* 促銷標籤 */}
-          <div className="absolute -top-2 -left-2 bg-white text-green-500 font-bold text-sm px-3 py-1 rounded-full shadow-md border-2 border-green-500">
+          <span className="bg-white text-[#4ac36d] text-2xl font-bold p-2.5 rounded-full flex justify-center items-center w-17 h-17 -mt-8.5 mb-0.5">
             {t.promo}
-          </div>
-
-          <div className="pt-2">
-            <div className="font-bold text-sm leading-tight mb-2">
-              {t.promoText}
-            </div>
-            <div className="text-xs opacity-90">
-              {t.promoSubtext}
-            </div>
-          </div>
-
-          {/* Hover 效果 */}
-          <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity duration-300"></div>
+          </span>          
+          <span className="font-bold leading-tight">
+            {t.promoText}
+          </span><br/>          
+          {t.promoSubtext}          
         </Link>
 
         {/* 主網站按鈕 - 紫色漸變 */}
@@ -63,12 +55,10 @@ export default function PromoBanner({
           href="https://www.i2hk.com/"
           target="_blank"
           rel="noopener noreferrer"
-          className="group bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-full px-6 py-4 shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-center"
+          className="group bg-linear-[#7d73f3_0%,#b379d2_50%,#e777af_100%] text-white text-center rounded-full px-6 py-4 transition-all duration-300 transform hover:scale-105"
           title={t.mainSiteTitle}
-        >
-          <div className="font-medium text-sm">
-            {t.mainSite}
-          </div>
+        >          
+          {t.mainSite}          
         </Link>
       </div>
     </div>

@@ -1,11 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import MenuWrapper from "./header/MenuWrapper";
+import ClientOnly from "./ClientOnly";
+import HeaderScrollEffect from "./header/HeaderScrollEffect";
 
 export default function Header({ locale = 'en', menuData = null }) {
   return (
-    <header id="header" className="w-full py-6 fixed z-50 transition duration-300 ease-in-out">
-      <div className="xl:container xl:max-w-[1280px] xl:mx-auto px-5">
+    <>
+      {/* Scroll effect handler - client-side only to prevent hydration mismatch */}
+      <ClientOnly>
+        <HeaderScrollEffect />
+      </ClientOnly>
+      
+      <header id="header" className="w-full py-6 fixed z-50 transition duration-300 ease-in-out">
+        <div className="xl:container xl:max-w-[1280px] xl:mx-auto px-5">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0">
@@ -14,7 +22,7 @@ export default function Header({ locale = 'en', menuData = null }) {
               width={245}
               height={106}
               alt="I2NGO Logo"
-              priority
+              priority={true}
               className="logo max-w-[162px] h-auto transition-[all_.3s_cubic-bezier(.2,1,.2,1)]"
             />
           </Link>
@@ -28,7 +36,7 @@ export default function Header({ locale = 'en', menuData = null }) {
             />
             
             {/* Social Media Icons */}
-            <div className="hidden md:flex items-center space-x-3">
+            <div className="hidden lg:flex items-center space-x-3">
               <Link 
                 href="https://www.facebook.com/i2hongkong/" 
                 target="_blank" 
@@ -52,5 +60,6 @@ export default function Header({ locale = 'en', menuData = null }) {
         </div>
       </div>
     </header>
+    </>
   );
 }

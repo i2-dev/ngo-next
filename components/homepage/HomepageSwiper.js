@@ -75,9 +75,10 @@ const HomepageSwiper = ({
                 className={swiperConfig.swiperClassName || "h-[400px] md:h-[500px] lg:h-[600px] w-full pb-20"}
                 {...swiperConfig.extraProps}
             >
-                {slidesToShow.map((slide) => {
+                {slidesToShow.map((slide, index) => {
                     // 获取正确的 Strapi 图片 URL
                     //const backgroundImageUrl = slide.image ? getStrapiMedia(slide.image) : null;
+                    const isFirstSlide = index === 0; // First slide should load with priority
                     return (
                         <SwiperSlide key={slide.id}>
                             <div className="relative w-full h-full">                                
@@ -88,28 +89,34 @@ const HomepageSwiper = ({
                                             {slide.icon && (                                             
                                                 <StrapiImage
                                                     image={slide.icon}
-                                                    className={styles.homeBannerCardIcon}
+                                                    className={`${styles.homeBannerCardIcon} animate-fade-in-up`}
+                                                    style={{animationDelay: '0.4s'}}
                                                     width={135}
                                                     height={110}
                                                     alt={slide.title}
+                                                    priority={isFirstSlide}
                                                 />                                          
                                             )}
-                                            <h2 className="text-[#3e3978] text-[46px]/[1.2] font-medium mb-[15px] max-lg:text-[28px]">
+                                            <h2 className="text-[#3e3978] text-[46px]/[1.2] font-medium mb-[15px] max-lg:text-[28px] animate-fade-in-left" style={{animationDelay: '0.6s'}}>
                                                 <span className="block text-2xl font-normal mb-[15px] max-lg:text-base max-lg:mb-2.5">{slide.subtitle}</span>
                                                 {slide.title}
                                             </h2>
-                                            <p className="text-[#ff6800] text-2xl/[1.23] mb-auto max-md:mb-[50px]"><strong className="font-medium">{slide.content}</strong></p>                                                      
-                                            <SharedButton {...slide}/>                                                                              
+                                            <p className="text-[#ff6800] text-2xl/[1.23] mb-auto max-md:mb-[50px] animate-fade-in-up" style={{animationDelay: '0.8s'}}><strong className="font-medium">{slide.content}</strong></p>                                                      
+                                            <div className="animate-fade-in-up" style={{animationDelay: '1s'}}>
+                                                <SharedButton {...slide}/>                                                                              
+                                            </div>
                                         </div>
                                         <div className={styles.homeBannerCardImageContainer}>                                            
                                             {/* Background Image or Default Background */}                                            
                                             {slide.image? (
-                                                <Link href={slide.buttonLink}> 
+                                                <Link href={slide.buttonLink} className="animate-fade-in-right" style={{animationDelay: '0.3s'}}> 
                                                     <StrapiImage
                                                         image={slide.image}                                                    
                                                         width={slide.image.width}
                                                         height={slide.image.height}
                                                         alt={slide.title}
+                                                        priority={isFirstSlide}
+                                                        className="hover:scale-105 transition-transform duration-500"
                                                     />
                                                 </Link> 
                                             ) : (
@@ -119,45 +126,6 @@ const HomepageSwiper = ({
                                     </div>                                    
                                 </div>
 
-
-                                {/* <div className="relative z-10 flex items-center justify-center h-full">
-                                    <div className="text-center text-white px-4 max-w-4xl mx-auto" style={{
-                                        textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
-                                    }}>
-                                        
-                                        {slide.icon && (
-                                            <div className="mb-6">
-                                                <StrapiImage
-                                                    image={slide.icon}
-                                                    className="mx-auto w-16 h-16 md:w-20 md:h-20 object-contain"
-                                                    width={135}
-                                                    height={110}
-                                                    alt={slide.title}
-                                                />
-                                            </div>
-                                        )}
-
-                                        <h2 className={`text-3xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight ${styles.homeBannerTextShadow}`}>
-                                            {slide.title}
-                                        </h2>
-                                        <p className="text-lg md:text-xl lg:text-2xl mb-4 opacity-90">
-                                            {slide.subtitle}
-                                        </p>
-                                        {slide.content && (
-                                            <p className="text-base md:text-lg lg:text-xl mb-8 opacity-80 font-medium">
-                                                {slide.content}
-                                            </p>
-                                        )}
-                                        {slide.buttonText && slide.buttonLink && (
-                                            <a
-                                                href={slide.buttonLink}
-                                                className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300 text-lg"
-                                            >
-                                                {slide.buttonText}
-                                            </a>
-                                        )}
-                                    </div>
-                                </div> */}
                             </div>
                         </SwiperSlide>
                     );

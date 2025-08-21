@@ -1,10 +1,9 @@
-import { getContactPageData } from "@/data/page-loaders";
-import ContactForm from "@/components/ContactForm";
-import ActiveCampaignForm from "@/components/ActiveCampaignForm";
+import { getContactUsData } from "@/data/unified-loader";
+import ActiveCampaignForm from "@/components/contactus/ActiveCampaignForm";
 import StrapiImage from "@/components/StrapiImage";
 import PageContainer from "@/components/blocks/PageContainer";
 import PageSection from "@/components/blocks/PageSection";
-import GoogleMap from "@/components/GoogleMap";
+import GoogleMap from "@/components/contactus/GoogleMap";
 
 export default async function ContactUsPage({ params }) {
   // Fix Next.js 15 params async requirement
@@ -12,7 +11,7 @@ export default async function ContactUsPage({ params }) {
   const locale = resolvedParams?.locale || 'en';
   
   // 🎯 只在訪問聯絡我們頁面時才獲取相關的 API 數據
-  const pageData = await getContactPageData(locale);
+  const pageData = await getContactUsData(locale);
   
   // 提取API數據（如果可用）或使用後備數據
   const contactPageData = pageData['contact-us'];

@@ -82,6 +82,7 @@ export default function Solution({ locale = 'en', styles, solutionData }) {
                 height={30}
                 className="absolute left-3 bottom-3"
                 alt="Picture of the author"
+                loading="lazy"
               />
               <div className="w-[70] h-[120] group-[&:nth-child(1)]:bg-[url(/images/homepage/number_01.svg)] group-[&:nth-child(2)]:bg-[url(/images/homepage/number_02.svg)] group-[&:nth-child(3)]:bg-[url(/images/homepage/number_03.svg)] group-[&:nth-child(4)]:bg-[url(/images/homepage/number_04.svg)] group-[&:nth-child(5)]:bg-[url(/images/homepage/number_05.svg)] absolute right-3 -bottom-[40px]"></div>
             </div>

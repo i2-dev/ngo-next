@@ -1,4 +1,4 @@
-import { getSuccessCasesPageData } from "@/data/page-loaders";
+import { getSuccessCasesData } from "@/data/unified-loader";
 import PageContainer from "@/components/blocks/PageContainer";
 import SuccessCaseHero from "@/components/successcases/SuccessCaseHero";
 import SuccessCaseBlockRenderer from "@/components/successcases/SuccessCaseBlockRenderer";
@@ -9,16 +9,16 @@ export default async function BrainTrainingGamePage({ params }) {
   const locale = resolvedParams?.locale || 'en';
 
   // 獲取成功案例頁面數據
-  const pageData = await getSuccessCasesPageData(locale);
+  const pageData = await getSuccessCasesData(locale);
   const { successCases, menus } = pageData.processedData || {};
   
   // 根據Order找到「智有腦」健腦遊戲系統案例 (data[2] - 菜單第2個)
   const successCase = successCases?.find(successCase => successCase.order === 2);
-  
+
   if (!successCase) {
     notFound();
   }
-
+  
   return (
     <>
       <SuccessCaseHero successCase={successCase} locale={locale} />
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const locale = resolvedParams?.locale || 'en';
   
-  const pageData = await getSuccessCasesPageData(locale);
+  const pageData = await getSuccessCasesData(locale);
   const { successCases } = pageData.processedData || {};
   const successCase = successCases?.find(successCase => successCase.order === 2);
   

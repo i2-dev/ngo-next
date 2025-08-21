@@ -1,68 +1,35 @@
-import { draftMode } from "next/headers";
-import { redirect } from "next/navigation";
-import { PREVIEW_CONFIG } from "@/utils/preview-routes";
+import { NextResponse } from 'next/server';
 
-function getPreviewPath(contentType, slug, locale, status) {
-  console.log(
-    "****** getPreviewPath ******",
-    contentType,
-    slug,
-    locale,
-    status
-  );
-
-  //if no contentType, return home page
-  if (!contentType) return "/";
-
-  const config = PREVIEW_CONFIG[contentType];
-
-  //if no config, return null
-  if (!config) {
-    console.log(`No route configured for: ${contentType}`);
-    return null;
-  }
-
-  //if single type, return path
-  if (config.type === "single") {
-    console.log(`Single type, returning: ${config.path}`);
-    return config.path;
-  }
-
-  //if collection type, return path with slug
-  const finalPath = slug ? `${config.path}/${slug}` : config.path;
-  console.log(`Collection type, returning: ${finalPath}`);
-  return finalPath;
-}
-
-export const GET = async (request) => {
+export async function GET(request) {
   const { searchParams } = new URL(request.url);
-  const searchParamsData = Object.fromEntries(searchParams);
-  const { secret, slug, locale, uid, status } = searchParamsData;
+  
+  // 获取URL参数
+  const secret = searchParams.get('secret');
+  const slug = searchParams.get('slug');
+  const uid = searchParams.get('uid');
+  const status = searchParams.get('status');
+  const documentId = searchParams.get('documentId');
+  const locale = searchParams.get('locale') || 'en';
 
-  if (secret !== process.env.PREVIEW_SECRET) {
-    return new Response("Invalid token", { status: 401 });
+  // 验证secret（可选，用于安全）
+  const expectedSecret = process.env.PREVIEW_SECRET || 'efee254c6a8b119e65057678ffa7cf8b2e701d83407596eb813d187c2959c087';
+  
+  if (secret && secret !== expectedSecret) {
+    return new NextResponse('Invalid token', { status: 401 });
   }
 
-  const contentType = uid?.split(".").pop();
-  const basePath = getPreviewPath(contentType, slug, locale, status);
-
-  // if no basePath, return error
-  if (!basePath) {
-    console.log(
-      `Preview failed: No route configured for content type "${contentType}"`
-    );
-    return new Response(
-      `Preview not configured for content type: ${contentType}. Please add it to PREVIEW_ROUTES.`,
-      { status: 404 }
-    );
+  // 检查是否是关于我们页面的预览
+  if (uid === 'api::about-us.about-us' || slug === 'y529m3uaz2v9rknwy21lg373') {
+    // 重定向到关于我们的预览页面
+    const previewUrl = `/preview/about-us?status=${status}&documentId=${documentId}&locale=${locale}`;
+    
+    // 获取正确的基础URL - 强制使用正确的外部URL
+    const PUBLIC_BASE_URL = 'http://192.168.15.200:3000';
+    const baseUrl = PUBLIC_BASE_URL;
+    
+    return NextResponse.redirect(new URL(previewUrl, baseUrl));
   }
 
-  const finalPath =
-    locale && locale !== "en" ? "/" + locale + basePath : basePath;
-    console.log("Final preview path:", finalPath);
-
-    const draft = await draftMode();
-    status === "draft" ? draft.enable() : draft.disable();
-
-    redirect(finalPath);
-  };
+  // 对于其他内容类型，可以添加更多处理逻辑
+  return new NextResponse('Preview not configured for this content type', { status: 400 });
+}

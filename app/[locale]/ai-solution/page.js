@@ -1,4 +1,4 @@
-import { getDigitalSolutionsPageData, getHomepagePageData } from "@/data/page-loaders";
+import { getDigitalSolutionsData, getHomepageData } from "@/data/unified-loader";
 import PageContainer from "@/components/blocks/PageContainer";
 import PageSection from "@/components/blocks/PageSection";
 import DigitalSolutionHero from "@/components/digitalsolutions/DigitalSolutionHero";
@@ -16,11 +16,11 @@ export default async function AISolutionPage({ params }) {
   const locale = resolvedParams?.locale || 'en';
 
   // 獲取數碼方案頁面數據
-  const pageData = await getDigitalSolutionsPageData(locale);
+  const pageData = await getDigitalSolutionsData(locale);
   const { plans } = pageData.processedData || {};
 
   // 獲取首頁數據以獲取各種組件數據
-  const homepageData = await getHomepagePageData(locale);
+  const homepageData = await getHomepageData(locale);
   const {
     clientLogoData,
     informationData,
@@ -36,28 +36,26 @@ export default async function AISolutionPage({ params }) {
   }
 
   return (
-    <PageContainer className="mt-12">
+    <PageContainer>
       {/* 方案標題區域 */}
-      <DigitalSolutionHero
-        plan={plan}
-        locale={locale}
-        variant="inline"
-      />
+      <PageSection>        
+        <DigitalSolutionHero
+          plan={plan}
+          locale={locale}
+          variant="inline"
+        />
+      </PageSection>
 
       {/* 方案內容區塊 */}
-      {plan.blocks && plan.blocks.length > 0 && (
-        <div className="py-16">
-          <div className="xl:container xl:max-w-[1280px] xl:mx-auto px-5">
-            <BlockRenderer
-              blocks={plan.blocks}
-              locale={locale}
-            />
-          </div>
-        </div>
+      {plan.blocks && plan.blocks.length > 0 && (        
+        <BlockRenderer
+          blocks={plan.blocks}
+          locale={locale}
+        />        
       )}
 
       {/* Client Logo Section */}
-      <PageSection>
+      <PageSection className={'pt-0'}>
         <ClientLogoSection
           logoData={clientLogoData}
         />
@@ -96,7 +94,7 @@ export async function generateMetadata({ params }) {
   const locale = resolvedParams?.locale || 'en';
 
   try {
-    const pageData = await getDigitalSolutionsPageData(locale);
+    const pageData = await getDigitalSolutionsData(locale);
     const { plans } = pageData.processedData || {};
     const plan = plans?.find(plan => plan.order === 0);
 

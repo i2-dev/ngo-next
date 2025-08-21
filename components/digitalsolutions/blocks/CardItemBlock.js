@@ -44,12 +44,12 @@ export default function CardItemBlock({ block, locale }) {
   };
 
   return (
-    <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-2xl p-8">
-      <div className="flex flex-col lg:flex-row items-center gap-8">
-        {/* 圖片區域 */}
+    <div className='bg-white grid grid-cols-1 gap-y-5 rounded-[30px] not-last:mb-20 py-7 px-5 sm:p-10 lg:grid-cols-3 lg:gap-x-5'>      
+      {/* 圖片區域 */}
+      <div>
         {block.Cover && block.Cover.length > 0 && (
-          <div className="w-full lg:w-1/3">
-            <div className="relative overflow-hidden rounded-xl shadow-lg">
+          <div className="w-full">
+            <div className="relative overflow-hidden">
               {hasMultipleImages ? (
                 <>
                   <Swiper
@@ -66,35 +66,35 @@ export default function CardItemBlock({ block, locale }) {
                       disableOnInteraction: false,
                     }}
                     loop={true}
-                    className="w-full h-64 lg:h-48"
+                    className="w-full h-auto"
                   >
                     {block.Cover.map((image, index) => (
                       <SwiperSlide key={index}>
                         <StrapiImage
                           image={image}
                           alt={`${block.Title} ${index + 1}`}
-                          className="w-full h-64 lg:h-48 object-cover"
+                          className="w-full h-auto object-cover"
                         />
                       </SwiperSlide>
                     ))}
                   </Swiper>
                   
                   {/* 控制按鈕 */}
-                  <div className="absolute inset-0 flex items-center justify-between p-4 z-10">
+                  <div className="absolute top-4 right-12.5 z-10 space-x-1.5">
                     {/* 左箭頭 */}
                     <button
                       onClick={handlePrev}
-                      className="bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110"
+                      className="bg-[#286e11] rounded-sm p-1 cursor-pointer top-1 transition-all duration-200 hover:bg-black"
                     >
-                      <ChevronLeftIcon className="w-5 h-5 text-gray-700" />
+                      <ChevronLeftIcon className="w-5 h-5 text-white" />
                     </button>
                     
                     {/* 右箭頭 */}
                     <button
                       onClick={handleNext}
-                      className="bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110"
+                      className="bg-[#286e11] rounded-sm p-1 cursor-pointer top-1 transition-all duration-200 hover:bg-black"
                     >
-                      <ChevronRightIcon className="w-5 h-5 text-gray-700" />
+                      <ChevronRightIcon className="w-5 h-5 text-white" />
                     </button>
                   </div>
                   
@@ -102,12 +102,12 @@ export default function CardItemBlock({ block, locale }) {
                   <div className="absolute top-4 right-4 z-10">
                     <button
                       onClick={handlePlayPause}
-                      className="bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110"
+                      className="bg-[#286e11] rounded-sm p-1 cursor-pointer top-1 transition-all duration-200 hover:bg-black"
                     >
                       {isAutoplay ? (
-                        <PauseIcon className="w-5 h-5 text-gray-700" />
+                        <PauseIcon className="w-5 h-5 text-white" />
                       ) : (
-                        <PlayIcon className="w-5 h-5 text-gray-700" />
+                        <PlayIcon className="w-5 h-5 text-white" />
                       )}
                     </button>
                   </div>
@@ -139,30 +139,31 @@ export default function CardItemBlock({ block, locale }) {
               ) : (
                 <StrapiImage
                   image={block.Cover[0]}
+                  width={block.Cover[0].width}
+                  height={block.Cover[0].height}
                   alt={block.Title}
-                  className="w-full h-64 lg:h-48 object-cover"
+                  className="w-full h-auto object-cover"
                 />
               )}
             </div>
           </div>
         )}
-
-        {/* 內容區域 */}
-        <div className="w-full lg:w-2/3 space-y-4">
-          {/* 標題 */}
-          <h3 className="text-2xl font-bold text-gray-900">
-            {block.Title}
-          </h3>
-          
-          {/* 內容 */}
-          {block.Content && (
-            <div 
-              className="prose prose-lg text-gray-600 text-lg leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: block.Content }}
-            />
-          )}
-        </div>
       </div>
+
+      {/* 內容區域 */}
+      <div className="col-span-2">
+        {/* 標題 */}
+        <h3 className="group-[&:nth-child(4n+1)]:text-[#555bba] group-[&:nth-child(4n+2)]:text-[#837634] group-[&:nth-child(4n+3)]:text-[#ba5c1f] group-[&:nth-child(4n+4)]:text-[#428156] text-[22px] mb-2.5">
+          {block.Title}
+        </h3>
+        
+        {/* 內容 */}
+        {block.Content && (
+          <p              
+            dangerouslySetInnerHTML={{ __html: block.Content }}
+          />
+        )}
+      </div>      
     </div>
   );
 }

@@ -56,13 +56,13 @@ export async function PageLayoutWithData({
   
   try {
     // 動態導入頁面加載器
-    const { getPageSpecificData } = await import('@/data/page-loaders');
+    const { getDataForRoute } = await import('@/data/unified-loader');
     
     // 自動推斷頁面名稱或使用提供的頁面名稱
     const finalPageName = pageName || inferPageNameFromParams(resolvedParams);
     
     // 獲取頁面特定數據
-    const pageData = await getPageSpecificData(finalPageName, locale, additionalData);
+    const pageData = await getDataForRoute(`/${finalPageName}`, locale, additionalData);
     
     return (
       <PageLayout 

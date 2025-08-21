@@ -14,10 +14,20 @@ const AwardsSwiper = ({
     setIsClient(true);
   }, []);
 
+  // 安全檢查：如果 awardsData 為 undefined 或 null，提供默認值
+  if (!awardsData) {
+    return null; // 或者返回一個加載狀態
+  }
 
   // 支持多種字段名稱：awardslogo 或 awardsLogo
   const { Title: sectionTitle, introduction } = awardsData;
   const awardsArray = awardsData.awardslogo || awardsData.awardsLogo || awardsData.awards;
+  
+  // 如果沒有獎項數據，也不顯示組件
+  if (!awardsArray || !Array.isArray(awardsArray) || awardsArray.length === 0) {
+    return null;
+  }
+  
   return (
     <>        
       {/* 標題區域 */}

@@ -1,27 +1,26 @@
 import StrapiImage from "@/components/StrapiImage";
 import SharedButton from "@/components/blocks/Button";
 
-export default function DigitalSolutionHero({ plan, locale, variant = "cover" }) {
+export default function DigitalSolutionHero({ plan, locale, bgcolor, bgGradient,  variant = "cover" }) {
   if (!plan) return null;
 
   // AI Solution 頁面使用簡化版本 (在 PageContainer 內)
   if (variant === "inline") {
     return (
-      <div className="relative bg-gradient-to-br from-green-400 via-blue-500 to-purple-600 text-white py-16 rounded-2xl overflow-hidden">
-        {/* 背景圖片 */}
-        {plan.image && (
-          <div className="absolute inset-0">
-            <StrapiImage
-              image={plan.image}
-              alt={plan.title}
-              className="w-full h-full object-cover opacity-20"
-            />
-          </div>
-        )}
-        
-        {/* 內容 */}
-        <div className="relative z-10 px-8">
-          <div className="max-w-3xl mx-auto text-center">
+      <>
+        <div className="text-center mb-24">
+            <h1 className='text-[42px] font-medium max-lg:text-5xl max-md:text-4xl'>{plan.title}</h1>            
+            {plan.content && (
+              <p 
+                className="text-lg"
+                dangerouslySetInnerHTML={{ __html: plan.content }}
+              />
+            )}
+        </div>
+
+        <div className="relative h-[500px] lg:h-[700px]">          
+          {/* 內容 */}
+          <div className="text-center absolute left-0 right-0 bottom-25">            
             {/* 圖標 */}
             {plan.icon && (
               <div className="mb-6 flex justify-center">
@@ -33,92 +32,83 @@ export default function DigitalSolutionHero({ plan, locale, variant = "cover" })
                   />
                 </div>
               </div>
-            )}
-            
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-              {plan.title}
-            </h1>
-            
-            {plan.content && (
-              <div 
-                className="text-lg md:text-xl mb-6 opacity-90 leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: plan.content }}
-              />
-            )}
-            
+            )}              
+              
             {plan.button && (
               <SharedButton
                 {...plan.button}
                 className="inline-flex items-center"
               />
-            )}
+            )}            
           </div>
+
+          {/* 背景圖片 */}
+          {plan.image && (            
+            <StrapiImage
+              image={plan.image}
+              width={plan.image.width}
+              height={plan.image.height}
+              alt={plan.title}
+              className="w-full h-full object-cover"
+            />            
+          )}
         </div>
-      </div>
+      </>
     );
   }
 
   // 其他頁面使用完整封面版本
   return (
-    <div className="relative min-h-screen flex items-center justify-center text-white overflow-hidden">
-      {/* 封面背景圖片 */}
-      {plan.image && (
-        <div className="absolute inset-0">
+    <>
+      <div className="text-center mb-12">
+          <h1 className='text-[#3e3978] text-[52px] font-medium max-lg:text-5xl max-md:text-4xl'>{plan.title}</h1>          
+      </div>            
+      <div
+        className={`mt-30 relative lg:h-[700px] ${
+        bgcolor === "gray" ? "max-lg:bg-[#979797]" : bgcolor === "blue" ? "max-lg:bg-[#00167b]" : bgcolor === "brown" ? "max-lg:bg-[#2f191b]" : `max-lg:bg-[#979797]`
+      }`}
+      >        
+        {/* 圖標 */}
+        {plan.icon && (            
           <StrapiImage
-            image={plan.image}
+            image={plan.icon}
             alt={plan.title}
-            className="w-full h-full object-cover"
-          />
-        </div>
-      )}
-      
-      {/* 漸變背景（如果沒有圖片） */}
-      {!plan.image && (
-        <div className="absolute inset-0 bg-gradient-to-br from-green-400 via-blue-500 to-purple-600"></div>
-      )}
-      
-      {/* 背景裝飾 - NGO 文字 */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-10">
-        <div className="text-[20rem] font-black text-white select-none">
-          NGO
-        </div>
-      </div>
-      
-      {/* 內容 */}
-      <div className="relative z-10 xl:container xl:max-w-[1280px] xl:mx-auto px-5">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* 圖標 */}
-          {plan.icon && (
-            <div className="mb-8 flex justify-center">
-              <div className="w-24 h-24 md:w-32 md:h-32 bg-white bg-opacity-20 rounded-2xl backdrop-blur-sm flex items-center justify-center">
-                <StrapiImage
-                  image={plan.icon}
-                  alt={plan.title}
-                  className="w-16 h-16 md:w-20 md:h-20 object-contain"
-                />
-              </div>
-            </div>
-          )}
-          
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            {plan.title}
-          </h1>
-          
-          {plan.content && (
-            <div 
-              className="text-xl md:text-2xl mb-8 opacity-90 leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: plan.content }}
+            width={plan.icon.width}
+            height={plan.icon.height}
+            className="absolute left-1/2 top-0 -translate-1/2 z-3"
+          />              
+        )}
+        <div className='text-white text-center p-[80px_30px_30px] relative z-2 lg:absolute lg:inset-0 max-lg:-mb-20 max-sm:mb-0'>              
+            {plan.content && (
+              <div
+                className="[&>h2]:text-5xl [&>h2]:mb-2 max-lg:[&>h2]:text-4xl max-md:[&>h2]:text-3xl"                
+                dangerouslySetInnerHTML={{ __html: plan.content }}
+              />
+            )}
+            {plan.button && (
+              <SharedButton
+                {...plan.button}
+                className="!inline-block mt-[30px]"
+              />
+            )}
+        </div>        
+        <div
+          className="absolute inset-0 bottom-[35vw] lg:hidden"
+          style={{
+            background: bgGradient
+          }}
+        ></div>
+        {/* 封面背景圖片 */}
+        {plan.image && (
+          <div className="">
+            <StrapiImage
+              image={plan.image}
+              alt={plan.title}
+              className="w-full h-full object-cover"
             />
-          )}
-          
-          {plan.button && (
-            <SharedButton
-              {...plan.button}
-              className="inline-flex items-center"
-            />
-          )}
-        </div>
-      </div>
-    </div>
+          </div>
+        )}
+      </div>      
+    </>
   );
 }

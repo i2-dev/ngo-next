@@ -1,6 +1,8 @@
 import { getStrapiURL } from '@/utils/get-strapi-url';
 import NewsCard from '@/components/news/NewsCard';
 import Link from 'next/link';
+import PageContainer from '@/components/blocks/PageContainer';
+import PageSection from '@/components/blocks/PageSection';
 
 async function getCategoryData(categoryId, page = 1, sortBy = 'Publish:desc') {
   try {
@@ -72,22 +74,16 @@ export default async function CategoryNewsPage({ params, searchParams }) {
     );
   }
   return (
-    <div className="min-h-screen">
-      {/* Category Header */}
-      <div className="bg-white border-b">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Category</h1>
-            <h2 className="text-4xl md:text-5xl font-bold text-blue-600 mb-4">
-              {categoryInfo.name}
-            </h2>
-            <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
-          </div>
-        </div>
-      </div>
+    <PageContainer className={'!mt-20'}>
+      <PageSection>
+        {/* Category Header */}                
+        <h1 className="text-[42px]/[1.35] font-medium border-b-1 border-b-[#aaa] mb-12 pb-10">
+          <span className="font-normal !text-[20px] block">Category</span>
+          {categoryInfo.name}
+        </h1>          
+        
 
-      {/* News List Section */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* News List Section */}      
         {newsData.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-gray-500 text-lg">此分類暫無文章</div>
@@ -100,7 +96,7 @@ export default async function CategoryNewsPage({ params, searchParams }) {
             </Link>
           </div>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-15">
             {newsData.map((article) => (
               <NewsCard key={article.id} article={article} locale={locale} />
             ))}
@@ -109,48 +105,48 @@ export default async function CategoryNewsPage({ params, searchParams }) {
 
         {/* Pagination */}
         {pagination.pageCount > 1 && (
-          <div className="mt-12 flex justify-center">
-            <div className="flex items-center space-x-2">
-              {/* Previous Page */}
-              {pagination.page > 1 && (
-                <Link
-                  href={`/${locale}/ngo-latest-news/category/${categoryId}?page=${pagination.page - 1}`}
-                  className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 border border-gray-300 rounded-md hover:bg-gray-50"
-                >
-                  上一頁
-                </Link>
-              )}
+        <div className="mt-15 flex justify-center">
+          <div className="flex items-center space-x-2">
+            {/* Previous Page */}
+            {pagination.page > 1 && (
+              <Link
+                href={`/${locale}/ngo-latest-news?page=${pagination.page - 1}`}
+                className="px-3.5 py-2 text-sm font-bold hover:text-black"
+              >
+                上一頁
+              </Link>
+            )}
 
-              {/* Page Numbers */}
-              {Array.from({ length: Math.min(5, pagination.pageCount) }, (_, i) => {
-                const pageNum = i + 1;
-                return (
-                  <Link
-                    key={pageNum}
-                    href={`/${locale}/ngo-latest-news/category/${categoryId}?page=${pageNum}`}
-                    className={`px-4 py-2 text-sm border rounded-md ${pageNum === pagination.page
-                      ? 'bg-green-500 text-white border-green-500'
-                      : 'text-gray-600 hover:text-gray-900 border-gray-300 hover:bg-gray-50'
-                      }`}
-                  >
-                    {pageNum}
-                  </Link>
-                );
-              })}
-
-              {/* Next Page */}
-              {pagination.page < pagination.pageCount && (
+            {/* Page Numbers */}
+            {Array.from({ length: Math.min(5, pagination.pageCount) }, (_, i) => {
+              const pageNum = i + 1;
+              return (
                 <Link
-                  href={`/${locale}/ngo-latest-news/category/${categoryId}?page=${pagination.page + 1}`}
-                  className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 border border-gray-300 rounded-md hover:bg-gray-50"
+                  key={pageNum}
+                  href={`/${locale}/ngo-latest-news?page=${pageNum}`}
+                  className={`px-3.5 py-2 text-sm rounded-md font-bold ${pageNum === pagination.page
+                    ? 'bg-[#286e11] text-white'
+                    : 'hover:text-black'
+                    }`}
                 >
-                  下一頁
+                  {pageNum}
                 </Link>
-              )}
-            </div>
+              );
+            })}
+
+            {/* Next Page */}
+            {pagination.page < pagination.pageCount && (
+              <Link
+                href={`/${locale}/ngo-latest-news?page=${pagination.page + 1}`}
+                className="px-3.5 py-2 text-sm font-bold hover:text-black"
+              >
+                下一頁
+              </Link>
+            )}
           </div>
-        )}
-      </div>
-    </div>
+        </div>
+      )}   
+      </PageSection>
+    </PageContainer>
   );
 }

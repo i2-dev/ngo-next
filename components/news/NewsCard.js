@@ -43,11 +43,11 @@ export default function NewsCard({ article, locale }) {
                   {article.Author_Summary.replace(/<[^>]*>/g, '').substring(0, 50)}...
                 </p>
               )}
-              {article.Content && (
+              {/* {article.Content && (
                 <p className="text-gray-700 text-sm line-clamp-3">
                   {article.Content.replace(/<[^>]*>/g, '').substring(0, 200)}...
                 </p>
-              )}
+              )} */}
             </div>
 
             <div className="text-sm">

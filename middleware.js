@@ -8,7 +8,10 @@ import {
 export function middleware(request) {
   const pathname = request.nextUrl.pathname;
 
-
+  // 排除预览路径，不添加locale前缀
+  if (pathname.startsWith('/preview/') || pathname.startsWith('/test-preview')) {
+    return NextResponse.next();
+  }
 
   //check if pathname has locale
   const pathnameHasLocale = SUPPORTED_LOCALES.some(

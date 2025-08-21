@@ -1,14 +1,57 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import ClientOnly from "@/components/ClientOnly";
 
 export default function MenuClient({ menuData, locale = 'en' }) {
+  const [isClient, setIsClient] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [headerHeight, setHeaderHeight] = useState(96);
   const pathname = usePathname();
+
+  // 防止 Hydration 錯誤：客戶端檢查
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    const updateHeaderHeight = () => {
+      const header = document.getElementById('header');
+      if (header) {
+        setHeaderHeight(header.offsetHeight);
+      }
+    };
+
+    updateHeaderHeight();
+    window.addEventListener('resize', updateHeaderHeight);
+    window.addEventListener('scroll', updateHeaderHeight);
+
+    return () => {
+      window.removeEventListener('resize', updateHeaderHeight);
+      window.removeEventListener('scroll', updateHeaderHeight);
+    };
+  }, []);
+
+  // 防止 Hydration 錯誤：服務端先渲染空的 nav
+  if (!isClient) {
+    return (
+      <nav className="bg-transparent relative">
+        <div className="relative lg:static">
+          <ul className="hidden lg:flex items-center space-x-6"></ul>
+          <div className="lg:hidden">
+            <button className="text-gray-600 hover:text-gray-900 focus:outline-none">
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </nav>
+    );
+  }
 
   if (!menuData || !menuData.data) {
     return null;
@@ -61,9 +104,9 @@ export default function MenuClient({ menuData, locale = 'en' }) {
 
   return (
     <nav className="bg-transparent relative">
-      <div className="relative">
+      <div className="relative lg:static">
         {/* 桌面菜单 */}
-        <ul className="hidden md:flex items-center space-x-6">
+        <ul className="hidden lg:flex items-center space-x-6">
           {menuData.data
             .sort((a, b) => (a.Order || 0) - (b.Order || 0))
             .map((menuItem, index) => (
@@ -125,7 +168,7 @@ export default function MenuClient({ menuData, locale = 'en' }) {
         </ul>
 
         {/* 移动端菜单按钮 */}
-        <div className="md:hidden">
+        <div className="lg:hidden">
           <button
             onClick={toggleMobileMenu}
             className="text-gray-600 hover:text-gray-900 focus:outline-none"
@@ -143,8 +186,12 @@ export default function MenuClient({ menuData, locale = 'en' }) {
         {/* 移动端菜单 - Wrapped in ClientOnly to prevent hydration issues */}
         <ClientOnly fallback={null}>
           {isMobileMenuOpen && (
-            <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg border-t border-gray-200 z-50">
-              <ul className="py-4 space-y-2 px-4">
+            <div 
+              className="lg:hidden fixed left-0 right-0 bg-white shadow-lg border-t border-gray-200 z-50 max-h-96 overflow-y-auto"
+              style={{ top: `${headerHeight}px` }}
+            >
+              <div className="px-6">
+                <ul className="py-4 space-y-2">
                 {menuData.data
                   .sort((a, b) => (a.Order || 0) - (b.Order || 0))
                   .map((menuItem, index) => (
@@ -153,10 +200,10 @@ export default function MenuClient({ menuData, locale = 'en' }) {
                     {menuItem.URL ? (
                       <Link
                         href={formatUrl(menuItem.URL)}
-                        className={`block py-2 transition-colors duration-200 ${
+                        className={`block py-3 px-2 rounded-md transition-colors duration-200 ${
                           isActiveMenuItem(menuItem.URL)
-                            ? 'text-blue-600 font-semibold'
-                            : 'text-gray-700 hover:text-gray-900'
+                            ? 'text-blue-600 font-semibold bg-blue-50'
+                            : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
                         }`}
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
@@ -165,7 +212,7 @@ export default function MenuClient({ menuData, locale = 'en' }) {
                     ) : (
                       <button
                         onClick={() => toggleSubMenu(index)}
-                        className="w-full text-left py-2 text-gray-700 hover:text-gray-900 transition-colors duration-200 flex items-center justify-between"
+                        className="w-full text-left py-3 px-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between"
                       >
                         {menuItem.title}
                         {menuItem.items && menuItem.items.length > 0 && (
@@ -185,7 +232,7 @@ export default function MenuClient({ menuData, locale = 'en' }) {
 
                     {/* 子菜单 - 移动版 */}
                     {menuItem.items && menuItem.items.length > 0 && openSubMenu === index && (
-                      <ul className="ml-4 mt-2 space-y-1">
+                      <ul className="ml-4 mt-2 space-y-1 border-l-2 border-gray-200 pl-4">
                         {menuItem.items
                           .sort((a, b) => (a.Order || 0) - (b.Order || 0))
                           .map((subItem) => (
@@ -193,10 +240,10 @@ export default function MenuClient({ menuData, locale = 'en' }) {
                               <Link
                                 href={formatUrl(subItem.url)}
                                 target={subItem.Target || "_self"}
-                                className={`block py-2 text-sm transition-colors duration-200 ${
+                                className={`block py-2 px-2 text-sm rounded-md transition-colors duration-200 ${
                                   isActiveMenuItem(subItem.url)
-                                    ? 'text-blue-600 font-semibold'
-                                    : 'text-gray-600 hover:text-gray-900'
+                                    ? 'text-blue-600 font-semibold bg-blue-50'
+                                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                                 }`}
                                 onClick={() => {
                                   setOpenSubMenu(null);
@@ -211,7 +258,8 @@ export default function MenuClient({ menuData, locale = 'en' }) {
                     )}
                   </li>
                 ))}
-              </ul>
+                </ul>
+              </div>
             </div>
           )}
         </ClientOnly>

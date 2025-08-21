@@ -7,6 +7,7 @@ import WelfareCardBlock from "./blocks/WelfareCardBlock";
 import SwiperCardBlock from "./blocks/SwiperCardBlock";
 import TableCardBlock from "./blocks/TableCardBlock";
 import PromotionCardBlock from "./blocks/PromotionCardBlock";
+import PageSection from "../blocks/PageSection";
 
 export default function BlockRenderer({ blocks, locale }) {
   if (!blocks || blocks.length === 0) {
@@ -14,89 +15,99 @@ export default function BlockRenderer({ blocks, locale }) {
   }
 
   return (
-    <div className="space-y-16">
+    <>
       {blocks.map((block, index) => {
         // 根據組件類型渲染對應的區塊
         switch (block.__component) {
           case 'digital-solutions.card':
-            return (
-              <CardBlock 
-                key={`${block.id}-${index}`}
-                block={block}
-                locale={locale}
-              />
+            return (              
+              <PageSection key={`${block.id}-${index}`} className={block.type === 'style-2' ? 'bg-[rgba(247,242,244,0.5)] backdrop-filter-[blur(10px)] pt-0' : block.type === 'style-3' ? '!py-0' : 'pt-0'}>
+                <CardBlock 
+                  block={block}
+                  locale={locale}
+                />
+              </PageSection>
             );
           
           case 'digital-solutions.card-item':
             return (
-              <CardItemBlock 
-                key={`${block.id}-${index}`}
-                block={block}
-                locale={locale}
-              />
+              <PageSection key={`${block.id}-${index}`} className={'group pt-0'}>
+                <CardItemBlock 
+                  block={block}
+                  locale={locale}
+                />
+              </PageSection>
             );
           
           case 'digital-solutions.story-card':
             return (
-              <StoryCardBlock 
-                key={`${block.id}-${index}`}
-                block={block}
-                locale={locale}
-              />
+              <PageSection key={`${block.id}-${index}`}>
+                <StoryCardBlock 
+                  block={block}
+                  locale={locale}
+                />
+              </PageSection>
             );
           
           case 'digital-solutions.functional-card':
             return (
-              <FunctionalCardBlock 
-                key={`${block.id}-${index}`}
-                block={block}
-                locale={locale}
-              />
+              <PageSection key={`${block.id}-${index}`} className={'bg-[rgba(247,242,244,0.5)] backdrop-filter-[blur(10px)]'}>
+                <FunctionalCardBlock 
+                  block={block}
+                  locale={locale}
+                />
+              </PageSection>
             );
           
           case 'digital-solutions.faq-card':
             return (
-              <FaqCardBlock 
-                key={`${block.id}-${index}`}
-                block={block}
-                locale={locale}
-              />
+              <PageSection key={`${block.id}-${index}`} className={'bg-[rgba(247,242,244,0.5)] backdrop-filter-[blur(10px)] pt-0'}>
+                <hr className='border-[#8d8d8d] mt-0 mb-25'></hr>
+                <FaqCardBlock 
+                  block={block}
+                  locale={locale}
+                />
+              </PageSection>
             );
           
           case 'digital-solutions.welfare-card':
             return (
-              <WelfareCardBlock 
-                key={`${block.id}-${index}`}
-                block={block}
-                locale={locale}
-              />
+              <PageSection key={`${block.id}-${index}`} className={'pt-0'}>
+                <WelfareCardBlock 
+                  block={block}
+                  locale={locale}
+                />
+              </PageSection>
             );
           
           case 'digital-solutions.swiper-card':
             return (
-              <SwiperCardBlock 
-                key={`${block.id}-${index}`}
-                block={block}
-                locale={locale}
-              />
+              <PageSection key={`${block.id}-${index}`} className={'pt-0'}>
+                <SwiperCardBlock 
+                  block={block}
+                  locale={locale}
+                />
+              </PageSection>
             );
           
           case 'digital-solutions.table-card':
             return (
-              <TableCardBlock 
-                key={`${block.id}-${index}`}
-                block={block}
-                locale={locale}
-              />
+              <PageSection key={`${block.id}-${index}`} className={'bg-[rgba(247,242,244,0.5)] backdrop-filter-[blur(10px)]'}>
+                <TableCardBlock 
+                  block={block}
+                  locale={locale}
+                />
+              </PageSection>
             );
           
           case 'digital-solutions.promotion-card':
             return (
-              <PromotionCardBlock 
-                key={`${block.id}-${index}`}
-                block={block}
-                locale={locale}
-              />
+              <PageSection key={`${block.id}-${index}`} className={'last:pb-50'}>
+                <PromotionCardBlock 
+                  block={block}
+                  locale={locale}
+                />
+              </PageSection>
             );
           
           default:
@@ -104,6 +115,6 @@ export default function BlockRenderer({ blocks, locale }) {
             return null;
         }
       })}
-    </div>
+    </>
   );
 }

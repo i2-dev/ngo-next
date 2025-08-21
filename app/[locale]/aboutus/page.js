@@ -1,4 +1,4 @@
-import { getAboutPageData } from "@/data/page-loaders";
+import { getAboutUsData } from "@/data/unified-loader";
 import StrapiImage from '@/components/StrapiImage';
 import ClientsSwiper from '@/components/aboutus/ClientsSwiper';
 import styles from '@/styles/AboutUs.module.css';
@@ -11,7 +11,7 @@ export default async function AboutUsPage({ params }) {
   const locale = resolvedParams?.locale || 'en';
   
   // 🎯 只在訪問關於我們頁面時才獲取相關的 API 數據
-  const pageData = await getAboutPageData(locale);
+  const pageData = await getAboutUsData(locale);
   
   // 提取API數據（如果可用）或使用後備數據
   const aboutPageData = pageData['about-us'];

@@ -1,18 +1,14 @@
 import StrapiImage from "@/components/StrapiImage";
-import { getNewsData } from "@/data/loaders";
+import { getHomepageNewsData } from "@/data/unified-loader";
 import Link from 'next/link'
 
 export default async function InformationSection({ locale = 'en', styles, informationData }) {
-  // 🆕 同時獲取新聞數據
+  // 🚀 使用專門的首頁新聞數據獲取函數 - 更輕量化
   let newsData = null;
   try {
-    newsData = await getNewsData(locale, {
-      page: 1,
-      pageSize: 3, // 獲取最新3條新聞
-      sortBy: 'Publish:desc'
-    });
+    newsData = await getHomepageNewsData(locale);
   } catch (error) {
-    console.error('Failed to fetch news data:', error);
+    console.error('Failed to fetch homepage news data:', error);
   }
   // 如果沒有傳入 informationData，顯示無數據狀態
   if (!informationData) {
@@ -24,7 +20,6 @@ export default async function InformationSection({ locale = 'en', styles, inform
       </section>
     );
   }
-
 
   return (
     <>      
@@ -48,11 +43,11 @@ export default async function InformationSection({ locale = 'en', styles, inform
               {/* 新聞圖片 */}
               {news.image && (                    
                 <StrapiImage 
-                  image={news.image}
-                  width={news.image.width}
-                  height={news.image.height}
+                  image={news.image[0]}
+                  width={news.image[0].width}
+                  height={news.image[0].height}
                   className="w-full h-full object-cover transition-[all_.3s_cubic-bezier(.2,1,.2,1)] group-hover:transform-[scale(1.07)]"
-                  alt={news.image.alternativeText || news.title || ''}
+                  alt={news.image[0].alternativeText || news.title || ''}
                 />                    
               )}
               <div className='bg-linear-[to_bottom,rgba(0,0,0,0)_0%,rgba(0,0,0,.7)_70%] absolute inset-[50%_0_0_0] z-1'></div>

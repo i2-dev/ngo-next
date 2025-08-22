@@ -86,17 +86,18 @@ export async function fetchStrapiData(endpoint, options = {}) {
     filters = {},
     populate = "*",
     fallbackData = null,
+    draft = false,
     ...extraParams
   } = options;
 
   const startTime = Date.now();
 
   try {
-    // 构建查询参数 - 始终使用 live 状态
+    // 构建查询参数 - 根据 draft 参数决定使用 live 还是 preview 状态
     const queryConfig = {
       pLevel,
       populate,
-      publicationState: 'live',
+      publicationState: draft ? 'preview' : 'live',
       ...extraParams,
     };
 

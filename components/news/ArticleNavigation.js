@@ -5,7 +5,7 @@ import StrapiImage from '@/components/StrapiImage';
 export default function ArticleNavigation({ previous, next, locale }) {
   return (
     <div className="mt-12">
-      <div className="flex">
+      <div className="flex flex-col md:flex-row">
         {/* Previous Article */}
         <div className={`${previous ? 'flex-1' : 'hidden'}`}>
           {previous && (

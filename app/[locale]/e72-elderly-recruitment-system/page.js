@@ -3,6 +3,7 @@ import PageContainer from "@/components/blocks/PageContainer";
 import SuccessCaseHero from "@/components/successcases/SuccessCaseHero";
 import SuccessCaseBlockRenderer from "@/components/successcases/SuccessCaseBlockRenderer";
 import { notFound } from 'next/navigation';
+import PageSection from "@/components/blocks/PageSection";
 
 export default async function E72ElderlyRecruitmentSystemPage({ params }) {
   const resolvedParams = await params;
@@ -19,23 +20,21 @@ export default async function E72ElderlyRecruitmentSystemPage({ params }) {
     notFound();
   }
 
+  const heroBg= "white";
+
   return (
-    <>
-      <SuccessCaseHero successCase={successCase} locale={locale} />
+    <PageContainer>
+      <PageSection className={'pb-0'}>
+        <SuccessCaseHero successCase={successCase} locale={locale} bgcolor={heroBg} />
+      </PageSection>      
       
-      <PageContainer>
-        <div className="py-16">
-          <div className="xl:container xl:max-w-[1280px] xl:mx-auto px-5">
-            <SuccessCaseBlockRenderer 
-              successCase={successCase} 
-              locale={locale}
-              allSuccessCases={successCases || []}
-              menuData={menus}
-            />
-          </div>
-        </div>
-      </PageContainer>
-    </>
+      <SuccessCaseBlockRenderer 
+        successCase={successCase} 
+        locale={locale}
+        allSuccessCases={successCases || []}
+        menuData={menus}
+      />      
+    </PageContainer>
   );
 }
 

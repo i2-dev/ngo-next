@@ -99,9 +99,10 @@ const AwardsSwiper = ({
 
                 {/* 獲獎名稱 */}                  
                 {award.name && (                      
-                  <p className='text-center'>
-                    {award.name}
-                  </p>
+                  <p 
+                    className='text-center'
+                    dangerouslySetInnerHTML={{ __html: award.name }}
+                  />
                 )}                  
             </SwiperSlide>
           ))}

@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, EffectCoverflow } from 'swiper/modules';
 import StrapiImage from "@/components/StrapiImage";
+import { PlayIcon, PauseIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 
 // 導入 Swiper 樣式
 import 'swiper/css';
@@ -15,10 +16,29 @@ import 'swiper/css/effect-coverflow';
 export default function ScreenshotCard({ screenshots }) {
   const [isClient, setIsClient] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
+  const swiperRef = useRef(null);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  // 控制 autoplay 的啟動和停止
+  useEffect(() => {
+    if (swiperRef.current && swiperRef.current.swiper) {
+      if (isPlaying) {
+        swiperRef.current.swiper.autoplay.start();
+      } else {
+        swiperRef.current.swiper.autoplay.stop();
+      }
+    }
+  }, [isPlaying]);
+
+  // 初始化時停止 autoplay
+  const onSwiper = (swiper) => {
+    if (!isPlaying) {
+      swiper.autoplay.stop();
+    }
+  };
 
 
 
@@ -46,41 +66,23 @@ export default function ScreenshotCard({ screenshots }) {
   }
 
   return (
-    <div className="screenshot-swiper-container relative">
-      {/* 播放/暫停控制按鈕 */}
-      <div className="flex justify-center mb-4">
-        <button
-          onClick={() => setIsPlaying(!isPlaying)}
-          className="bg-white shadow-lg rounded-full p-3 hover:shadow-xl transition-all duration-300 border border-gray-200"
-        >
-          {isPlaying ? (
-            // 暫停圖標
-            <svg className="w-6 h-6 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
-            </svg>
-          ) : (
-            // 播放圖標
-            <svg className="w-6 h-6 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z"/>
-            </svg>
-          )}
-        </button>
-      </div>
-
+    <div className="relative w-[calc(100%-40px)] sm:w-[calc(100%-96px)] max-w-275 mx-auto">
       <Swiper
+        ref={swiperRef}
         modules={[Navigation, Autoplay]}
         spaceBetween={20}
         slidesPerView={1}
-        autoplay={isPlaying ? {
+        autoplay={{
           delay: 3000,
           disableOnInteraction: false,
-        } : false}
+        }}
+        onSwiper={onSwiper}
         navigation={{
           nextEl: '.screenshot-swiper-button-next',
           prevEl: '.screenshot-swiper-button-prev',
         }}
         loop={screenshots.length > 1}
-        className="w-full h-[400px] md:h-[500px]"
+        className="w-full h-auto"
       >
         {screenshots.map((screenshotItem, index) => {
           // 根據真實數據結構處理
@@ -90,16 +92,16 @@ export default function ScreenshotCard({ screenshots }) {
           
           return (
             <SwiperSlide key={screenshotItem.id || index}>
-              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="bg-white overflow-hidden shadow-[0_2px_7px_rgba(0,0,0,0.1)]">
                 {imageData ? (
-                  <div className="relative aspect-video">
+                  <div className="relative">
                     <StrapiImage
                       image={imageData}
-                      format="large"
+                      width={imageData.width}
+                      height={imageData.height}                      
                       alt={itemName || `截圖 ${index + 1}`}
                       className="w-full h-full object-cover"
                     />
-
                   </div>
                 ) : (
                   <div className="aspect-video bg-gray-200 flex items-center justify-center">
@@ -113,7 +115,7 @@ export default function ScreenshotCard({ screenshots }) {
                 )}
                 
                 {/* 簡潔的底部信息 */}
-                {(itemName || screenshotItem.description) && (
+                {/* {(itemName || screenshotItem.description) && (
                   <div className="p-4">
                     {itemName && (
                       <h4 className="font-medium text-gray-900 text-base">
@@ -126,27 +128,38 @@ export default function ScreenshotCard({ screenshots }) {
                       </p>
                     )}
                   </div>
-                )}
+                )} */}
               </div>
             </SwiperSlide>
           );
         })}
       </Swiper>
 
+      {/* 播放/暫停按鈕 */}
+      <div className="absolute top-4 right-4 z-10">
+        <button
+          onClick={() => setIsPlaying(!isPlaying)}
+          className="bg-[#286e11] rounded-sm p-1 cursor-pointer top-1 transition-all duration-200 hover:bg-black"
+        >
+          {isPlaying ? (
+            <PauseIcon className="w-5 h-5 text-white" />
+          ) : (
+            // 播放圖標
+            <PlayIcon className="w-5 h-5 text-white" />
+          )}
+        </button>
+      </div>
+
       {/* 自定義導航按鈕 */}
       {screenshots.length > 1 && (
-        <>
-          <button className="screenshot-swiper-button-prev absolute top-1/2 left-4 -translate-y-1/2 z-10 bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-3 shadow-lg transition-all duration-300 group">
-            <svg className="w-6 h-6 text-gray-700 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+        <div className="absolute top-4 right-12.5 z-10 space-x-1.5">
+          <button className="screenshot-swiper-button-next bg-[#286e11] rounded-sm p-1 cursor-pointer top-1 transition-all duration-200 hover:bg-black">
+            <ChevronLeftIcon className="w-5 h-5 text-white" />
           </button>
-          <button className="screenshot-swiper-button-next absolute top-1/2 right-4 -translate-y-1/2 z-10 bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-3 shadow-lg transition-all duration-300 group">
-            <svg className="w-6 h-6 text-gray-700 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+          <button className="screenshot-swiper-button-prev bg-[#286e11] rounded-sm p-1 cursor-pointer top-1 transition-all duration-200 hover:bg-black">
+            <ChevronRightIcon className="w-5 h-5 text-white" />
           </button>
-        </>
+        </div>
       )}
     </div>
   );

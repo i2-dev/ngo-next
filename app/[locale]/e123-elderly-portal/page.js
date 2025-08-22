@@ -24,7 +24,7 @@ export default async function E123ElderlyPortalPage({ params }) {
 
   return (      
     <PageContainer>
-      <PageSection>
+      <PageSection className={'pb-0'}>
         <SuccessCaseHero successCase={successCase} locale={locale} bgcolor={heroBg} />
       </PageSection>
       
@@ -33,8 +33,7 @@ export default async function E123ElderlyPortalPage({ params }) {
         locale={locale}
         allSuccessCases={successCases || []}
         menuData={menus}
-      />
-        
+      />        
     </PageContainer>    
   );
 }

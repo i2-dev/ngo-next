@@ -4,7 +4,7 @@ import PageSection from "@/components/blocks/PageSection";
 import DigitalSolutionHero from "@/components/digitalsolutions/DigitalSolutionHero";
 import BlockRenderer from "@/components/digitalsolutions/BlockRenderer";
 import ClientLogoSection from "@/components/homepage/ClientLogoSection";
-import InformationSection from "@/components/homepage/InformationSection";
+import InformationSectionWrapper from "@/components/homepage/InformationSectionWrapper";
 import AwardsSwiper from "@/components/homepage/AwardsSwiper";
 import Card from "@/components/blocks/Card";
 import styles from "@/styles/DigitalSolutions.module.css";
@@ -35,6 +35,8 @@ export default async function AISolutionPage({ params }) {
     notFound();
   }
 
+  // console.log('Regular page plan data:', plan);
+
   return (
     <PageContainer>
       {/* 方案標題區域 */}
@@ -63,7 +65,11 @@ export default async function AISolutionPage({ params }) {
 
       {/* Information Section */}
       <PageSection className={'bg-[rgba(247,242,244,0.5)] backdrop-filter-[blur(10px)]'}>
-        <InformationSection locale={locale} styles={homepageStyles} informationData={informationData} />
+        <InformationSectionWrapper 
+          locale={locale} 
+          styles={homepageStyles} 
+          informationData={informationData}
+        />
       </PageSection>
 
       {/* Awards Swiper Section */}

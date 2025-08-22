@@ -106,27 +106,27 @@ export default function MenuClient({ menuData, locale = 'en' }) {
     <nav className="bg-transparent relative">
       <div className="relative lg:static">
         {/* 桌面菜单 */}
-        <ul className="hidden lg:flex items-center space-x-6">
+        <ul className="hidden lg:flex items-center">
           {menuData.data
             .sort((a, b) => (a.Order || 0) - (b.Order || 0))
             .map((menuItem, index) => (
-            <li key={menuItem.id} className="relative group">
+            <li key={menuItem.id} className="relative group tracking-[2px]">
               {/* 主菜单项 */}
               {menuItem.URL ? (
                 <Link
                   href={formatUrl(menuItem.URL)}
-                  className={`font-medium text-sm transition-colors duration-200 whitespace-nowrap ${
+                  className={`font-medium transition-colors duration-200 whitespace-nowrap px-2.5 xl:px-3.5 ${
                     isActiveMenuItem(menuItem.URL)
-                      ? 'text-blue-600 font-semibold'
-                      : 'text-gray-700 hover:text-gray-900'
+                      ? 'text-[#2a7115]'
+                      : 'text-[#3a4148] hover:text-[#2a7115]'
                   }`}
                 >
                   {menuItem.title}
                 </Link>
               ) : (
-                <div className="text-gray-700 hover:text-gray-900 font-medium text-sm transition-colors duration-200 whitespace-nowrap cursor-pointer flex items-center">
+                <div className="text-[#3a4148] hover:text-[#2a7115] font-medium px-2.5 xl:px-3.5 transition-colors duration-200 whitespace-nowrap cursor-pointer flex items-center">
                   {menuItem.title}
-                  {menuItem.items && menuItem.items.length > 0 && (
+                  {/* {menuItem.items && menuItem.items.length > 0 && (
                     <svg
                       className="ml-1 h-3 w-3"
                       fill="none"
@@ -135,7 +135,7 @@ export default function MenuClient({ menuData, locale = 'en' }) {
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
-                  )}
+                  )} */}
                 </div>
               )}
 

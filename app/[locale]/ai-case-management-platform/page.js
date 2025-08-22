@@ -13,8 +13,9 @@ export default async function AICaseManagementPlatformPage({ params }) {
   const pageData = await getDigitalSolutionsData(locale);
   const { plans } = pageData.processedData || {};
   
-  // 根據Order找到AI個案管理平台方案 (data[1])
-  const plan = plans?.find(plan => plan.order === 1);
+  // 使用特定的documentId來找到AI個案管理平台方案
+  const documentId = 'r42zk86ouqoly2l8jpg82psl';
+  const plan = plans?.find(plan => plan.documentId === documentId);
   
   if (!plan) {
     notFound();
@@ -45,7 +46,8 @@ export async function generateMetadata({ params }) {
   try {
     const pageData = await getDigitalSolutionsData(locale);
     const { plans } = pageData.processedData || {};
-    const plan = plans?.find(plan => plan.order === 1);
+    const documentId = 'r42zk86ouqoly2l8jpg82psl';
+    const plan = plans?.find(plan => plan.documentId === documentId);
 
     return {
       title: plan ? `${plan.title} - I2NGO` : 'AI 個案管理平台 - I2NGO',

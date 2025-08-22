@@ -71,7 +71,7 @@ export default async function NewsDetailPage({ params }) {
 
       <PageSection className={'!pt-12.5'}> 
         {article.Author_Summary && (            
-            <h3 className="text-center text-[22px] mb-7.5">{article.Author_Summary}</h3>          
+            <h3 className="text-center text-[22px] xl:max-w-[1000px] xl:mx-auto mb-7.5">{article.Author_Summary}</h3>          
         )}
 
         {/* Article Content */}      

@@ -14,17 +14,17 @@ export default function SuccessCaseHero({ successCase, locale, bgcolor, variant 
       </div>
 
       {/* <div className="bg-[#e5f8fe] bg-[url(/images/success-stories/case_01_bg_image.jpg)] bg-bottom bg-no-repeat bg-size-[130%] mt-30 relative xl:bg-cover"> */}
-      <div className={`overflow-hidden mt-30 relative ${bgcolor === "lightblue" ? "bg-[#e5f8fe]" : "bg-white" }`}>
+      <div className={`mt-30 relative ${bgcolor === "lightblue" ? "bg-[#e5f8fe]" : "bg-white" }`}>
         {/* 背景圖片 */}
         {successCase.background && (
           <>
-            <div className="absolute bottom-0 z-0">
+            <div className="overflow-hidden flex flex-col absolute inset-0 z-0">              
               <StrapiImage
                 image={successCase.background}
                 width={successCase.background.width}
                 height={successCase.background.height}
                 alt={successCase.title}
-                className="w-full h-auto origin-bottom max-lg:scale-130"
+                className="w-full h-auto mt-auto origin-bottom scale-130 lg:scale-115"
                 priority
               />
             </div>

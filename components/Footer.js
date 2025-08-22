@@ -22,7 +22,7 @@ export default function Footer({ locale = 'en' }) {
   const currentContent = content[locale] || content.en;
 
   return (
-    <footer className="bg-gray-100 border-t border-gray-200 py-5 mt-auto">
+    <footer className="bg-gray-100 border-t border-gray-200 py-5.5 mt-auto">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           {/* Copyright Information */}

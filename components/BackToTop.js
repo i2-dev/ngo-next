@@ -91,23 +91,23 @@ export default function BackToTop({
   if (!isVisible) return null;
 
   return (
-    <div className={`fixed bottom-8 right-8 z-50 ${className}`}>
+    <div className={`fixed bottom-4 right-5 z-50 ${className}`}>
       <button
         onClick={scrollToTop}
         onKeyDown={handleKeyDown}
-        className="group relative bg-[#6ccb50] hover:bg-[#286e11] text-white p-3 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[#6ccb50] focus:ring-opacity-50 active:scale-95"
+        className="group relative bg-[#707070] hover:bg-[#286e11] text-white p-1.5 rounded-full shadow-lg transition-all duration-300 ease-in-out transform cursor-pointer"
         aria-label="返回頂部"
         title="返回頂部"
       >
         {/* 進度環 */}
         {showProgress && (
           <svg
-            className="absolute inset-0 w-full h-full transform -rotate-90"
+            className="absolute inset-0.5 w-[calc(100%-4px)] h-[calc(100%-4px)] transform -rotate-90"
             viewBox="0 0 36 36"
           >
             <path
               className="text-white/20"
-              strokeWidth="2"
+              strokeWidth="1.5"
               fill="none"
               stroke="currentColor"
               d="M18 2.0845
@@ -116,7 +116,7 @@ export default function BackToTop({
             />
             <path
               className="text-white transition-all duration-200"
-              strokeWidth="2"
+              strokeWidth="1.5"
               strokeLinecap="round"
               fill="none"
               stroke="currentColor"
@@ -130,7 +130,7 @@ export default function BackToTop({
         
         {/* 箭頭圖標 */}
         <svg
-          className="relative w-6 h-6 transition-transform duration-200 group-hover:-translate-y-0.5"
+          className="relative w-5 h-5 transition-transform duration-200"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"

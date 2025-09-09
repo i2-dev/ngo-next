@@ -8,8 +8,10 @@ import {
 export function middleware(request) {
   const pathname = request.nextUrl.pathname;
 
-  // 排除预览路径，不添加locale前缀
-  if (pathname.startsWith('/preview/') || pathname.startsWith('/test-preview')) {
+  // 排除预览路径和測試文件，不添加locale前缀
+  if (pathname.startsWith('/preview/') || 
+      pathname.startsWith('/test-preview') ||
+      pathname.startsWith('/test-google-maps.html')) {
     return NextResponse.next();
   }
 

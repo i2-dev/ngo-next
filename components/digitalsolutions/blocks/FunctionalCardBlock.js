@@ -1,13 +1,26 @@
 export default function FunctionalCardBlock({ block, locale }) {
   if (!block) return null;
 
+  // 處理 hr 選項
+  const hrClass = block.hr ? `hr-${block.hr}` : '';
+
   return (    
-    <div className="grid grid-cols-2 gap-x-10 max-lg:grid-cols-1">
+    <div className={`grid grid-cols-2 gap-x-10 max-lg:grid-cols-1 relative`}>
+      {/* hr線 */}
+      {block.hr && (
+        hrClass === "hr-top" ? (
+          <div className="bg-[#8d8d8d] block w-full h-0.25 absolute -top-25"></div>
+        ) : (
+          <div className="bg-[#8d8d8d] block w-full h-0.25 absolute -bottom-25"></div>
+        )
+      )}
+
       {/* 左側標題 */}
       {block.Title && (
         <div>
           <h2 className='text-[#3e3978] text-[42px] max-lg:text-4xl max-lg:mb-12 max-md:text-3xl'>{block.Title}</h2>           
         </div>
+        
       )}
 
       {/* 右側功能列表 */}

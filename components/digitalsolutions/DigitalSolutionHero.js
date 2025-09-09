@@ -81,7 +81,7 @@ export default function DigitalSolutionHero({ plan, locale, bgcolor, bgGradient,
         <div className='text-white text-center p-[80px_30px_30px] relative z-2 lg:absolute lg:inset-0 max-lg:-mb-20 max-sm:mb-0'>              
             {plan.content && (
               <div
-                className="[&>h2]:text-5xl [&>h2]:mb-2 max-lg:[&>h2]:text-4xl max-md:[&>h2]:text-3xl"                
+                className="[&>h2]:text-[42px] [&>h2]:mb-2 max-lg:[&>h2]:text-4xl max-md:[&>h2]:text-3xl [&>p]:text-lg [&>:last-child]:mb-0 xl:[&>h2]:px-[10%]"
                 dangerouslySetInnerHTML={{ __html: plan.content }}
               />
             )}

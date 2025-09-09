@@ -3,7 +3,9 @@
  * 用于从Strapi API获取预览数据
  */
 
-const STRAPI_BASE_URL = 'http://strapi2-dev.dev.i2hk.net';
+import { getStrapiBaseUrl, buildApiUrl, buildPreviewApiUrl } from './get-strapi-url';
+
+const STRAPI_BASE_URL = getStrapiBaseUrl();
 
 // 内容类型映射
 const CONTENT_TYPE_MAPPING = {
@@ -186,7 +188,7 @@ export async function fetchPreviewData(contentType, options = {}) {
     });
 
     // 构建API URL
-    const apiUrl = `${STRAPI_BASE_URL}/api/${contentType}?${queryParams.toString()}`;
+    const apiUrl = buildApiUrl(contentType, null, Object.fromEntries(queryParams));
 
     // 发送请求
     const response = await fetch(apiUrl, {
@@ -273,7 +275,7 @@ export async function getPreviewNewsData(locale = 'en', options = {}) {
     queryParams.append('sort[0]', 'Publish:desc');
 
     // 构建API URL
-    const apiUrl = `${STRAPI_BASE_URL}/api/informations?${queryParams.toString()}`;
+    const apiUrl = buildApiUrl('informations', null, Object.fromEntries(queryParams));
 
     // 发送请求
     const response = await fetch(apiUrl, {
@@ -343,7 +345,7 @@ export function formatPreviewData(data, contentType) {
       return {
         ...baseData,
         title: data.Title,
-        rightContent: data.RightContent,
+        Content: data.Content,
         leftImage: data.LeftImage,
         ourClients: data.OurClients,
       };

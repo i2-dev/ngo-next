@@ -8,11 +8,12 @@ import DigitalSolutionHero from "@/components/digitalsolutions/DigitalSolutionHe
 import BlockRenderer from "@/components/digitalsolutions/BlockRenderer";
 import PreviewWrapper from '@/components/PreviewWrapper';
 import styles from "@/styles/DigitalSolutions.module.css";
+import { buildPreviewApiUrl } from '@/utils/get-strapi-url';
 
 // 直接获取特定计划的预览数据
 async function getPreviewPlanData(documentId, status = 'draft', pLevel = 3) {
   try {
-    const apiUrl = `http://strapi2-dev.dev.i2hk.net/api/plans/${documentId}?status=${status}&pLevel=${pLevel}`;
+    const apiUrl = buildPreviewApiUrl('plans', documentId, { status, pLevel });
     
     const response = await fetch(apiUrl, {
       method: 'GET',

@@ -1,51 +1,47 @@
 "use client";
 
-import { useEffect } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 
 export default function HeaderScrollEffect() {
-  useEffect(() => {
-    const header = document.getElementById('header');
-    const scrollThreshold = 5; // 降低觸發閾值，讓首頁也能看到效果
-    
-    if (!header) return;
-    
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      
-      if (scrollY > scrollThreshold) {
-        if (!header.classList.contains('scrolled')) {
-          header.classList.add('scrolled');
-        }
-      } else {
-        if (header.classList.contains('scrolled')) {
-          header.classList.remove('scrolled');
-        }
+  const initializedRef = useRef(false);
+
+  useLayoutEffect(() => {
+
+    // 添加全局測試函數
+    window.testHeaderScroll = () => {
+      const header = document.getElementById('header');
+
+      if (header) {
+        header.classList.add('scrolled');
+
+
+        // 檢查計算樣式
+        const computedStyle = window.getComputedStyle(header);
       }
     };
-    
-    // Initial check
-    handleScroll();
-    
-    // Add scroll event listener with throttling for better performance
-    let ticking = false;
-    const throttledHandleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          handleScroll();
-          ticking = false;
-        });
-        ticking = true;
+
+    window.forceHeaderScrolled = () => {
+      const header = document.getElementById('header');
+      if (header) {
+        header.classList.add('scrolled');
       }
     };
-    
-    window.addEventListener('scroll', throttledHandleScroll, { passive: true });
-    
-    // Cleanup
+
+    window.removeHeaderScrolled = () => {
+      const header = document.getElementById('header');
+      if (header) {
+        header.classList.remove('scrolled');
+      }
+    };
+
+
     return () => {
-      window.removeEventListener('scroll', throttledHandleScroll);
+      delete window.testHeaderScroll;
+      delete window.forceHeaderScrolled;
+      delete window.removeHeaderScrolled;
+      initializedRef.current = false;
     };
   }, []);
-  
-  // This component doesn't render anything visible
+
   return null;
 }

@@ -25,7 +25,7 @@ export default async function ContactUsPage({ params }) {
         <h1 className='text-[42px] font-medium max-lg:text-5xl max-md:text-4xl'>{contactPageData?.data?.Title || '聯絡我們'}</h1>
       </PageSection> 
 
-      <PageSection className={'pt-0'}>                
+      <PageSection className={'pt-0'} delay={300}>                
         <div className="grid grid-cols-2 gap-y-12 gap-x-10 max-lg:grid-cols-1">
           {/* 左側：聯絡信息和圖片 */}
           <div className="flex flex-col min-h-[500px]">

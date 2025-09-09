@@ -21,12 +21,24 @@ export default async function AISolutionPage({ params }) {
 
   // 獲取首頁數據以獲取各種組件數據
   const homepageData = await getHomepageData(locale);
-  const {
-    clientLogoData,
-    informationData,
-    awardsData,
-    cardData
-  } = homepageData.processedData || {};
+  const homepageBlocks = homepageData.blocks || [];
+  
+  // 从区块中提取需要的组件数据
+  const clientLogoData = homepageBlocks.find(block => 
+    block.__component === 'home-page.client-logo'
+  );
+  
+  const informationData = homepageBlocks.find(block => 
+    block.__component === 'home-page.information-section'
+  );
+  
+  const awardsData = homepageBlocks.find(block => 
+    block.__component === 'home-page.awards-section'
+  );
+  
+  const cardData = homepageBlocks.find(block => 
+    block.__component === 'public.card'
+  );
 
   // 根據Order找到第一個方案 (data[0] - AI為你解決實際問題)
   const plan = plans?.find(plan => plan.order === 0);

@@ -9,23 +9,22 @@ import { FadeDown, FadeUp, FadeLeft, FadeRight, ZoomIn } from '@/components/Simp
 const ClientLogoSection = ({ 
   logoData,  
 }) => {
+  // 支持兩種數據結構：Awards 或 logo
+  const logoArray = logoData?.Awards || logoData?.logo;
+  const { Title: sectionTitle } = logoData || {};
+  const awards = logoArray || [];
+
+  // 使用交錯動畫 Hook - 必须在组件顶部调用
+  const { ref, getItemClass, getItemStyle } = useStaggeredAnimation(awards.length, 150);
+
   // 如果沒有 logo 數據，不渲染組件
   if (!logoData) {
     return null;
   }
-
-  // 支持兩種數據結構：Awards 或 logo
-  const logoArray = logoData.Awards || logoData.logo;
   
   if (!logoArray || !Array.isArray(logoArray)) {
     return null;
   }
-
-  const { Title: sectionTitle } = logoData;
-  const awards = logoArray;
-
-  // 使用交錯動畫 Hook
-  const { ref, getItemClass, getItemStyle } = useStaggeredAnimation(awards.length, 150);
 
   return (
     <>        

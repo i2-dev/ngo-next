@@ -6,6 +6,7 @@ import { getAdjacentArticles } from '@/utils/get-adjacent-articles';
 import { notFound } from 'next/navigation';
 import PageContainer from '@/components/blocks/PageContainer';
 import PageSection from '@/components/blocks/PageSection';
+import { FadeUp } from '@/components/SimpleAnimatedElement';
 
 async function getArticleData(documentId) {
   try {
@@ -45,55 +46,44 @@ export default async function NewsDetailPage({ params }) {
   return (
     <PageContainer className={'!mt-29'}>      
       {/* Article Header */}
-      <div className="flex items-center text-center w-full min-h-[250px] md:min-h-[350px] py-12.5 bg-[rgba(247,242,244,0.5)] backdrop-filter-[blur(10px)]">
-        <div className="xl:container xl:max-w-[1040px] xl:mx-auto px-5">
-          {/* Category Badge */}
-          {article.information_category && (
-            <CategoryBadge category={article.information_category} locale={locale} />
-          )}
-
-          {/* Title */}
-          <h1 className="text-3xl text-[#272727] mb-5 md:text-[42px]">
-            {article.Title}
-          </h1>
-
-          {/* Meta Information */}
-          <div className="flex flex-wrap justify-center text-sm">            
-            {article.Publish && (
-              <div className="flex items-center">
-                <span className="font-medium">發布日期：</span>
-                <span>{article.Publish}</span>
-              </div>
+      <FadeUp>
+        <div className="flex items-center text-center w-full min-h-[250px] md:min-h-[320px] py-12.5 bg-[rgba(247,242,244,0.5)] backdrop-filter-[blur(10px)]">
+          <div className="xl:container xl:max-w-[1040px] xl:mx-auto px-5">
+            {/* Category Badge */}
+            {article.information_category && (
+              <CategoryBadge category={article.information_category} locale={locale} />
             )}
+
+            {/* Title */}
+            <h1 className="text-3xl text-[#272727] mb-5 md:text-[42px]">
+              {article.Title}
+            </h1>
+
+            {/* Meta Information */}
+            <div className="flex flex-wrap justify-center text-sm">            
+              {article.Publish && (
+                <div className="flex items-center">
+                  <span className="font-medium">發布日期：</span>
+                  <span>{article.Publish}</span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      </FadeUp>
 
-      <PageSection className={'!pt-12.5'}> 
+      <PageSection className={'!pt-12.5'} delay={300}> 
         {article.Author_Summary && (            
             <h3 className="text-center text-[22px] xl:max-w-[1000px] xl:mx-auto mb-7.5">{article.Author_Summary}</h3>          
         )}
 
         {/* Article Content */}      
         <article className="overflow-hidden xl:max-w-[1040px] xl:mx-auto px-5">
-          {/* Featured Image */}
-          {/* {article.image && article.image.length > 0 && (
-            <div className="relative h-64 md:h-96 overflow-hidden">
-              <StrapiImage
-                image={article.image[0]}
-                className="w-full h-full object-cover"
-                width={800}
-                height={400}
-                alt={article.Title || 'Article image'}
-              />
-            </div>
-          )} */}
-
           {/* Article Content */}          
-          {article.Content ? (
+          {article.NewsContent ? (
             <div
               className="prose prose-lg max-w-none"
-              dangerouslySetInnerHTML={{ __html: article.Content }}
+              dangerouslySetInnerHTML={{ __html: article.NewsContent }}
             />
           ) : (
             <div className="text-center py-12">

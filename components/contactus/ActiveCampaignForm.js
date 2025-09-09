@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
+import Script from 'next/script';
 
 export default function ActiveCampaignForm() {
   const [formData, setFormData] = useState({
@@ -35,7 +36,7 @@ export default function ActiveCampaignForm() {
     setIsClient(true);
   }, []);
 
-  // 載入 reCAPTCHA 腳本和設置回調
+  // 設置全局回調函數
   useEffect(() => {
     if (!isClient) return;
 
@@ -55,62 +56,139 @@ export default function ActiveCampaignForm() {
       }
     };
 
-    // 設置超時檢查
-    const timeoutId = setTimeout(() => {
-      if (!recaptchaLoaded) {
-        console.error('reCAPTCHA load timeout');
-        setRecaptchaError(true);
-      }
-    }, 10000); // 10秒超時
-
-    // 檢查是否已經載入
-    if (window.grecaptcha && window.grecaptcha.render) {
-      console.log('reCAPTCHA already available');
-      clearTimeout(timeoutId);
-      setRecaptchaLoaded(true);
-    } else {
-      // 簡單的 reCAPTCHA 載入
-      console.log('Loading reCAPTCHA with simple method...');
-      
-      // 移除任何現有的腳本
-      const existingScript = document.querySelector('script[src*="recaptcha"]');
-      if (existingScript) {
-        existingScript.remove();
-      }
-
-      const script = document.createElement('script');
-      script.src = 'https://www.google.com/recaptcha/api.js';
-      script.async = true;
-      script.defer = true;
-      
-      script.onload = () => {
-        console.log('reCAPTCHA script loaded');
-        clearTimeout(timeoutId);
-        // 等待一下確保 grecaptcha 可用
-        setTimeout(() => {
-          if (window.grecaptcha) {
-            setRecaptchaLoaded(true);
-          } else {
-            setRecaptchaError(true);
-          }
-        }, 500);
-      };
-      
-      script.onerror = () => {
-        console.error('Failed to load reCAPTCHA script');
-        clearTimeout(timeoutId);
-        setRecaptchaError(true);
-      };
-      
-      document.head.appendChild(script);
-    }
-
     // 清理函數
     return () => {
-      clearTimeout(timeoutId);
       delete window.handleRecaptcha;
     };
-  }, [isClient, recaptchaLoaded]);
+  }, [isClient, errors.recaptcha]);
+
+  // 監聽 reCAPTCHA 載入狀態，嘗試渲染
+  useEffect(() => {
+    if (recaptchaLoaded && isClient) {
+      console.log('reCAPTCHA loaded state changed, attempting to render');
+      
+      // 等待一下確保 DOM 已更新
+      setTimeout(() => {
+        try {
+          const recaptchaElement = document.querySelector('.g-recaptcha');
+          if (recaptchaElement && window.grecaptcha && window.grecaptcha.render) {
+            console.log('Attempting to render reCAPTCHA after state change');
+            
+            // 檢查是否已經渲染
+            if (!recaptchaElement.hasChildNodes()) {
+              window.grecaptcha.render(recaptchaElement, {
+                sitekey: '6LcwIw8TAAAAACP1ysM08EhCgzd6q5JAOUR1a0Go',
+                callback: 'handleRecaptcha'
+              });
+            }
+          }
+        } catch (error) {
+          console.error('Error rendering reCAPTCHA after state change:', error);
+        }
+      }, 200);
+    }
+  }, [recaptchaLoaded, isClient]);
+
+  // 手動驗證函數
+  const handleManualVerification = () => {
+    console.log('Manual verification triggered');
+    setFormData(prev => ({ ...prev, recaptcha: 'manual_verified' }));
+    if (errors.recaptcha) {
+      setErrors(prev => ({ ...prev, recaptcha: '' }));
+    }
+  };
+
+  // 重試 reCAPTCHA 載入
+  const handleRetryRecaptcha = () => {
+    console.log('Retrying reCAPTCHA load');
+    setRecaptchaError(false);
+    setRecaptchaLoaded(false);
+    
+    // 重新載入 reCAPTCHA 腳本
+    const script = document.createElement('script');
+    script.src = 'https://www.google.com/recaptcha/api.js';
+    script.async = true;
+    script.defer = true;
+    script.onload = handleRecaptchaLoad;
+    script.onerror = handleRecaptchaError;
+    document.head.appendChild(script);
+  };
+
+  // 手動觸發 reCAPTCHA 渲染
+  const handleForceRenderRecaptcha = () => {
+    console.log('Force rendering reCAPTCHA');
+    if (window.grecaptcha && window.grecaptcha.render) {
+      try {
+        const recaptchaElement = document.querySelector('.g-recaptcha');
+        if (recaptchaElement) {
+          // 清空現有內容
+          recaptchaElement.innerHTML = '';
+          
+          // 重新渲染
+          window.grecaptcha.render(recaptchaElement, {
+            sitekey: '6LcwIw8TAAAAACP1ysM08EhCgzd6q5JAOUR1a0Go',
+            callback: 'handleRecaptcha'
+          });
+        }
+      } catch (error) {
+        console.error('Error force rendering reCAPTCHA:', error);
+      }
+    } else {
+      console.error('grecaptcha not available for force render');
+    }
+  };
+
+  // 處理 reCAPTCHA 腳本載入成功
+  const handleRecaptchaLoad = () => {
+    console.log('reCAPTCHA script loaded successfully');
+    
+    let attempts = 0;
+    const maxAttempts = 100; // 增加等待時間到10秒
+    
+    // 等待 grecaptcha 對象可用
+    const checkGrecaptcha = () => {
+      attempts++;
+      console.log(`Checking grecaptcha... attempt ${attempts}`);
+      
+      if (window.grecaptcha && window.grecaptcha.render) {
+        console.log('grecaptcha is available, setting loaded state');
+        setRecaptchaLoaded(true);
+        setRecaptchaError(false);
+        
+        // 手動觸發 reCAPTCHA 渲染
+        setTimeout(() => {
+          try {
+            const recaptchaElement = document.querySelector('.g-recaptcha');
+            if (recaptchaElement && !recaptchaElement.hasChildNodes()) {
+              console.log('Manually rendering reCAPTCHA');
+              window.grecaptcha.render(recaptchaElement, {
+                sitekey: '6LcwIw8TAAAAACP1ysM08EhCgzd6q5JAOUR1a0Go',
+                callback: 'handleRecaptcha'
+              });
+            }
+          } catch (error) {
+            console.error('Error manually rendering reCAPTCHA:', error);
+          }
+        }, 100);
+      } else if (attempts < maxAttempts) {
+        setTimeout(checkGrecaptcha, 100);
+      } else {
+        console.error('grecaptcha not available after maximum attempts');
+        console.log('window.grecaptcha:', window.grecaptcha);
+        setRecaptchaError(true);
+      }
+    };
+    
+    // 開始檢查
+    setTimeout(checkGrecaptcha, 500);
+  };
+
+  // 處理 reCAPTCHA 腳本載入錯誤
+  const handleRecaptchaError = () => {
+    console.error('Failed to load reCAPTCHA script');
+    setRecaptchaError(true);
+    setRecaptchaLoaded(false);
+  };
 
   // 處理輸入變更
   const handleInputChange = (e) => {
@@ -437,6 +515,15 @@ export default function ActiveCampaignForm() {
           <label className="block text-base font-bold text-black mb-2 leading-relaxed">
             進行人機身份驗證<span className="text-red-500 ml-1">*</span>
           </label>
+          
+          {/* 使用 Next.js Script 組件載入 reCAPTCHA */}
+          <Script
+            src="https://www.google.com/recaptcha/api.js"
+            strategy="afterInteractive"
+            onLoad={handleRecaptchaLoad}
+            onError={handleRecaptchaError}
+          />
+          
           {!isClient ? (
             // 服務器端渲染佔位符
             <div className="bg-gray-100 border border-gray-300 rounded p-4 text-center text-gray-500 flex items-center justify-center" style={{ minHeight: '78px', minWidth: '304px' }}>
@@ -447,11 +534,29 @@ export default function ActiveCampaignForm() {
             </div>
           ) : recaptchaError ? (
             <div className="bg-red-50 border border-red-300 rounded p-4 text-center text-red-600" style={{ minHeight: '78px', minWidth: '304px' }}>
-              <div className="flex items-center justify-center space-x-2">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                </svg>
-                <span>reCAPTCHA 載入失敗，請刷新頁面重試</span>
+              <div className="flex flex-col items-center justify-center space-y-2">
+                <div className="flex items-center space-x-2">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                  <span>reCAPTCHA 載入失敗</span>
+                </div>
+                <div className="flex space-x-2">
+                  <button 
+                    type="button"
+                    onClick={handleRetryRecaptcha}
+                    className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+                  >
+                    重試
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={handleManualVerification}
+                    className="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700"
+                  >
+                    手動驗證
+                  </button>
+                </div>
               </div>
             </div>
           ) : !recaptchaLoaded ? (
@@ -469,19 +574,25 @@ export default function ActiveCampaignForm() {
                 data-callback="handleRecaptcha"
                 style={{ minHeight: '78px', minWidth: '304px' }}
               ></div>
-              <div className="mt-2 text-xs text-gray-500">
-                如果 reCAPTCHA 無法顯示，<button 
-                  type="button" 
-                  onClick={() => {
-                    setFormData(prev => ({ ...prev, recaptcha: 'fallback_verified' }));
-                    if (errors.recaptcha) {
-                      setErrors(prev => ({ ...prev, recaptcha: '' }));
-                    }
-                  }}
-                  className="text-blue-600 underline hover:text-blue-800"
-                >
-                  點擊這裡手動驗證
-                </button>
+              <div className="mt-2 text-xs text-gray-500 space-y-1">
+                <div>
+                  如果 reCAPTCHA 無法顯示，<button 
+                    type="button" 
+                    onClick={handleManualVerification}
+                    className="text-blue-600 underline hover:text-blue-800"
+                  >
+                    點擊這裡手動驗證
+                  </button>
+                </div>
+                <div>
+                  <button 
+                    type="button" 
+                    onClick={handleForceRenderRecaptcha}
+                    className="text-green-600 underline hover:text-green-800"
+                  >
+                    強制重新渲染 reCAPTCHA
+                  </button>
+                </div>
               </div>
             </div>
           )}

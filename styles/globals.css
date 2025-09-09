@@ -17,27 +17,52 @@
   ul li::marker {
     color: #6ccb50;
   }
-  
-  #header.scrolled {
-    @apply !py-3 bg-[rgba(255,255,255,.98)] shadow-[0_3px_45px_rgba(0,0,0,.2)];
-    backdrop-filter: blur(10px);
+  #header {
+    @apply !py-3;
+  }  
+  #header .logo {
+    @apply max-lg:w-37;
   }
-
-  #header.scrolled .logo {
+  /* 更明確的 scrolled 樣式，確保優先級 */
+  header#header.scrolled {
+    @apply !py-3 !bg-[rgba(255,255,255,.95)] !shadow-[0_3px_45px_rgba(0,0,0,.2)] !backdrop-blur-sm;    
+  }
+  header#header.scrolled .logo {
     @apply w-37;
+  }
+  
+  /* 額外的強制樣式，使用更高優先級 */
+  header#header.scrolled {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 3px 45px rgba(0, 0, 0, 0.2) !important;
+    backdrop-filter: blur(8px) !important;
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
   }
 
   /* 菜單項 hover 隔離樣式 */
   .menu-item-with-dropdown {
     @apply isolate;
-  }
-  
+  }  
   .menu-item-with-dropdown::before {
     content: '';
     @apply absolute inset-0 -m-2 z-[-1];
   }
-
   .text-\[36px\]\/\[1\.2\] { font-size: 36px; line-height: 1.2; }
+
+  /* news detail button */
+  .news-detail a.button {
+      @apply bg-[#74d190] !text-white !text-[22px]/[30px] leading-[30px] block w-fit mx-auto rounded-lg;
+      @apply max-lg:text-[18px]/[26px] max-lg:leading-[26px] max-lg:py-2.5 max-lg:px-4;
+      padding: 14px 22px 14px 20px;
+  }
+  .news-detail a.button::after {
+      @apply inline-block w-[30px] h-[30px] ml-2.5 rounded-full;
+      @apply max-lg:w-[26px] max-lg:h-[26px] max-lg:bg-size-[6px_auto];
+      content: ' ';
+      background: #fff url('/btn-arrow-blue.png') center no-repeat;
+      vertical-align: text-bottom;
+  }
 }
 
 @layer components {  

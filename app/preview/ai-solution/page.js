@@ -6,13 +6,10 @@ import PageContainer from "@/components/blocks/PageContainer";
 import PageSection from "@/components/blocks/PageSection";
 import DigitalSolutionHero from "@/components/digitalsolutions/DigitalSolutionHero";
 import BlockRenderer from "@/components/digitalsolutions/BlockRenderer";
-import ClientLogoSection from "@/components/homepage/ClientLogoSection";
-import InformationSectionWrapper from "@/components/homepage/InformationSectionWrapper";
-import AwardsSwiper from "@/components/homepage/AwardsSwiper";
-import Card from "@/components/blocks/Card";
+import HomepageBlockRendererPreview from "@/components/homepage/HomepageBlockRendererPreview";
 import PreviewWrapper from '@/components/PreviewWrapper';
+import { buildPreviewApiUrl } from '@/utils/get-strapi-url';
 import styles from "@/styles/DigitalSolutions.module.css";
-import homepageStyles from "@/styles/Homepage.module.css";
 
 // 直接获取特定计划的预览数据
 async function getPreviewPlanData(documentId, status = 'draft', pLevel = 4) {
@@ -25,7 +22,7 @@ async function getPreviewPlanData(documentId, status = 'draft', pLevel = 4) {
     queryParams.append('populate[2]', 'Button');
     queryParams.append('populate[3]', 'Blocks');
     
-    const apiUrl = `http://strapi2-dev.dev.i2hk.net/api/plans/${documentId}?${queryParams.toString()}`;
+    const apiUrl = buildPreviewApiUrl('plans', documentId, Object.fromEntries(queryParams));
     
     const response = await fetch(apiUrl, {
       method: 'GET',
@@ -77,7 +74,7 @@ async function getPreviewNewsData(locale = 'en', status = 'draft') {
     queryParams.append('pagination[pageSize]', '3');
     queryParams.append('sort[0]', 'Publish:desc');
 
-    const apiUrl = `http://strapi2-dev.dev.i2hk.net/api/informations?${queryParams.toString()}`;
+    const apiUrl = buildPreviewApiUrl('informations', null, Object.fromEntries(queryParams));
 
     const response = await fetch(apiUrl, {
       method: 'GET',
@@ -143,65 +140,19 @@ function formatPlanData(data) {
   };
 }
 
-// 格式化首页数据 - 模拟 unified-loader 的处理逻辑
+// 格式化首页数据 - 使用 BlockRenderer 方式
 function formatHomepageData(data) {
   if (!data) return null;
 
-  // 处理首页特殊结构
+  // 使用 BlockRenderer 方式处理数据
   if (data.Blocks) {
-    const blocks = data.Blocks;
-    
-    // 提取横幅数据
-    const bannerBlock = blocks.find(block => block.__component === 'home-page.banner-block');
-    const bannerSlides = bannerBlock?.Banner?.map(banner => ({
-      id: banner.id,
-      title: banner.Title || '',
-      subtitle: banner.SubTitle || '',
-      content: extractContentFromRichText(banner.Content),
-      image: banner.Image || null,
-      buttonText: banner.Button?.Text || null,
-      buttonLink: banner.Button?.URL || null,
-      icon: banner.icon || null,
-    })) || [];
-
-    // 提取其他区块
-    const solutionData = blocks.find(block => 
-      block.__component === 'home-page.solution' || 
-      block.__component === 'home-page.solution-block'
-    );
-    
-    const informationData = blocks.find(block => 
-      block.__component === 'home-page.information-section'
-    );
-    
-    const clientLogoData = blocks.find(block => 
-      block.__component === 'home-page.client-logo'
-    );
-    
-    const awardsData = blocks.find(block => 
-      block.__component === 'home-page.awards-section'
-    );
-    
-    const cardData = blocks.find(block => 
-      block.__component === 'public.card'
-    );
-
     return {
-      bannerSlides,
-      solutionData,
-      informationData,
-      clientLogoData,
-      awardsData,
-      cardData,
-      rawBlocks: blocks
+      blocks: data.Blocks
     };
   }
   
   return {
-    clientLogoData: data.ClientLogoData,
-    informationData: data.InformationData,
-    awardsData: data.AwardsData,
-    cardData: data.CardData,
+    blocks: []
   };
 }
 
@@ -297,46 +248,13 @@ export default function AICaseManagementPlatformPreview() {
             />        
           )}
 
-          {/* Client Logo Section */}
-          {homepageData?.clientLogoData && (
-            <PageSection className={'pt-0'}>
-              <ClientLogoSection
-                logoData={homepageData.clientLogoData}
-              />
-            </PageSection>
-          )}
-
-          {/* Information Section */}
-          {homepageData?.informationData && (
-            <PageSection className={'bg-[rgba(247,242,244,0.5)] backdrop-filter-[blur(10px)]'}>
-              <InformationSectionWrapper 
-                locale={locale} 
-                styles={homepageStyles} 
-                informationData={homepageData.informationData}
-                newsData={newsData}
-              />
-            </PageSection>
-          )}
-
-          {/* Awards Swiper Section */}
-          {homepageData?.awardsData && (
-            <PageSection>
-              <AwardsSwiper
-                awardsData={homepageData.awardsData}
-              />
-            </PageSection>
-          )}
-
-          {/* AI² Card Section */}
-          {homepageData?.cardData && (
-            <PageSection>
-              <Card
-                Title={homepageData.cardData.Title}
-                Content={homepageData.cardData.Content}
-                icon={homepageData.cardData.icon}
-                Button={homepageData.cardData.Button}
-              />
-            </PageSection>
+          {/* 使用 HomepageBlockRendererPreview 渲染首页区块 */}
+          {homepageData?.blocks && homepageData.blocks.length > 0 && (
+            <HomepageBlockRendererPreview 
+              blocks={homepageData.blocks} 
+              locale={locale} 
+              newsData={newsData}
+            />
           )}
         </PageContainer>
       )}

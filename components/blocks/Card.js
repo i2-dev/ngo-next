@@ -36,7 +36,7 @@ export default function Card({ Title, Content, icon, Button }) {
       )}
       
       {/* Button */}
-      {console.log('card------------------',Button)}
+      {/* {console.log('card------------------',Button)} */}
       {Button && (
         <SharedButton {...Button} className={'!inline-block'} />
       )}

@@ -13,6 +13,7 @@ const GoogleMap = ({
   const mapRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
+  const [debugInfo, setDebugInfo] = useState('');
 
   useEffect(() => {
     // 檢查是否已經載入 Google Maps API
@@ -23,28 +24,47 @@ const GoogleMap = ({
 
     // 載入 Google Maps API
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDFb7pxsOp-yrPwdr973Ezo3RWlqNimX4M&libraries=places&callback=initGoogleMaps`;
     script.async = true;
     script.defer = true;
-    script.onload = initializeMap;
-    script.onerror = () => {
-      setError('無法載入 Google Maps');
+    
+    // 設置全局回調函數
+    window.initGoogleMaps = () => {
+      console.log('Google Maps API 載入成功');
+      setDebugInfo('API 載入成功');
+      initializeMap();
+    };
+
+    script.onerror = (e) => {
+      console.error('Google Maps API 載入失敗:', e);
+      setError('無法載入 Google Maps API');
+      setDebugInfo('腳本載入失敗');
     };
 
     document.head.appendChild(script);
 
     return () => {
-      // 清理腳本（可選）
+      // 清理腳本和回調
       const existingScript = document.querySelector(`script[src*="maps.googleapis.com"]`);
       if (existingScript && existingScript === script) {
         document.head.removeChild(script);
       }
+      delete window.initGoogleMaps;
     };
   }, [address, latitude, longitude]);
 
   const initializeMap = async () => {
     try {
-      if (!mapRef.current) return;
+      if (!mapRef.current) {
+        setError('地圖容器未找到');
+        return;
+      }
+
+      if (!window.google || !window.google.maps) {
+        setError('Google Maps API 未正確載入');
+        setDebugInfo('API 對象不存在');
+        return;
+      }
 
       let mapCenter;
       let marker;
@@ -52,12 +72,15 @@ const GoogleMap = ({
       // 如果提供了經緯度，直接使用
       if (latitude && longitude) {
         mapCenter = { lat: parseFloat(latitude), lng: parseFloat(longitude) };
+        setDebugInfo(`使用提供的座標: ${latitude}, ${longitude}`);
       } 
       // 否則使用地址進行地理編碼
       else if (address) {
+        setDebugInfo(`正在地理編碼地址: ${address}`);
         const geocoder = new window.google.maps.Geocoder();
         const results = await new Promise((resolve, reject) => {
           geocoder.geocode({ address }, (results, status) => {
+            console.log('地理編碼結果:', status, results);
             if (status === 'OK') {
               resolve(results);
             } else {
@@ -68,12 +91,14 @@ const GoogleMap = ({
         
         if (results && results[0]) {
           mapCenter = results[0].geometry.location.toJSON();
+          setDebugInfo(`地理編碼成功: ${mapCenter.lat}, ${mapCenter.lng}`);
         } else {
           throw new Error('找不到地址對應的位置');
         }
       } else {
         // 預設位置（香港中環）
         mapCenter = { lat: 22.2818, lng: 114.1557 };
+        setDebugInfo('使用預設位置（香港中環）');
       }
 
       // 創建地圖
@@ -115,25 +140,50 @@ const GoogleMap = ({
       }
 
       setIsLoaded(true);
+      setDebugInfo('地圖初始化完成');
     } catch (err) {
       console.error('Google Maps 初始化錯誤:', err);
       setError(err.message);
+      setDebugInfo(`錯誤: ${err.message}`);
     }
   };
 
-  if (error) {
-    return (
-      <div className={`bg-gray-100 rounded-lg flex items-center justify-center ${className}`} style={{ height }}>
-        <div className="text-center text-gray-600">
-          <svg className="w-12 h-12 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          <p className="text-sm">地圖載入失敗</p>
-          <p className="text-xs text-gray-500 mt-1">{error}</p>
-        </div>
+  // 備用地圖組件
+  const FallbackMap = () => (
+    <div className={`bg-gray-100 rounded-lg border border-gray-200 ${className}`} style={{ height }}>
+      <div className="h-full flex flex-col items-center justify-center p-4">
+        <svg className="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <h3 className="text-lg font-semibold text-gray-700 mb-2">地圖暫時無法載入</h3>
+        <p className="text-sm text-gray-600 text-center mb-4">
+          {address || '我們的位置'}
+        </p>
+        {address && (
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2"
+          >
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+            在 Google Maps 中開啟
+          </a>
+        )}
+        {debugInfo && (
+          <p className="text-xs text-gray-500 mt-2 text-center max-w-xs">
+            調試信息: {debugInfo}
+          </p>
+        )}
       </div>
-    );
+    </div>
+  );
+
+  if (error) {
+    return <FallbackMap />;
   }
 
   return (
@@ -146,6 +196,9 @@ const GoogleMap = ({
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
             <p className="text-sm text-gray-600">載入地圖中...</p>
+            {debugInfo && (
+              <p className="text-xs text-gray-500 mt-1">{debugInfo}</p>
+            )}
           </div>
         </div>
       )}

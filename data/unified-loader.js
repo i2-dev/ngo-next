@@ -242,56 +242,13 @@ export async function getPageData(pageName, locale = 'en', options = {}) {
 export async function getHomepageData(locale = 'en', options = {}) {
   const data = await getPageData('homepage', locale, options);
   
-  // 处理首页特殊结构
+  // 处理首页特殊结构 - 使用 BlockRenderer 方式
   if (data.homepage?.data?.Blocks) {
     const blocks = data.homepage.data.Blocks;
     
-    // 提取横幅数据
-    const bannerBlock = blocks.find(block => block.__component === 'home-page.banner-block');
-    const bannerSlides = bannerBlock?.Banner?.map(banner => ({
-      id: banner.id,
-      title: banner.Title || '',
-      subtitle: banner.SubTitle || '',
-      content: extractContentFromRichText(banner.Content),
-      image: banner.Image || null,
-      buttonText: banner.Button?.Text || null,
-      buttonLink: banner.Button?.URL || null,
-      icon: banner.icon || null,
-    })) || [];
-
-    // 提取其他区块
-    const solutionData = blocks.find(block => 
-      block.__component === 'home-page.solution' || 
-      block.__component === 'home-page.solution-block'
-    );
-    
-    const informationData = blocks.find(block => 
-      block.__component === 'home-page.information-section'
-    );
-    
-    const clientLogoData = blocks.find(block => 
-      block.__component === 'home-page.client-logo'
-    );
-    
-    const awardsData = blocks.find(block => 
-      block.__component === 'home-page.awards-section'
-    );
-    
-    const cardData = blocks.find(block => 
-      block.__component === 'public.card'
-    );
-
     return {
       ...data,
-      processedData: {
-        bannerSlides,
-        solutionData,
-        informationData,
-        clientLogoData,
-        awardsData,
-        cardData,
-        rawBlocks: blocks
-      }
+      blocks: blocks // 直接返回原始区块数据，让 HomepageBlockRenderer 处理
     };
   }
   

@@ -23,15 +23,15 @@ export default function Footer({ locale = 'en' }) {
 
   return (
     <footer className="bg-gray-100 border-t border-gray-200 py-5.5 mt-auto">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+      <div className="xl:container xl:max-w-[1280px] xl:mx-auto px-4 max-[1399px]:pr-18">
+        <div className="flex flex-col-reverse justify-between items-start gap-4 md:flex-row md:items-center md:gap-0">
           {/* Copyright Information */}
           <div className="text-sm text-gray-600">
             {currentContent.copyright}
           </div>
           
           {/* Links and Social Media */}
-          <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-5">
+          <div className="flex flex-col md:flex-row items-start space-y-2.5 md:items-center md:space-y-0 md:space-x-5">
             {/* Website Guide and Accessibility Links */}
             <div className="flex items-center space-x-5 text-sm">
               <Link 
@@ -53,7 +53,7 @@ export default function Footer({ locale = 'en' }) {
               <Link 
                 href="https://www.facebook.com/i2hongkong/" 
                 target="_blank" 
-                className="text-gray-600 hover:text-blue-600 transition-colors"
+                className="text-gray-600 hover:text-[#1773ea] transition-colors"
                 aria-label="Facebook"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -63,7 +63,7 @@ export default function Footer({ locale = 'en' }) {
               <Link 
                 href="https://www.youtube.com/channel/UCIs5MfXVvK-D-4CT3_vaAKg" 
                 target="_blank" 
-                className="text-gray-600 hover:text-red-600 transition-colors"
+                className="text-gray-600 hover:text-[#f70000] transition-colors"
                 aria-label="YouTube"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

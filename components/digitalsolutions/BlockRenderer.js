@@ -21,7 +21,7 @@ export default function BlockRenderer({ blocks, locale }) {
         switch (block.__component) {
           case 'digital-solutions.card':
             return (              
-              <PageSection key={`${block.id}-${index}`} className={block.type === 'style-2' ? 'bg-[rgba(247,242,244,0.5)] backdrop-filter-[blur(10px)] pt-0' : block.type === 'style-3' ? '!py-0' : 'pt-0'}>
+              <PageSection key={`${block.id}-${index}`} className={block.type === 'style-2' ? 'bg-[rgba(247,242,244,0.5)] backdrop-filter-[blur(10px)] pt-0' : block.type === 'style-3' ? '!py-0' : block.type === 'style-5' ? 'bg-[rgba(247,242,244,0.5)] backdrop-filter-[blur(10px)]' : 'pt-0'}>
                 <CardBlock 
                   block={block}
                   locale={locale}
@@ -61,8 +61,8 @@ export default function BlockRenderer({ blocks, locale }) {
           
           case 'digital-solutions.faq-card':
             return (
-              <PageSection key={`${block.id}-${index}`} className={'bg-[rgba(247,242,244,0.5)] backdrop-filter-[blur(10px)] pt-0'}>
-                <hr className='border-[#8d8d8d] mt-0 mb-25'></hr>
+              <PageSection key={`${block.id}-${index}`} className={'bg-[rgba(247,242,244,0.5)] backdrop-filter-[blur(10px)]'}>
+                {/* <hr className='border-[#8d8d8d] mt-0 mb-25'></hr> */}
                 <FaqCardBlock 
                   block={block}
                   locale={locale}

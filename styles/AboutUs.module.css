@@ -2,25 +2,25 @@
    About Us 页面样式
    ====================================== */
 
-/* Clients Swiper 样式 */
-:global(.clients-swiper-pagination) {
+.clientsSwiperPagination {
   padding-top: 2px;
   padding-bottom: 2px;
 }
 
-:global(.clients-swiper-pagination .swiper-pagination-bullet) {
+.clientsSwiperPagination :global(.swiper-pagination-bullet) {
   opacity: 1;
   width: 9px;
   height: 9px;
   background: rgba(0, 0, 0, .25); 
 }
 
-:global(.clients-swiper-pagination .swiper-pagination-bullet-active) {
+.clientsSwiperPagination :global(.swiper-pagination-bullet-active) {
   background: rgb(40, 110, 17);
   transform: scale(1.2);
 }
 
-:global(.swiper-slide) {
+.swiperSlide {
   display: flex;
   align-items: center;
-  justify-content: center;}
+  justify-content: center;
+}

@@ -57,8 +57,11 @@
     @apply max-lg:w-[calc(100%-110px)] max-lg:ml-[110px];
     @apply max-md:w-full max-md:ml-0 max-sm:h-[calc(80vw-90px)];
 }
+.homeBannerCardImageContainer a {
+    @apply block h-full rounded-[30px] overflow-hidden;
+}
 .homeBannerCardImageContainer img {
-    @apply rounded-[30px] w-full max-md:mb-0 max-sm:h-full max-sm:object-cover max-sm:object-[90%_90%];
+    @apply w-full max-md:mb-0 max-sm:h-full max-sm:object-cover max-sm:object-[90%_90%];
 }
 
 .imageCardBodyShadow {
@@ -76,8 +79,11 @@
     @apply w-[calc(100%-170px)] ml-[170px];
     @apply max-md:w-full max-md:ml-0 max-sm:h-[calc(80vw-90px)];
 }
+.imageCardImageContainer a {
+    @apply rounded-[30px] overflow-hidden;
+}
 .imageCardImageContainer img {
-    @apply rounded-[30px] w-full max-md:mb-0 max-sm:h-full max-sm:object-cover max-sm:object-[90%_90%];
+    @apply w-full max-md:mb-0 max-sm:h-full max-sm:object-cover max-sm:object-[90%_90%];
 }
 
 /* Swiper 樣式 */
@@ -130,19 +136,19 @@
   padding-bottom: 80px !important;
 }
 
-:global(.awards-swiper-pagination) {
+.awardsSwiperPagination {
    padding-top: 2px;
    padding-bottom: 2px;
 }
 
-:global(.awards-swiper-pagination .swiper-pagination-bullet) {
+.awardsSwiperPagination :global(.swiper-pagination-bullet) {
   opacity: 1;
   width: 9px;
   height: 9px;
   background: rgba(0, 0, 0, .25);    
 }
 
-:global(.awards-swiper-pagination .swiper-pagination-bullet-active) {
+.awardsSwiperPagination :global(.swiper-pagination-bullet-active) {
   background: rgb(40, 110, 17);
   transform: scale(1.2);
 }

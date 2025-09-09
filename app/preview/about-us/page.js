@@ -24,7 +24,7 @@ export default function AboutUsPreview() {
     const fetchPreviewData = async () => {
       try {
         setLoading(true);
-        
+
         // 使用新的预览数据获取工具，包含pLevel=6
         const result = await getPreviewData('about-us', {
           status,
@@ -50,7 +50,7 @@ export default function AboutUsPreview() {
 
   // 提取数据
   const title = data?.title || '關於我們';
-  const rightContent = data?.rightContent || '';
+  const Content = data?.Content || '';
   const leftImage = data?.leftImage && data.leftImage.length > 0 ? data.leftImage[0] : null;
   const ourClients = data?.ourClients && data.ourClients.length > 0 ? data.ourClients[0] : null;
 
@@ -85,14 +85,14 @@ export default function AboutUsPreview() {
                 </div>
               )}
             </div>
-            <div dangerouslySetInnerHTML={{ __html: rightContent }} />
+            <div dangerouslySetInnerHTML={{ __html: Content }} />
           </div>
         </PageSection>
 
         {/* 客户Logo轮播区域 */}
         {ourClients && (
           <PageSection className={'pt-0'}>
-            <ClientsSwiper 
+            <ClientsSwiper
               clientsData={ourClients}
               className={`border-t border-gray-200 ${styles.clientsSwiper}`}
             />

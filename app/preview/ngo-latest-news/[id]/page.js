@@ -9,10 +9,12 @@ import { getAdjacentArticles } from '@/utils/get-adjacent-articles';
 import PreviewWrapper from '@/components/PreviewWrapper';
 import PageContainer from '@/components/blocks/PageContainer';
 import PageSection from '@/components/blocks/PageSection';
+import { buildPreviewApiUrl } from '@/utils/get-strapi-url';
 
 async function getPreviewArticleData(documentId, status = 'draft') {
   try {
-    const response = await fetch(`http://strapi2-dev.dev.i2hk.net/api/informations/${documentId}?status=${status}&pLevel=5`, {
+    const apiUrl = buildPreviewApiUrl('informations', documentId, { status, pLevel: 5 });
+    const response = await fetch(apiUrl, {
       cache: 'no-store', // 禁用缓存以确保获取最新预览数据
     });
 
@@ -158,10 +160,10 @@ export default function NewsDetailPreview() {
             )}
 
             {/* Article Content */}          
-            {article?.Content ? (
+            {article?.NewsContent ? (
               <div
                 className="prose prose-lg max-w-none"
-                dangerouslySetInnerHTML={{ __html: article.Content }}
+                dangerouslySetInnerHTML={{ __html: article.NewsContent }}
               />
             ) : (
               <div className="text-center py-12">

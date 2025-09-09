@@ -47,8 +47,6 @@ export function useInViewAnimation(options = {}) {
       console.log('useInViewAnimation: No element found, elementRef.current is null');
       return;
     }
-    
-    console.log('useInViewAnimation: Element found:', element, 'with classes:', element.className);
 
     // 檢查 IntersectionObserver 支持
     if (!window.IntersectionObserver) {

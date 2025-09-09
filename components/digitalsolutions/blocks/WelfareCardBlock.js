@@ -30,24 +30,33 @@ export default function WelfareCardBlock({ block, locale }) {
         )}
 
         {/* 服務標題與描述 */}
-        <div className='flex flex-col mb-12 sm:flex-row sm:items-start'>
-          {/* 圖標 */}
-          {block.icon && (            
+        {block.icon ? (
+          <div className='flex flex-col mb-12 sm:flex-row sm:items-start'>
+            {/* 圖標 */}
             <StrapiImage
               image={block.icon}
               alt="DeepSeek AI"
               width={block.icon.width}
               height={block.icon.height}
               className="flex-none w-23 rounded-full border border-[#eee] mb-5 sm:mr-5 sm:mb-0"
-            />            
-          )}          
-          <h3 className="text-[#3e3978] text-[28px]/[1.5] font-semibold hidden"></h3>
-          {block.Content && (
-            <div                 
-              dangerouslySetInnerHTML={{ __html: block.Content }}
-            />
-          )}          
-        </div>
+            />                        
+            {block.Content && (
+              <div
+                className="[&>h3]:text-[#3e3978] [&>h3]:text-[28px]/[1.5] [&>h3]:font-semibold"                 
+                dangerouslySetInnerHTML={{ __html: block.Content }}
+              />
+            )}          
+          </div>
+        ) : (
+          <div className='mb-12'>
+            {block.Content && (
+              <div
+                className="[&>h3]:text-[#3e3978] [&>h3]:text-[28px]/[1.5] [&>h3]:font-semibold"
+                dangerouslySetInnerHTML={{ __html: block.Content }}
+              />
+            )}
+          </div>
+        )}
 
         {/* 申請按鈕 */}
         {block.Button && (

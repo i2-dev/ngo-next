@@ -20,7 +20,7 @@ export default async function AboutUsPage({ params }) {
   // 從API數據中提取具體內容
   const data = aboutPageData?.data || {};
   const title = data.Title || '關於我們';
-  const rightContent = data.RightContent || '';
+  const Content = data.Content || '';
   const leftImage = data.LeftImage && data.LeftImage.length > 0 ? data.LeftImage[0] : null;
   const ourClients = data.OurClients && data.OurClients.length > 0 ? data.OurClients[0] : null;
 
@@ -35,17 +35,18 @@ export default async function AboutUsPage({ params }) {
       .map(line => line.trim());
   };
 
-  const contentLines = formatContent(rightContent);
+  const contentLines = formatContent(Content);
 
   return (    
     <PageContainer>    
       {/* Hero Section - 主要内容区域 */}
-        {/* 主标题 */}
+        {/* 主标题 */}        
         <PageSection className={'text-center'}>
           <h1 className='text-[42px] font-medium max-lg:text-5xl max-md:text-4xl'>{title}</h1>
         </PageSection>
+        
 
-        <PageSection className={'pt-0'}>
+        <PageSection className={'pt-0'} delay={300}>
           <div className="grid grid-cols-2 gap-y-12 gap-x-10 max-lg:grid-cols-1">
               <div>                  
                 {leftImage ? (
@@ -59,7 +60,10 @@ export default async function AboutUsPage({ params }) {
                   />
                 ) : ( null ) }
               </div>
-              <div dangerouslySetInnerHTML={{ __html: rightContent }} />              
+              <div 
+                className="[&>h2]:text-[#454176] [&>h2]:text-[#454176] [&>h2]:text-[22px] [&>p>a]:text-[#286e11] [&>p>a]:hover:text-[#555]"
+                dangerouslySetInnerHTML={{ __html: Content }}
+              />
           </div>
         </PageSection>      
 

@@ -2,10 +2,25 @@ import StrapiImage from "@/components/StrapiImage";
 import styles from "@/styles/SuccessCases.module.css";
 import SharedButton from "../blocks/Button";
 
-export default function SuccessCaseHero({ successCase, locale, bgcolor, variant = "cover" }) {
+export default function SuccessCaseHero({ successCase, locale, bgcolor ="white", variant = "cover" }) {
   if (!successCase) {
     return null;
   }
+
+  // Use the passed bgcolor prop, not the one from successCase
+  // This ensures the preview page can override the Strapi data
+  // Force use the passed bgcolor prop, ignore successCase.bgcolor completely
+  const finalBgcolor = bgcolor;
+
+  // Debug logging to identify the bgcolor issue
+  console.log('=== SuccessCaseHero Debug ===');
+  console.log('bgcolor prop:', bgcolor);
+  console.log('bgcolor prop type:', typeof bgcolor);
+  console.log('successCase.bgcolor:', successCase.bgcolor);
+  console.log('finalBgcolor:', finalBgcolor);
+  console.log('successCase.title:', successCase.title);
+  console.log('successCase.documentId:', successCase.documentId);
+  console.log('==============================');
 
   return (
     <>
@@ -14,7 +29,11 @@ export default function SuccessCaseHero({ successCase, locale, bgcolor, variant 
       </div>
 
       {/* <div className="bg-[#e5f8fe] bg-[url(/images/success-stories/case_01_bg_image.jpg)] bg-bottom bg-no-repeat bg-size-[130%] mt-30 relative xl:bg-cover"> */}
-      <div className={`mt-30 relative ${bgcolor === "lightblue" ? "bg-[#e5f8fe]" : "bg-white" }`}>
+      <div className={`mt-30 relative ${ 
+        finalBgcolor === "lightblue" ? "bg-[#e5f8fe]" : 
+        finalBgcolor === "white" ? "bg-white" : 
+        "bg-white" 
+      }`}>
         {/* 背景圖片 */}
         {successCase.background && (
           <>

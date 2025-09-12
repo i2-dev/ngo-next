@@ -7,49 +7,7 @@ import SuccessCaseHero from "@/components/successcases/SuccessCaseHero";
 import SuccessCaseBlockRenderer from "@/components/successcases/SuccessCaseBlockRenderer";
 import PageSection from "@/components/blocks/PageSection";
 import PreviewWrapper from '@/components/PreviewWrapper';
-import { getPreviewData, formatPreviewData } from '@/utils/preview-data-fetcher';
-
-// 獲取成功案例預覽數據
-async function getPreviewSuccessCaseData(locale = 'en', status = 'draft', pLevel = 5) {
-  try {
-    const result = await getPreviewData('successfuls', {
-      status,
-      locale,
-      pLevel,
-    });
-    if (result?.data) {
-      // 處理排序並找到 order === 1 的案例 (e123 長青網)
-      const sortedCases = result.data
-        .sort((a, b) => (a.Order || 0) - (b.Order || 0))
-        .map(successCase => ({
-          id: successCase.id,
-          documentId: successCase.documentId,
-          title: successCase.Title,
-          order: successCase.Order,
-          content: successCase.Content,
-          icon: successCase.Icon,
-          background: successCase.Background,
-          button: successCase.Button,
-          card: successCase.Card || [],
-          screenshot: successCase.image || []
-        }));
-
-      // 找到 e123 長青網案例 (order === 1)
-      const e123Case = sortedCases.find(successCase => successCase.order === 1);
-      
-      return {
-        successCase: e123Case,
-        allSuccessCases: sortedCases,
-        menus: result.menus
-      };
-    }
-
-    return null;
-  } catch (error) {
-    console.error('Error fetching preview success case data:', error);
-    throw error;
-  }
-}
+import { getPreviewSuccessCaseData } from '@/utils/preview-data-fetcher';
 
 export default function E123ElderlyPortalPreview() {
   const searchParams = useSearchParams();
@@ -60,13 +18,24 @@ export default function E123ElderlyPortalPreview() {
   const status = searchParams.get('status') || 'draft';
   const locale = searchParams.get('locale') || 'en';
   const pLevel = searchParams.get('pLevel') || '5';
+  const documentId = searchParams.get('documentId') || searchParams.get('slug');
 
   const fetchPreviewData = async () => {
+    if (!documentId) {
+      setError('Document ID is required');
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
 
-      const result = await getPreviewSuccessCaseData(locale, status, pLevel);
+      const result = await getPreviewSuccessCaseData(documentId, {
+        status,
+        locale,
+        pLevel
+      });
 
       if (result?.successCase) {
         setData(result);
@@ -84,9 +53,11 @@ export default function E123ElderlyPortalPreview() {
 
   useEffect(() => {
     fetchPreviewData();
-  }, [status, locale, pLevel]);
+  }, [documentId, status, locale, pLevel]);
 
-  const heroBg = "lightblue";
+  // Set background color based on documentId
+  // - i-change-gambling-counseling (b8g7kbq1j62qmd5u4mnacpjb): white
+  const heroBg = documentId === "drsd1m8p9bf2qg1ho1qe4gt4" ? "lightblue" : "white";
 
   return (
     <PreviewWrapper

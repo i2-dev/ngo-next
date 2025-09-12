@@ -22,6 +22,16 @@ export default async function BrainTrainingGamePage({ params }) {
   
   const heroBg= "white";
 
+  // Debug logging for main page
+  console.log('=== Brain Training Game Main Page Debug ===');
+  console.log('successCase found:', successCase);
+  console.log('successCase.title:', successCase?.title);
+  console.log('successCase.order:', successCase?.order);
+  console.log('successCase.documentId:', successCase?.documentId);
+  console.log('successCase.bgcolor:', successCase?.bgcolor);
+  console.log('heroBg value:', heroBg);
+  console.log('============================================');
+
   return (
     <PageContainer>
       <PageSection className={'pb-0'}>

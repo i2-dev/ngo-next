@@ -225,6 +225,110 @@ export async function getPreviewData(contentType, options = {}) {
 }
 
 /**
+ * 获取特定成功案例的预览数据
+ * @param {string} documentId - 文档ID
+ * @param {Object} options - 选项
+ * @returns {Promise<Object>} 成功案例数据
+ */
+export async function getPreviewSuccessCaseData(documentId, options = {}) {
+  const {
+    status = 'draft',
+    locale = 'en',
+    pLevel = 5
+  } = options;
+
+  try {
+    // 首先获取所有成功案例数据（用于"更多成功案例"部分）
+    const allCasesQueryParams = new URLSearchParams();
+    allCasesQueryParams.append('status', status);
+    allCasesQueryParams.append('locale', locale);
+    allCasesQueryParams.append('pLevel', pLevel.toString());
+    allCasesQueryParams.append('sort[0]', 'Order:asc');
+
+    const allCasesApiUrl = buildApiUrl('successfuls', null, Object.fromEntries(allCasesQueryParams));
+    
+    const allCasesResponse = await fetch(allCasesApiUrl, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      cache: 'no-store',
+    });
+
+    if (!allCasesResponse.ok) {
+      throw new Error(`Failed to fetch all success cases: ${allCasesResponse.status} ${allCasesResponse.statusText}`);
+    }
+
+    const allCasesResult = await allCasesResponse.json();
+    
+    // 格式化所有成功案例数据
+    const allSuccessCases = allCasesResult.data?.map(successCase => ({
+      id: successCase.id,
+      documentId: successCase.documentId,
+      title: successCase.Title,
+      order: successCase.Order,
+      content: successCase.Content,
+      icon: successCase.Icon,
+      background: successCase.Background,
+      button: successCase.Button,
+      card: successCase.Card || [],
+      screenshot: successCase.image || [],
+      bgcolor: successCase.bgcolor || successCase.Bgcolor || successCase.bgColor // Add bgcolor field
+    })) || [];
+
+    // Debug logging for Strapi data
+    console.log('=== Strapi Data Debug ===');
+    console.log('documentId requested:', documentId);
+    console.log('allSuccessCases count:', allSuccessCases.length);
+    allSuccessCases.forEach((case_, index) => {
+      console.log(`Case ${index}:`, {
+        documentId: case_.documentId,
+        title: case_.title,
+        order: case_.order,
+        bgcolor: case_.bgcolor
+      });
+    });
+    console.log('========================');
+
+    // 如果指定了documentId，找到对应的案例
+    let targetSuccessCase = null;
+    if (documentId) {
+      targetSuccessCase = allSuccessCases.find(successCase => successCase.documentId === documentId);
+      console.log('Target case found by documentId:', targetSuccessCase);
+    }
+
+    // 如果没有找到特定案例，返回第一个案例
+    if (!targetSuccessCase && allSuccessCases.length > 0) {
+      targetSuccessCase = allSuccessCases[0];
+      console.log('Using first case as fallback:', targetSuccessCase);
+    }
+
+    if (!targetSuccessCase) {
+      console.log('No target case found!');
+      return null;
+    }
+
+    console.log('Final selected case:', {
+      documentId: targetSuccessCase.documentId,
+      title: targetSuccessCase.title,
+      order: targetSuccessCase.order,
+      bgcolor: targetSuccessCase.bgcolor
+    });
+
+    return {
+      successCase: targetSuccessCase,
+      allSuccessCases: allSuccessCases,
+      menus: allCasesResult.menus
+    };
+
+  } catch (error) {
+    console.error('Error fetching success case data:', error);
+    throw error;
+  }
+}
+
+/**
  * 验证预览请求参数
  * @param {Object} params - 请求参数
  * @returns {Object} 验证结果

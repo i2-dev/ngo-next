@@ -59,7 +59,7 @@ export default function LanguageSwitcher({ currentLocale = 'en' }) {
       {/* 語言切換按鈕 */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="text-[#3a4148] hover:text-[#2a7115] font-medium cursor-pointer flex items-center space-x-2 px-3 transition-all duration-200"
+        className="text-[#3a4148] hover:text-[#2a7115] font-medium cursor-pointer flex items-center space-x-2 transition-all duration-200"
         aria-expanded={isOpen}
         aria-haspopup="true"
       >

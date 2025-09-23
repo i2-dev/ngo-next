@@ -49,14 +49,20 @@ export async function generateMetadata({ params }) {
     const documentId = 'r42zk86ouqoly2l8jpg82psl';
     const plan = plans?.find(plan => plan.documentId === documentId);
 
-    return {
-      title: plan ? `${plan.title} - I2NGO` : 'AI 個案管理平台 - I2NGO',
-      description: plan?.content || 'AI 個案管理平台',
-    };
+    if (!plan) {
+      return {
+        title: 'AI 個案管理平台 | NGO Digital',
+        description: 'AI 個案管理平台 - 智能化的個案管理解決方案',
+      };
+    }
+
+    const { extractSEOFromData } = await import('@/utils/seo-metadata');
+    return extractSEOFromData(plan, `${plan.title} | NGO Digital`, 
+      plan.content || `了解更多關於 ${plan.title} 的數碼化解決方案`);
   } catch (error) {
     return {
-      title: 'AI 個案管理平台 - I2NGO',
-      description: 'AI 個案管理平台'
+      title: 'AI 個案管理平台 | NGO Digital',
+      description: 'AI 個案管理平台 - 智能化的個案管理解決方案'
     };
   }
 }

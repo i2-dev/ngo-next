@@ -111,26 +111,6 @@ export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const locale = resolvedParams?.locale || 'en';
 
-  try {
-    const pageData = await getDigitalSolutionsData(locale);
-    const { plans } = pageData.processedData || {};
-    const plan = plans?.find(plan => plan.order === 0);
-
-    if (!plan) {
-      return {
-        title: '方案未找到 - I2NGO',
-        description: '請求的數碼方案不存在。'
-      };
-    }
-
-    return {
-      title: `${plan.title} - I2NGO`,
-      description: plan.content || `了解更多關於 ${plan.title} 的數碼化解決方案`,
-    };
-  } catch (error) {
-    return {
-      title: 'AI為你解決實際問題 - I2NGO',
-      description: 'AI落地應用，為你解決實際問題'
-    };
-  }
+  const { generatePlanSEOMetadata } = await import('@/utils/seo-metadata');
+  return await generatePlanSEOMetadata(locale, 0, 'AI為你解決實際問題');
 }

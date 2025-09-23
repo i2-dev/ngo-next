@@ -21,3 +21,12 @@ export default async function HomePage({ params }) {
     </PageContainer>
   );
 }
+
+// 生成首頁的SEO元數據
+export async function generateMetadata({ params }) {
+  const resolvedParams = await params;
+  const locale = resolvedParams?.locale || 'en';
+
+  const { generateSEOMetadata } = await import('@/utils/seo-metadata');
+  return await generateSEOMetadata('homepage', { locale }, 'NGO Digital Services', 'Professional digital transformation solutions for non-profit organizations');
+}

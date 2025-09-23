@@ -43,28 +43,6 @@ export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const locale = resolvedParams?.locale || 'en';
   
-  const pageData = await getSuccessCasesData(locale);
-  const { successCases } = pageData.processedData || {};
-  const successCase = successCases?.find(successCase => successCase.order === 1);
-  
-  if (!successCase) {
-    const fallbackTitle = getTranslation(locale, 'common', 'successCase', 'Success Case');
-    return {
-      title: 'e123 Elderly Portal | NGO App',
-      description: `e123 Elderly Portal ${fallbackTitle}`
-    };
-  }
-
-  const successCaseText = getTranslation(locale, 'common', 'successCase', 'Success Case');
-  
-  return {
-    title: `${successCase.title} | NGO App`,
-    description: successCase.content ? successCase.content.substring(0, 160) : `${successCase.title} ${successCaseText}`,
-    openGraph: {
-      title: `${successCase.title} | NGO App`,
-      description: successCase.content ? successCase.content.substring(0, 160) : `${successCase.title} ${successCaseText}`,
-      type: 'website',
-      images: successCase.background ? [successCase.background.url] : [],
-    },
-  };
+  const { generateSuccessCaseSEOMetadata } = await import('@/utils/seo-metadata');
+  return await generateSuccessCaseSEOMetadata(locale, 1, 'e123 長青網');
 }

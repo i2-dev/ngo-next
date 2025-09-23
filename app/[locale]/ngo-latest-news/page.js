@@ -109,3 +109,12 @@ export default async function NGOLatestNewsPage({ params, searchParams }) {
     </PageContainer>
   );
 }
+
+// 生成新聞列表頁面的SEO元數據
+export async function generateMetadata({ params }) {
+  const resolvedParams = await params;
+  const locale = resolvedParams?.locale || 'en';
+
+  const { generateSEOMetadata } = await import('@/utils/seo-metadata');
+  return await generateSEOMetadata('informations', { locale }, 'NGO Latest News | NGO Digital', 'Stay updated with the latest news and information from NGO organizations. Get insights on digital transformation, social impact, and community initiatives.');
+}

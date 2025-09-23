@@ -108,3 +108,13 @@ export default async function NewsDetailPage({ params }) {
     </PageContainer>
   );
 }
+
+// 生成新聞文章的SEO元數據
+export async function generateMetadata({ params }) {
+  const resolvedParams = await params;
+  const { id, locale } = resolvedParams;
+  const normalizedLocale = locale || 'en';
+
+  const { generateNewsSEOMetadata } = await import('@/utils/seo-metadata');
+  return await generateNewsSEOMetadata(id, normalizedLocale);
+}

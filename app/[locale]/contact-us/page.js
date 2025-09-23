@@ -85,8 +85,11 @@ export default async function ContactUsPage({ params }) {
   );
 }
 
-// SEO metadata - 需要動態生成，這裡提供默認值
-export const metadata = {
-  title: 'Contact Us | NGO Digital Solutions',
-  description: 'Contact us to learn more about NGO digital solutions. We provide case management systems, AI customer service robots and other services.',
-};
+// 生成聯絡我們頁面的SEO元數據
+export async function generateMetadata({ params }) {
+  const resolvedParams = await params;
+  const locale = resolvedParams?.locale || 'en';
+
+  const { generateSEOMetadata } = await import('@/utils/seo-metadata');
+  return await generateSEOMetadata('contact-us', { locale }, 'Contact Us | NGO Digital Solutions', 'Contact us to learn more about NGO digital solutions. We provide case management systems, AI customer service robots and other services.');
+}

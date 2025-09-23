@@ -90,8 +90,11 @@ export default async function AboutUsPage({ params }) {
   );
 }
 
-// SEO metadata - 需要動態生成，這裡提供默認值
-export const metadata = {
-  title: 'About Us | NGO Digital Solutions',
-  description: 'We are committed to providing the highest quality digital solutions for NGO organizations, helping non-profit organizations serve society more effectively.',
-};
+// 生成關於我們頁面的SEO元數據
+export async function generateMetadata({ params }) {
+  const resolvedParams = await params;
+  const locale = resolvedParams?.locale || 'en';
+
+  const { generateSEOMetadata } = await import('@/utils/seo-metadata');
+  return await generateSEOMetadata('about-us', { locale }, 'About Us | NGO Digital Solutions', 'We are committed to providing the highest quality digital solutions for NGO organizations, helping non-profit organizations serve society more effectively.');
+}

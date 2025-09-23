@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
-import SimpleImage from '@/components/SimpleImage';
+import StrapiImage from '@/components/StrapiImage';
 import { getStrapiMedia } from '@/utils/get-strapi-media';
 import styles from '@/styles/Homepage.module.css';
 import SharedButton from '../blocks/Button';
@@ -87,7 +87,7 @@ const HomepageSwiper = ({
                                         <div className={styles.homeBannerCardBodyShadow}></div>
                                         <div className={styles.homeBannerCardBody}>                                       
                                             {slide.icon && (                                             
-                                                <SimpleImage
+                                                <StrapiImage
                                                     image={slide.icon}
                                                     className={`${styles.homeBannerCardIcon} animate-fade-in-up`}
                                                     style={{animationDelay: '0.4s'}}
@@ -110,7 +110,7 @@ const HomepageSwiper = ({
                                             {/* Background Image or Default Background */}                                            
                                             {slide.image? (
                                                 <Link href={slide.buttonLink} className="animate-fade-in-right" style={{animationDelay: '0.3s'}}> 
-                                                    <SimpleImage
+                                                    <StrapiImage
                                                         image={slide.image}                                                    
                                                         width={slide.image.width}
                                                         height={slide.image.height}

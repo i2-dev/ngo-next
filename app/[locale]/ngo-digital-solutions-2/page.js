@@ -44,19 +44,6 @@ export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const locale = resolvedParams?.locale || 'en';
 
-  try {
-    const pageData = await getDigitalSolutionsData(locale);
-    const { plans } = pageData.processedData || {};
-    const plan = plans?.find(plan => plan.order === 5);
-
-    return {
-      title: plan ? `${plan.title} - I2NGO` : 'NGO 數碼化解決方案 - I2NGO',
-      description: plan?.content || 'NGO 數碼化解決方案',
-    };
-  } catch (error) {
-    return {
-      title: 'NGO 數碼化解決方案 - I2NGO',
-      description: 'NGO 數碼化解決方案'
-    };
-  }
+  const { generatePlanSEOMetadata } = await import('@/utils/seo-metadata');
+  return await generatePlanSEOMetadata(locale, 5, 'NGO 數碼化解決方案');
 }

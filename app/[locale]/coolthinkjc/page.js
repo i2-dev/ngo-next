@@ -42,25 +42,6 @@ export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const locale = resolvedParams?.locale || 'en';
   
-  const pageData = await getSuccessCasesData(locale);
-  const { successCases } = pageData.processedData || {};
-  const successCase = successCases?.find(successCase => successCase.order === 4);
-  
-  if (!successCase) {
-    return {
-      title: 'Coolthink@JC 賽馬會運算思維教育 網上課程系統 | NGO App',
-      description: 'Coolthink@JC 賽馬會運算思維教育 網上課程系統成功案例'
-    };
-  }
-
-  return {
-    title: `${successCase.title} | NGO App`,
-    description: successCase.content ? successCase.content.substring(0, 160) : `${successCase.title}成功案例`,
-    openGraph: {
-      title: `${successCase.title} | NGO App`,
-      description: successCase.content ? successCase.content.substring(0, 160) : `${successCase.title}成功案例`,
-      type: 'website',
-      images: successCase.background ? [successCase.background.url] : [],
-    },
-  };
+  const { generateSuccessCaseSEOMetadata } = await import('@/utils/seo-metadata');
+  return await generateSuccessCaseSEOMetadata(locale, 4, 'Coolthink@JC 賽馬會運算思維教育 網上課程系統');
 }

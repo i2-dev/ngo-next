@@ -43,19 +43,6 @@ export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const locale = resolvedParams?.locale || 'en';
 
-  try {
-    const pageData = await getDigitalSolutionsData(locale);
-    const { plans } = pageData.processedData || {};
-    const plan = plans?.find(plan => plan.order === 2);
-
-    return {
-      title: plan ? `${plan.title} - I2NGO` : 'AI 工作流程轉型方案 - I2NGO',
-      description: plan?.content || 'AI 工作流程轉型方案',
-    };
-  } catch (error) {
-    return {
-      title: 'AI 工作流程轉型方案 - I2NGO',
-      description: 'AI 工作流程轉型方案'
-    };
-  }
+  const { generatePlanSEOMetadata } = await import('@/utils/seo-metadata');
+  return await generatePlanSEOMetadata(locale, 2, 'AI 工作流程轉型方案');
 }

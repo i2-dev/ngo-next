@@ -43,19 +43,6 @@ export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const locale = resolvedParams?.locale || 'en';
 
-  try {
-    const pageData = await getDigitalSolutionsData(locale);
-    const { plans } = pageData.processedData || {};
-    const plan = plans?.find(plan => plan.order === 4);
-
-    return {
-      title: plan ? `${plan.title} - I2NGO` : '機構網上學習管理系統 - I2NGO',
-      description: plan?.content || '機構網上學習管理系統',
-    };
-  } catch (error) {
-    return {
-      title: '機構網上學習管理系統 - I2NGO',
-      description: '機構網上學習管理系統'
-    };
-  }
+  const { generatePlanSEOMetadata } = await import('@/utils/seo-metadata');
+  return await generatePlanSEOMetadata(locale, 4, '機構網上學習管理系統');
 }

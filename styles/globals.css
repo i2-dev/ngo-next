@@ -2,6 +2,9 @@
 @import "tailwindcss";
 
 @layer base {
+  :root, :host {
+    --spacing: .20rem;
+  }
   
   body {    
     color: #555;

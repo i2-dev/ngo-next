@@ -44,19 +44,6 @@ export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const locale = resolvedParams?.locale || 'en';
 
-  try {
-    const pageData = await getDigitalSolutionsData(locale);
-    const { plans } = pageData.processedData || {};
-    const plan = plans?.find(plan => plan.order === 6);
-
-    return {
-      title: plan ? `${plan.title} - I2NGO` : 'AI Elderly Health Manager - I2NGO',
-      description: plan?.content || 'AI Elderly Health Manager',
-    };
-  } catch (error) {
-    return {
-      title: 'AI Elderly Health Manager',
-      description: 'AI Elderly Health Manager'
-    };
-  }
+  const { generatePlanSEOMetadata } = await import('@/utils/seo-metadata');
+  return await generatePlanSEOMetadata(locale, 6, 'AI Elderly Health Manager');
 }

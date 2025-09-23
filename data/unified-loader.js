@@ -393,7 +393,8 @@ export async function getDigitalSolutionsData(locale = 'en', options = {}) {
         icon: plan.icon,
         image: plan.Image,
         button: plan.Button,
-        blocks: plan.Blocks || []
+        blocks: plan.Blocks || [],
+        seo: plan.seo || plan.SEO || plan.Seo // 包含SEO數據
       }));
     
     data.processedData = { plans: sortedPlans };
@@ -420,7 +421,8 @@ export async function getSuccessCasesData(locale = 'en', options = {}) {
         background: successCase.Background,
         button: successCase.Button,
         card: successCase.Card || [],
-        screenshot: successCase.image || []
+        screenshot: successCase.image || [],
+        seo: successCase.seo || successCase.SEO || successCase.Seo // 包含SEO數據
       }));
     
     data.processedData = { successCases: sortedCases };

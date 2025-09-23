@@ -64,19 +64,6 @@ export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const locale = resolvedParams?.locale || 'en';
 
-  try {
-    const pageData = await getDigitalSolutionsData(locale);
-    const { plans } = pageData.processedData || {};
-    const plan = plans?.find(plan => plan.order === 3);
-
-    return {
-      title: plan ? `${plan.title} - I2NGO` : 'AI 熱線系統 - I2NGO',
-      description: plan?.content || 'AI 熱線系統',
-    };
-  } catch (error) {
-    return {
-      title: 'AI 熱線系統 - I2NGO',
-      description: 'AI 熱線系統'
-    };
-  }
+  const { generatePlanSEOMetadata } = await import('@/utils/seo-metadata');
+  return await generatePlanSEOMetadata(locale, 3, 'AI 熱線系統');
 }

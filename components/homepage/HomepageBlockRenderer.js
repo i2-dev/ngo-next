@@ -69,9 +69,8 @@ export default function HomepageBlockRenderer({ blocks, locale }) {
             })) || [];
             
             return (
-              <FadeUp>
+              <FadeUp key={`${block.id}-${index}`}>
                 <HomepageSwiper
-                  key={`${block.id}-${index}`}
                   slides={bannerSlides}
                   className={styles.homepageSwiper}
                   swiperConfig={swiperConfig}

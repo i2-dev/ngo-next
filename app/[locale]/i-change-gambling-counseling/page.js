@@ -42,25 +42,6 @@ export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const locale = resolvedParams?.locale || 'en';
   
-  const pageData = await getSuccessCasesData(locale);
-  const { successCases } = pageData.processedData || {};
-  const successCase = successCases?.find(successCase => successCase.order === 5);
-  
-  if (!successCase) {
-    return {
-      title: 'i-Change賭博輔導平台 | NGO App',
-      description: 'i-Change賭博輔導平台成功案例'
-    };
-  }
-
-  return {
-    title: `${successCase.title} | NGO App`,
-    description: successCase.content ? successCase.content.substring(0, 160) : `${successCase.title}成功案例`,
-    openGraph: {
-      title: `${successCase.title} | NGO App`,
-      description: successCase.content ? successCase.content.substring(0, 160) : `${successCase.title}成功案例`,
-      type: 'website',
-      images: successCase.background ? [successCase.background.url] : [],
-    },
-  };
+  const { generateSuccessCaseSEOMetadata } = await import('@/utils/seo-metadata');
+  return await generateSuccessCaseSEOMetadata(locale, 5, 'i-Change賭博輔導平台');
 }

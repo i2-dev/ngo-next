@@ -8,15 +8,15 @@ import qs from "qs";
 
 // ========== API 端点配置 ==========
 const API_ENDPOINTS = {
-  homepage: { endpoint: 'homepage', populateLevel: 6 },
-  menus: { endpoint: 'menus', populateLevel: 3 },
+  homepage: { endpoint: 'homepage', populateLevel: 4 },
+  menus: { endpoint: 'menus', populateLevel: 2 },
   'about-us': { endpoint: 'about-us', populateLevel: 4 },
   'contact-us': { endpoint: 'contact-us', populateLevel: 3 },
   informations: { endpoint: 'informations', populateLevel: 3 },
   'information-categories': { endpoint: 'information-categories', populateLevel: 1 },
   'services-page': { endpoint: 'services-page', populateLevel: 4 },
-  plans: { endpoint: 'plans', populateLevel: 5 },
-  successfuls: { endpoint: 'successfuls', populateLevel: 10 }
+  plans: { endpoint: 'plans', populateLevel: 4 },
+  successfuls: { endpoint: 'successfuls', populateLevel: 3 }
 };
 
 // ========== 页面 API 需求配置 ==========

@@ -12,6 +12,11 @@ export default function Footer({ locale = 'en' }) {
       sitemap: "Site Map",
       accessibility: "Accessibility"
     },
+    "zh-hant": {
+      copyright: `I2 COMPANY LIMITED 版權所有 © 2006-${currentYear}`,
+      sitemap: "網頁指南", 
+      accessibility: "無障礙瀏覽"
+    },
     "zh-Hant": {
       copyright: `I2 COMPANY LIMITED 版權所有 © 2006-${currentYear}`,
       sitemap: "網頁指南", 
@@ -35,13 +40,13 @@ export default function Footer({ locale = 'en' }) {
             {/* Website Guide and Accessibility Links */}
             <div className="flex items-center space-x-5 text-sm">
               <Link 
-                href="/sitemap" 
+                href={`/${locale}/sitemap`} 
                 className="text-gray-600 hover:text-gray-900 transition-colors"
               >
                 {currentContent.sitemap}
               </Link>
               <Link 
-                href="/accessibility" 
+                href={`/${locale}/accessibility`} 
                 className="text-gray-600 hover:text-gray-900 transition-colors"
               >
                 {currentContent.accessibility}

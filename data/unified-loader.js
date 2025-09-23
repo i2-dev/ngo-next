@@ -28,7 +28,8 @@ const PAGE_API_CONFIG = {
   'news-detail': ['menus', 'informations'],
   services: ['menus', 'services-page'],
   'digital-solutions': ['menus', 'plans'],
-  'success-case-detail': ['menus', 'successfuls']
+  'success-case-detail': ['menus', 'successfuls'],
+  sitemap: ['menus']
 };
 
 // ========== 工具函数 ==========
@@ -36,9 +37,20 @@ const PAGE_API_CONFIG = {
 // 规范化 locale
 function normalizeLocale(locale) {
   if (!locale) return 'en';
-  const normalized = locale.toLowerCase().replace(/[^a-z]/g, '');
-  const supportedLocales = ['en', 'zh', 'hk', 'tc'];
-  return supportedLocales.includes(normalized) ? normalized : 'en';
+  
+  // 映射到 Strapi API 格式
+  const localeMapping = {
+    'en': 'en',
+    'zh-hant': 'zh-Hant-HK', // 前端使用 zh-hant，API 使用 zh-Hant-HK
+    'zh-hant-hk': 'zh-Hant-HK', // 兼容舊格式
+    'zhhkhk': 'zh-Hant-HK', // 兼容舊格式
+    'zh': 'zh-Hant-HK', // 默認中文為香港繁體
+    'hk': 'zh-Hant-HK',
+    'tc': 'zh-Hant-HK'
+  };
+  
+  const normalized = locale.toLowerCase();
+  return localeMapping[normalized] || 'en';
 }
 
 // 从路径推断页面名称

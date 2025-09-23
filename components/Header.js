@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import MenuWrapper from "./header/MenuWrapper";
 import ClientOnly from "./ClientOnly";
+import LanguageSwitcher from "./LanguageSwitcher";
 import { useState, useEffect } from 'react';
 
 export default function Header({ locale = 'en', menuData = null }) {
@@ -61,6 +62,9 @@ export default function Header({ locale = 'en', menuData = null }) {
               locale={locale} 
               fallbackToApi={!menuData} 
             />
+            
+            {/* Language Switcher */}
+            <LanguageSwitcher currentLocale={locale} />
             
             {/* Social Media Icons */}
             <div className="hidden lg:flex items-center space-x-5">

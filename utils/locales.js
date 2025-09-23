@@ -1,5 +1,5 @@
 // 支持的语言列表
-export const SUPPORTED_LOCALES = ['en', 'zh', 'zh-CN', 'zh-Hant'];
+export const SUPPORTED_LOCALES = ['en', 'zh-hant'];
 
 // 默认语言
 export const DEFAULT_LOCALE = 'en';
@@ -13,9 +13,7 @@ export function isValidLocale(locale) {
 export function getLocaleName(locale) {
   const names = {
     'en': 'English',
-    'zh': '中文',
-    'zh-CN': '简体中文',
-    'zh-Hant': '繁體中文'
+    'zh-hant': '繁體'
   };
   return names[locale] || names[DEFAULT_LOCALE];
 }

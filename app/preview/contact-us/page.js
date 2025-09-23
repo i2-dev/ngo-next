@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ActiveCampaignForm from "@/components/contactus/ActiveCampaignForm";
-import StrapiImage from '@/components/StrapiImage';
+import SimpleImage from '@/components/SimpleImage';
 import PreviewWrapper from '@/components/PreviewWrapper';
 import { getPreviewData, formatPreviewData } from '@/utils/preview-data-fetcher';
 import PageContainer from "@/components/blocks/PageContainer";
@@ -101,7 +101,7 @@ export default function ContactUsPreview() {
               {/* 底部圖片 */}
               {image && (
                 <div className="mt-auto">
-                  <StrapiImage
+                  <SimpleImage
                     image={image}
                     className="max-w-full h-auto lg:w-[76%]"
                     alt="聯絡我們插圖"

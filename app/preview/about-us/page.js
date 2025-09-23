@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import StrapiImage from '@/components/StrapiImage';
+import SimpleImage from '@/components/SimpleImage';
 import ClientsSwiper from '@/components/aboutus/ClientsSwiper';
 import PreviewWrapper from '@/components/PreviewWrapper';
 import { getPreviewData, formatPreviewData } from '@/utils/preview-data-fetcher';
@@ -71,7 +71,7 @@ export default function AboutUsPreview() {
           <div className="grid grid-cols-2 gap-y-12 gap-x-10 max-lg:grid-cols-1">
             <div>
               {leftImage ? (
-                <StrapiImage
+                <SimpleImage
                   image={leftImage}
                   alt={title}
                   width={leftImage.width}

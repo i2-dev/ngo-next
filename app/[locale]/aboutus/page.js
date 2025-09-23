@@ -1,5 +1,5 @@
 import { getAboutUsData } from "@/data/unified-loader";
-import StrapiImage from '@/components/StrapiImage';
+import SimpleImage from '@/components/SimpleImage';
 import ClientsSwiper from '@/components/aboutus/ClientsSwiper';
 import styles from '@/styles/AboutUs.module.css';
 import PageContainer from "@/components/blocks/PageContainer";
@@ -51,7 +51,7 @@ export default async function AboutUsPage({ params }) {
           <div className="grid grid-cols-2 gap-y-12 gap-x-10 max-lg:grid-cols-1">
               <div>                  
                 {leftImage ? (
-                <StrapiImage
+                <SimpleImage
                     image={leftImage}
                     alt={title}
                     width={leftImage.width}

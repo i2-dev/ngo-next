@@ -1,4 +1,4 @@
-import StrapiImage from '@/components/StrapiImage';
+import SimpleImage from '@/components/SimpleImage';
 import CategoryBadgeInline from '@/components/news/CategoryBadgeInline';
 import Link from 'next/link';
 import styles from "@/styles/News.module.css";
@@ -6,12 +6,12 @@ import styles from "@/styles/News.module.css";
 export default function NewsCard({ article, locale }) {
   return (
     <article className="group cursor-pointer">
-      <Link href={`/${locale}/ngo-latest-news/${article.documentId}`}>
+      <Link href={`/${locale}/ngo-latest-news/${article.documentId}`} className="focus:outline-none">
         <div className="flex flex-col md:flex-row">
           {/* Image Section - Left Side */}
           <div className="aspect-3/2 rounded-md overflow-hidden relative md:w-1/3">
             {article.image && article.image.length > 0 ? (
-              <StrapiImage
+              <SimpleImage
                 image={article.image[0]}
                 className="w-full h-full object-cover transition-[all_.3s_cubic-bezier(.2,1,.2,1)] group-hover:transform-[scale(1.05)]"
                 width={article.image[0].width}
@@ -19,8 +19,8 @@ export default function NewsCard({ article, locale }) {
                 alt={article.Title || 'News image'}
               />
             ) : (
-              <div className="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
-                <div className="text-white text-4xl">📰</div>
+              <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                <div className="text-gray-500 text-4xl">📰</div>
               </div>
             )}
           </div>

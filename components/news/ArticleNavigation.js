@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import StrapiImage from '@/components/StrapiImage';
+import SimpleImage from '@/components/SimpleImage';
+import { getTranslation } from '@/utils/translations';
 
 export default function ArticleNavigation({ previous, next, locale }) {
   return (
@@ -16,7 +17,7 @@ export default function ArticleNavigation({ previous, next, locale }) {
               {/* Previous Article Image */}
               {previous.image && previous.image.length > 0 && (
                 <div className="absolute w-full h-full overflow-hidden">
-                  <StrapiImage
+                  <SimpleImage
                     image={previous.image[0]}
                     className="w-full h-full object-cover transition duration-300 ease-in-out group-hover:transform-[scale(1.1)]"
                     width={previous.image[0].width}
@@ -29,7 +30,7 @@ export default function ArticleNavigation({ previous, next, locale }) {
               
               <div className="text-center flex justify-center items-center flex-1 min-w-0 p-10 bg-[rgba(13,13,13,.35)] relative z-1 transition duration-300 ease-in-out group-hover:bg-[rgba(13,13,13,.9)]">
                 <h3 className="text-[22px]/[1.2] font-semibold text-white line-clamp-2 inline-block mb-0 px-8 relative">                  
-                  <span className={`block ${next ? 'text-right' : ''} !text-base mb-2.5`}>上一篇</span>
+                  <span className={`block ${next ? 'text-right' : ''} !text-base mb-2.5`}>{getTranslation(locale, 'common', 'previousArticle')}</span>
                   {previous.Title}
                   <ChevronLeftIcon className="w-5 h-5 text-white absolute left-0 bottom-0.5" />
                 </h3>
@@ -53,7 +54,7 @@ export default function ArticleNavigation({ previous, next, locale }) {
               {/* Next Article Image */}
               {next.image && next.image.length > 0 && (
                 <div className="absolute w-full h-full overflow-hidden">
-                  <StrapiImage
+                  <SimpleImage
                     image={next.image[0]}
                     className="w-full h-full object-cover transition duration-300 ease-in-out group-hover:transform-[scale(1.1)]"
                     width={next.image[0].width}
@@ -65,7 +66,7 @@ export default function ArticleNavigation({ previous, next, locale }) {
 
               <div className="text-center flex justify-center items-center flex-1 min-w-0 p-10 bg-[rgba(13,13,13,.35)] relative z-1 transition duration-300 ease-in-out group-hover:bg-[rgba(13,13,13,.9)]">                
                 <h3 className="text-[22px]/[1.2] font-semibold text-white line-clamp-2 inline-block mb-0 px-8 relative">
-                  <span className={`block ${previous ? 'text-left' : ''} !text-base mb-2.5`}>下一篇</span>
+                  <span className={`block ${previous ? 'text-left' : ''} !text-base mb-2.5`}>{getTranslation(locale, 'common', 'nextArticle')}</span>
                   {next.Title}
                   <ChevronRightIcon className="w-5 h-5 text-white absolute right-0 bottom-0.5" />
                 </h3>

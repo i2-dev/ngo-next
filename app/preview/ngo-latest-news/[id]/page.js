@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams, useParams } from 'next/navigation';
-import StrapiImage from '@/components/StrapiImage';
+import SimpleImage from '@/components/SimpleImage';
 import CategoryBadge from '@/components/news/CategoryBadge';
 import ArticleNavigation from '@/components/news/ArticleNavigation';
 import { getAdjacentArticles } from '@/utils/get-adjacent-articles';
@@ -11,9 +11,9 @@ import PageContainer from '@/components/blocks/PageContainer';
 import PageSection from '@/components/blocks/PageSection';
 import { buildPreviewApiUrl } from '@/utils/get-strapi-url';
 
-async function getPreviewArticleData(documentId, status = 'draft') {
+async function getPreviewArticleData(documentId, status = 'draft', locale = 'en') {
   try {
-    const apiUrl = buildPreviewApiUrl('informations', documentId, { status, pLevel: 5 });
+    const apiUrl = buildPreviewApiUrl('informations', documentId, { status, pLevel: 5, locale });
     const response = await fetch(apiUrl, {
       cache: 'no-store', // 禁用缓存以确保获取最新预览数据
     });
@@ -57,7 +57,7 @@ export default function NewsDetailPreview() {
         setLoading(true);
         
         // 获取文章数据
-        const articleData = await getPreviewArticleData(documentId, status);
+        const articleData = await getPreviewArticleData(documentId, status, locale);
         
         if (!articleData) {
           setError('Article not found');
@@ -149,7 +149,7 @@ export default function NewsDetailPreview() {
             {/* Featured Image */}
             {article?.image && article.image.length > 0 && (
               <div className="relative h-64 md:h-96 overflow-hidden mb-8">
-                <StrapiImage
+                <SimpleImage
                   image={article.image[0]}
                   className="w-full h-full object-cover"
                   width={800}

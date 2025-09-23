@@ -1,5 +1,6 @@
 import { getStrapiURL } from '@/utils/get-strapi-url';
-import StrapiImage from '@/components/StrapiImage';
+import { normalizeLocaleForStrapi } from '@/utils/locale-normalizer';
+import SimpleImage from '@/components/SimpleImage';
 import CategoryBadge from '@/components/news/CategoryBadge';
 import ArticleNavigation from '@/components/news/ArticleNavigation';
 import { getAdjacentArticles } from '@/utils/get-adjacent-articles';
@@ -7,10 +8,14 @@ import { notFound } from 'next/navigation';
 import PageContainer from '@/components/blocks/PageContainer';
 import PageSection from '@/components/blocks/PageSection';
 import { FadeUp } from '@/components/SimpleAnimatedElement';
+import { getTranslation } from '@/utils/translations';
 
-async function getArticleData(documentId) {
+async function getArticleData(documentId, locale = 'en') {
   try {
-    const response = await fetch(`${getStrapiURL()}/api/informations/${documentId}?pLevel=5`, {
+    // Normalize locale for Strapi API
+    const normalizedLocale = normalizeLocaleForStrapi(locale);
+    
+    const response = await fetch(`${getStrapiURL()}/api/informations/${documentId}?pLevel=5&locale=${normalizedLocale}`, {
       next: { revalidate: 3600 }, // Cache for 1 hour
     });
 
@@ -34,7 +39,7 @@ export default async function NewsDetailPage({ params }) {
   const locale = resolvedParams?.locale || 'en';
   const documentId = resolvedParams?.id;
 
-  const article = await getArticleData(documentId);
+  const article = await getArticleData(documentId, locale);
 
   if (!article) {
     notFound();
@@ -63,7 +68,7 @@ export default async function NewsDetailPage({ params }) {
             <div className="flex flex-wrap justify-center text-sm">            
               {article.Publish && (
                 <div className="flex items-center">
-                  <span className="font-medium">發布日期：</span>
+                  <span className="font-medium">{getTranslation(locale, 'common', 'publishDate')}</span>
                   <span>{article.Publish}</span>
                 </div>
               )}

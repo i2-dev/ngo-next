@@ -1,4 +1,4 @@
-import StrapiImage from "@/components/StrapiImage";
+import SimpleImage from "@/components/SimpleImage";
 import { getHomepageNewsData } from "@/data/unified-loader";
 import Link from 'next/link'
 
@@ -100,7 +100,7 @@ export default async function InformationSection({ locale = 'en', styles, inform
                 </Link>                
                 {/* 新聞圖片 */}
                 {newsImage && (                    
-                  <StrapiImage 
+                  <SimpleImage 
                     image={newsImage}
                     width={newsImage.width}
                     height={newsImage.height}

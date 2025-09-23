@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import ClientOnly from "@/components/ClientOnly";
+import { DEFAULT_LOCALE, isValidLocale } from "@/utils/locales";
 
 export default function MenuClient({ menuData, locale = 'en' }) {
   const [isClient, setIsClient] = useState(false);
@@ -11,6 +12,8 @@ export default function MenuClient({ menuData, locale = 'en' }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [headerHeight, setHeaderHeight] = useState(96);
   const pathname = usePathname();
+  
+  const currentlocale = isValidLocale(locale) ? locale : DEFAULT_LOCALE;
 
   // 防止 Hydration 錯誤：客戶端檢查
   useEffect(() => {
@@ -109,8 +112,8 @@ export default function MenuClient({ menuData, locale = 'en' }) {
         <ul className="hidden lg:flex items-center">
           {menuData.data
             .sort((a, b) => (a.Order || 0) - (b.Order || 0))
-            .map((menuItem, index) => (
-            <li key={menuItem.id} className="relative group tracking-[2px]">
+            .map((menuItem, index) => ( 
+            <li key={menuItem.id} className={`relative group ${currentlocale === 'en' ? '' : 'tracking-[2px]'}`}>
               {/* 主菜单项 */}
               {menuItem.URL ? (
                 <Link

@@ -1,4 +1,4 @@
-import StrapiImage from "@/components/StrapiImage";
+import SimpleImage from "@/components/SimpleImage";
 import Image from "next/image";
 
 export default function StoryCardBlock({ block, locale }) {
@@ -44,7 +44,7 @@ export default function StoryCardBlock({ block, locale }) {
       {/* 背景圖片 */}
       {block.Image && (
         <div className="w-[calc(100%-170px)] ml-[170px] max-md:w-full max-md:ml-0 max-sm:h-[calc(80vw-90px)]">
-          <StrapiImage
+          <SimpleImage
             image={block.Image}
             alt={block.Title}
             className="w-full rounded-[30px] w-full max-md:mb-0 max-sm:h-full max-sm:object-cover max-sm:object-[90%_90%]"

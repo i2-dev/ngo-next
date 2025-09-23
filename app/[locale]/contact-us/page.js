@@ -1,6 +1,6 @@
 import { getContactUsData } from "@/data/unified-loader";
 import ActiveCampaignForm from "@/components/contactus/ActiveCampaignForm";
-import StrapiImage from "@/components/StrapiImage";
+import SimpleImage from "@/components/SimpleImage";
 import PageContainer from "@/components/blocks/PageContainer";
 import PageSection from "@/components/blocks/PageSection";
 import GoogleMap from "@/components/contactus/GoogleMap";
@@ -64,7 +64,7 @@ export default async function ContactUsPage({ params }) {
             {/* 底部圖片 */}
             {contactPageData?.data?.Image && (
               <div className="mt-auto">
-                <StrapiImage 
+                <SimpleImage 
                   image={contactPageData.data.Image}
                   className="max-w-full h-auto lg:w-[76%]"
                   alt="聯絡我們插圖"

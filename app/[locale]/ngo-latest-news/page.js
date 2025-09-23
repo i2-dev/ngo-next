@@ -1,13 +1,18 @@
 import { getStrapiURL } from '@/utils/get-strapi-url';
+import { normalizeLocaleForStrapi } from '@/utils/locale-normalizer';
 import NewsCard from '@/components/news/NewsCard';
 import Link from 'next/link';
 import PageContainer from '@/components/blocks/PageContainer';
 import PageSection from '@/components/blocks/PageSection';
+import { getTranslation } from '@/utils/translations';
 
-async function getInformationData(page = 1, sortBy = 'Publish:desc') {
+async function getInformationData(page = 1, sortBy = 'Publish:desc', locale = 'en') {
   try {
+    // Normalize locale for Strapi API
+    const normalizedLocale = normalizeLocaleForStrapi(locale);
+    
     const response = await fetch(
-      `${getStrapiURL()}/api/informations?pLevel=3&pagination[page]=${page}&pagination[pageSize]=10&sort=${sortBy}`,
+      `${getStrapiURL()}/api/informations?pLevel=3&pagination[page]=${page}&pagination[pageSize]=10&sort=${sortBy}&locale=${normalizedLocale}`,
       {
         next: { revalidate: 3600 }, // Cache for 1 hour
       }
@@ -36,7 +41,7 @@ export default async function NGOLatestNewsPage({ params, searchParams }) {
   const page = parseInt(searchParams?.page) || 1;
   const sortBy = 'Publish:desc'; // Fixed sorting by latest publish date
 
-  const { data: newsData, pagination } = await getInformationData(page, sortBy);
+  const { data: newsData, pagination } = await getInformationData(page, sortBy, locale);
 
   return (
     <PageContainer className={'!mt-20'}>
@@ -66,7 +71,7 @@ export default async function NGOLatestNewsPage({ params, searchParams }) {
                 href={`/${locale}/ngo-latest-news?page=${pagination.page - 1}`}
                 className="px-3.5 py-2 text-sm font-bold hover:text-black"
               >
-                上一頁
+                {getTranslation(locale, 'common', 'previousPage')}
               </Link>
             )}
 
@@ -93,7 +98,7 @@ export default async function NGOLatestNewsPage({ params, searchParams }) {
                 href={`/${locale}/ngo-latest-news?page=${pagination.page + 1}`}
                 className="px-3.5 py-2 text-sm font-bold hover:text-black"
               >
-                下一頁
+                {getTranslation(locale, 'common', 'nextPage')}
               </Link>
             )}
           </div>

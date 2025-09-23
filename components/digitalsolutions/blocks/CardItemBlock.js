@@ -1,6 +1,6 @@
 'use client';
 
-import StrapiImage from "@/components/StrapiImage";
+import SimpleImage from "@/components/SimpleImage";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { useState, useRef } from 'react';
@@ -70,7 +70,7 @@ export default function CardItemBlock({ block, locale }) {
                   >
                     {block.Cover.map((image, index) => (
                       <SwiperSlide key={index}>
-                        <StrapiImage
+                        <SimpleImage
                           image={image}
                           alt={`${block.Title} ${index + 1}`}
                           className="w-full h-auto object-cover"
@@ -137,7 +137,7 @@ export default function CardItemBlock({ block, locale }) {
                   `}</style>
                 </>
               ) : (
-                <StrapiImage
+                <SimpleImage
                   image={block.Cover[0]}
                   width={block.Cover[0].width}
                   height={block.Cover[0].height}

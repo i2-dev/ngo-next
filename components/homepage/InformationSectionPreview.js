@@ -1,6 +1,6 @@
 'use client';
 
-import StrapiImage from "@/components/StrapiImage";
+import SimpleImage from "@/components/SimpleImage";
 import Link from 'next/link'
 
 export default function InformationSectionPreview({ locale = 'en', styles, informationData, newsData }) {
@@ -94,7 +94,7 @@ export default function InformationSectionPreview({ locale = 'en', styles, infor
                 </Link>
                 {/* 新聞圖片 */}
                 {newsImage && (
-                  <StrapiImage
+                  <SimpleImage
                     image={newsImage}
                     width={newsImage.width}
                     height={newsImage.height}

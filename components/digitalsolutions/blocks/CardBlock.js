@@ -1,4 +1,4 @@
-import StrapiImage from "@/components/StrapiImage";
+import SimpleImage from "@/components/SimpleImage";
 
 export default function CardBlock({ block, locale, className = '' }) {
 
@@ -21,7 +21,7 @@ export default function CardBlock({ block, locale, className = '' }) {
           className='group bg-white flex flex-col items-center p-[40px_35px] rounded-[20px] sm:flex-row'
         >
           {item.Cover && item.Cover.length > 0 && (
-            <StrapiImage
+            <SimpleImage
               image={item.Cover[0]}
               alt={item.Title}
               width={item.Cover[0].width}
@@ -49,7 +49,7 @@ export default function CardBlock({ block, locale, className = '' }) {
           className="group flex flex-col"
         >
           {item.Cover && item.Cover.length > 0 && (
-            <StrapiImage
+            <SimpleImage
               image={item.Cover[0]}
               width={item.Cover[0].width}
               height={item.Cover[0].height}
@@ -78,7 +78,7 @@ export default function CardBlock({ block, locale, className = '' }) {
           className="basis-56 text-center lg:basis-64"
         >          
           {item.Cover && item.Cover.length > 0 && (              
-            <StrapiImage
+            <SimpleImage
               image={item.Cover[0]}
               width={item.Cover[0].width}
               height={item.Cover[0].height}
@@ -103,7 +103,7 @@ export default function CardBlock({ block, locale, className = '' }) {
     <div className="grid grid-cols-2 gap-[30px_40px] max-md:grid-cols-1">
       <div className="flex justify-center items-center">
         {images.length > 0 && (
-          <StrapiImage
+          <SimpleImage
               image={images[0]}              
               width={images[0].width}
               height={images[0].height}
@@ -119,7 +119,7 @@ export default function CardBlock({ block, locale, className = '' }) {
             className='group bg-white flex flex-col items-center p-[40px_35px] rounded-[20px] sm:flex-row'
           >
             {item.Cover && item.Cover.length > 0 && (
-              <StrapiImage
+              <SimpleImage
                 image={item.Cover[0]}
                 alt={item.Title}
                 width={item.Cover[0].width}
@@ -148,7 +148,7 @@ export default function CardBlock({ block, locale, className = '' }) {
           className='group flex items-start lg:pr-12.5'
         >
           {item.Cover && item.Cover.length > 0 && (
-            <StrapiImage
+            <SimpleImage
               image={item.Cover[0]}
               alt={item.Title}
               width={item.Cover[0].width}

@@ -1,4 +1,4 @@
-import StrapiImage from "@/components/StrapiImage";
+import SimpleImage from "@/components/SimpleImage";
 import SharedButton from "@/components/blocks/Button";
 
 export default function PromotionCardBlock({ block, locale }) {
@@ -15,7 +15,7 @@ export default function PromotionCardBlock({ block, locale }) {
         
         {/* 頂部圖片區域 */}
         {block.Cover && (
-          <StrapiImage
+          <SimpleImage
             image={block.Cover}
             alt={block.Cover.alternativeText || "Delivery promotion image"}
             className="absolute left-1/2 top-0 -translate-1/2"
@@ -74,7 +74,7 @@ export default function PromotionCardBlock({ block, locale }) {
     <div className='flex max-lg:flex-col'>
       {/* 左側圖片區域 */}        
       {block.Cover && (            
-        <StrapiImage
+        <SimpleImage
           image={block.Cover}
           width={block.Cover.width}
           height={block.Cover.height}

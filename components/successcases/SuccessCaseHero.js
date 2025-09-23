@@ -1,4 +1,4 @@
-import StrapiImage from "@/components/StrapiImage";
+import SimpleImage from "@/components/SimpleImage";
 import styles from "@/styles/SuccessCases.module.css";
 import SharedButton from "../blocks/Button";
 import { getTranslation } from "@/utils/translations";
@@ -32,7 +32,7 @@ export default function SuccessCaseHero({ successCase, locale, bgcolor ="white",
         {successCase.background && (
           <>
             <div className="overflow-hidden flex flex-col absolute inset-0 z-0">              
-              <StrapiImage
+              <SimpleImage
                 image={successCase.background}
                 width={successCase.background.width}
                 height={successCase.background.height}
@@ -47,7 +47,7 @@ export default function SuccessCaseHero({ successCase, locale, bgcolor ="white",
         {/* 內容區域 */}        
         {/* 圖標 */}
         {successCase.icon && (              
-          <StrapiImage
+          <SimpleImage
             image={successCase.icon}
             width={successCase.icon.width}
             height={successCase.icon.height}

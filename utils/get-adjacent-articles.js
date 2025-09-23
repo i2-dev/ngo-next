@@ -1,10 +1,14 @@
 import { getStrapiURL } from '@/utils/get-strapi-url';
+import { normalizeLocaleForStrapi } from '@/utils/locale-normalizer';
 
 export async function getAdjacentArticles(currentDocumentId, locale = 'en') {
   try {
+    // Normalize locale for Strapi API
+    const normalizedLocale = normalizeLocaleForStrapi(locale);
+    
     // 获取所有文章，按发布时间排序
     const response = await fetch(
-      `${getStrapiURL()}/api/informations?pLevel=3&pagination[pageSize]=1000&sort=Publish:desc&locale=${locale}`,
+      `${getStrapiURL()}/api/informations?pLevel=3&pagination[pageSize]=1000&sort=Publish:desc&locale=${normalizedLocale}`,
       {
         next: { revalidate: 3600 }, // Cache for 1 hour
       }

@@ -1,4 +1,4 @@
-import StrapiImage from "@/components/StrapiImage";
+import SimpleImage from "@/components/SimpleImage";
 import SharedButton from "@/components/blocks/Button";
 
 export default function DigitalSolutionHero({ plan, locale, bgcolor, bgGradient,  variant = "cover" }) {
@@ -25,7 +25,7 @@ export default function DigitalSolutionHero({ plan, locale, bgcolor, bgGradient,
             {plan.icon && (
               <div className="mb-6 flex justify-center">
                 <div className="w-20 h-20 bg-white bg-opacity-20 rounded-xl backdrop-blur-sm flex items-center justify-center">
-                  <StrapiImage
+                  <SimpleImage
                     image={plan.icon}
                     alt={plan.title}
                     className="w-12 h-12 object-contain"
@@ -44,7 +44,7 @@ export default function DigitalSolutionHero({ plan, locale, bgcolor, bgGradient,
 
           {/* 背景圖片 */}
           {plan.image && (            
-            <StrapiImage
+            <SimpleImage
               image={plan.image}
               width={plan.image.width}
               height={plan.image.height}
@@ -70,7 +70,7 @@ export default function DigitalSolutionHero({ plan, locale, bgcolor, bgGradient,
       >        
         {/* 圖標 */}
         {plan.icon && (            
-          <StrapiImage
+          <SimpleImage
             image={plan.icon}
             alt={plan.title}
             width={plan.icon.width}
@@ -101,7 +101,7 @@ export default function DigitalSolutionHero({ plan, locale, bgcolor, bgGradient,
         {/* 封面背景圖片 */}
         {plan.image && (
           <div className="">
-            <StrapiImage
+            <SimpleImage
               image={plan.image}
               alt={plan.title}
               className="w-full h-full object-cover"

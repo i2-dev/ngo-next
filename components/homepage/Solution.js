@@ -1,4 +1,4 @@
-import StrapiImage from "@/components/StrapiImage";
+import SimpleImage from "@/components/SimpleImage";
 import Image from "next/image";
 
 export default function Solution({ locale = 'en', styles, solutionData }) {
@@ -39,7 +39,7 @@ export default function Solution({ locale = 'en', styles, solutionData }) {
               <a className="overflow-hidden -indent-9999 absolute inset-0 z-10" target="_self" href={solution.link || '#'} role="link">全面ngo數碼方案</a>
               {/* 圖標 */}
               {solution.icon && (
-                <StrapiImage
+                <SimpleImage
                   image={solution.icon}
                   width={74}
                   height={74}

@@ -1,4 +1,4 @@
-import StrapiImage from "@/components/StrapiImage";
+import SimpleImage from "@/components/SimpleImage";
 import CtaButton from "@/components/CtaButton";
 import SharedButton from "@/components/blocks/Button";
 
@@ -33,7 +33,7 @@ export default function WelfareCardBlock({ block, locale }) {
         {block.icon ? (
           <div className='flex flex-col mb-12 sm:flex-row sm:items-start'>
             {/* 圖標 */}
-            <StrapiImage
+            <SimpleImage
               image={block.icon}
               alt="DeepSeek AI"
               width={block.icon.width}

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import StrapiImage from '@/components/StrapiImage';
+import SimpleImage from '@/components/SimpleImage';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -101,7 +101,7 @@ const ClientsSwiper = ({
               {/* 客戶Logo或名稱 */}
               <div className="text-center">
                 {client.Image ? (                  
-                  <StrapiImage
+                  <SimpleImage
                     image={client.Image}
                     alt={client.name || 'Client logo'}
                     width={client.Image.width}

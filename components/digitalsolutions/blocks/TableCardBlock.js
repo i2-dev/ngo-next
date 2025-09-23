@@ -1,4 +1,4 @@
-import StrapiImage from "@/components/StrapiImage";
+import SimpleImage from "@/components/SimpleImage";
 import CtaButton from "@/components/CtaButton";
 
 export default function TableCardBlock({ block, locale }) {

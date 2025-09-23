@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import StrapiImage from '@/components/StrapiImage';
+import SimpleImage from '@/components/SimpleImage';
 import { getStrapiMedia } from '@/utils/get-strapi-media';
 import { useStaggeredAnimation } from '@/hooks/useInViewAnimation';
 import { FadeDown, FadeUp, FadeLeft, FadeRight, ZoomIn } from '@/components/SimpleAnimatedElement';
@@ -49,7 +49,7 @@ const ClientLogoSection = ({
           >
             {/* 獲獎圖片 */}
             {award.Image ? (
-              <StrapiImage
+              <SimpleImage
                         image={award.Image}
                         alt={award.name || 'Award Logo'}
                         width={award.Image.width}

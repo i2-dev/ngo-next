@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import StrapiImage from "@/components/StrapiImage";
+import SimpleImage from "@/components/SimpleImage";
 
 // 導入 Swiper 樣式
 import 'swiper/css';
@@ -80,7 +80,7 @@ export default function SwiperCardBlock({ block, locale }) {
                 <SwiperSlide
                   key={image.id || index}                  
                   >                  
-                  <StrapiImage
+                  <SimpleImage
                     image={image}
                     width={image.width}
                     height={image.height}
@@ -98,7 +98,7 @@ export default function SwiperCardBlock({ block, locale }) {
             </Swiper>
           ) : (
             // 單張圖片時不使用 Swiper，直接顯示                        
-            <StrapiImage
+            <SimpleImage
               image={images[0]}              
               width={images[0].width}
               height={images[0].height}

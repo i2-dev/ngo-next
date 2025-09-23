@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import StrapiImage from '@/components/StrapiImage';
+import SimpleImage from '@/components/SimpleImage';
 import { getTranslation } from '@/utils/translations';
 
 // 从菜单数据中获取成功案例的链接
@@ -120,7 +120,7 @@ export default function MoreSuccessCases({
             <article key={successCase.id} className="relative [&:first-child>h3]:bg-[#d0f3db] [&:first-child>h3]:text-[#083f19] [&:last-child>h3]:bg-[#c7efef] [&:last-child>h3]:text-[#094b4b]">              
               {/* 图片区域 */}                
               {successCase.background ? (
-                <StrapiImage
+                <SimpleImage
                   image={successCase.background}
                   alt={successCase.title || successCaseAlt}
                   width={successCase.background.width}

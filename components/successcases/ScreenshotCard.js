@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, EffectCoverflow } from 'swiper/modules';
-import StrapiImage from "@/components/StrapiImage";
+import SimpleImage from "@/components/SimpleImage";
 import { PlayIcon, PauseIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 
 // 導入 Swiper 樣式
@@ -95,7 +95,7 @@ export default function ScreenshotCard({ screenshots }) {
               <div className="bg-white overflow-hidden shadow-[0_2px_7px_rgba(0,0,0,0.1)]">
                 {imageData ? (
                   <div className="relative">
-                    <StrapiImage
+                    <SimpleImage
                       image={imageData}
                       width={imageData.width}
                       height={imageData.height}                      

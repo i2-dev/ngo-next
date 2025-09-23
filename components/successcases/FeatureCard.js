@@ -1,4 +1,4 @@
-import StrapiImage from "@/components/StrapiImage";
+import SimpleImage from "@/components/SimpleImage";
 
 // 功能卡片組件 - 上下結構佈局
 export default function FeatureCard({ card, index }) {
@@ -6,7 +6,7 @@ export default function FeatureCard({ card, index }) {
     <div className="bg-white rounded-[20px] p-12 shadow-[0_2px_7px_rgba(0,0,0,0.1)] [&:first-child>h3]:text-[#ba5c1f] [&:nth-child(2)>h3]:text-[#428156] [&:nth-child(3)>h3]:text-[#555bba] [&:nth-child(4)>h3]:text-[#837634] [&:nth-child(5)>h3]:text-[#1e809c] [&:nth-child(6)>h3]:text-[#c54380]">
       {/* 圖標區域 - 置頂 */}      
       {card.icon ? (        
-        <StrapiImage
+        <SimpleImage
           image={card.icon}
           width={card.icon.width}
           height={card.icon.height}

@@ -1,13 +1,17 @@
 import { getStrapiURL } from '@/utils/get-strapi-url';
+import { normalizeLocaleForStrapi } from '@/utils/locale-normalizer';
 import NewsCard from '@/components/news/NewsCard';
 import Link from 'next/link';
 import PageContainer from '@/components/blocks/PageContainer';
 import PageSection from '@/components/blocks/PageSection';
 
-async function getCategoryData(categoryId, page = 1, sortBy = 'Publish:desc') {
+async function getCategoryData(categoryId, page = 1, sortBy = 'Publish:desc', locale = 'en') {
   try {
+    // Normalize locale for Strapi API
+    const normalizedLocale = normalizeLocaleForStrapi(locale);
+    
     const response = await fetch(
-      `${getStrapiURL()}/api/informations?pLevel=3&pagination[page]=${page}&pagination[pageSize]=10&sort=${sortBy}&filters[information_category][documentId][$eq]=${categoryId}`,
+      `${getStrapiURL()}/api/informations?pLevel=3&pagination[page]=${page}&pagination[pageSize]=10&sort=${sortBy}&filters[information_category][documentId][$eq]=${categoryId}&locale=${normalizedLocale}`,
       {
         next: { revalidate: 3600 }, // Cache for 1 hour
       }
@@ -28,10 +32,13 @@ async function getCategoryData(categoryId, page = 1, sortBy = 'Publish:desc') {
   }
 }
 
-async function getCategoryInfo(categoryId) {
+async function getCategoryInfo(categoryId, locale = 'en') {
   try {
+    // Normalize locale for Strapi API
+    const normalizedLocale = normalizeLocaleForStrapi(locale);
+    
     const response = await fetch(
-      `${getStrapiURL()}/api/information-categories?filters[documentId][$eq]=${categoryId}`,
+      `${getStrapiURL()}/api/information-categories?filters[documentId][$eq]=${categoryId}&locale=${normalizedLocale}`,
       {
         next: { revalidate: 3600 },
       }
@@ -58,8 +65,8 @@ export default async function CategoryNewsPage({ params, searchParams }) {
   const page = parseInt(searchParams?.page) || 1;
   const sortBy = 'Publish:desc'; // Fixed sorting by latest publish date
 
-  const { data: newsData, pagination } = await getCategoryData(categoryId, page, sortBy);
-  const categoryInfo = await getCategoryInfo(categoryId);
+  const { data: newsData, pagination } = await getCategoryData(categoryId, page, sortBy, locale);
+  const categoryInfo = await getCategoryInfo(categoryId, locale);
 
   if (!categoryInfo) {
     return (

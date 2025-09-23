@@ -1,6 +1,6 @@
 
 
-import StrapiImage from '@/components/StrapiImage';
+import SimpleImage from '@/components/SimpleImage';
 import Link from 'next/link';
 import CtaButton from '../CtaButton';
 import SharedButton from './Button';
@@ -11,7 +11,7 @@ export default function Card({ Title, Content, icon, Button }) {
     <div className=" rounded-[30px] bg-linear-[to_bottom,#fff_25%,#c5ead0_100%] shadow-[0_10px_50px_rgba(0,0,0,0.1)] p-[80px_40px_50px] text-center relative">        
       {/* Icon */}
       {icon && (            
-        <StrapiImage
+        <SimpleImage
           image={icon}
           alt={icon.alternativeText || "Card Icon"}
           className="absolute left-1/2 top-0 -translate-1/2"

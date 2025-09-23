@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import StrapiImage from '@/components/StrapiImage';
+import SimpleImage from '@/components/SimpleImage';
 
 const AwardsSwiper = ({ 
   awardsData,  
@@ -87,7 +87,7 @@ const AwardsSwiper = ({
                 {/* 獲獎圖片 */}
                 {award.Image && (
                   <div>                      
-                      <StrapiImage
+                      <SimpleImage
                         image={Array.isArray(award.Image) ? award.Image[0] : award.Image}
                         alt={award.name || 'Award'}
                         width={award.Image.width}

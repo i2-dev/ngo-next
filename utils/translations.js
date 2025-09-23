@@ -41,6 +41,15 @@ export const translations = {
       // 載入狀態
       loading: "Loading...",
       
+      // 分頁相關
+      previousPage: "Previous",
+      nextPage: "Next",
+      publishDate: "Publish Date:",
+      
+      // 文章導航相關
+      previousArticle: "Previous Article",
+      nextArticle: "Next Article",
+      
       // 聯絡信息
       enquiryPhone: "Enquiry Phone",
       address: "Address",
@@ -108,6 +117,15 @@ export const translations = {
       
       // 載入狀態
       loading: "載入中...",
+      
+      // 分頁相關
+      previousPage: "上一頁",
+      nextPage: "下一頁",
+      publishDate: "發布日期：",
+      
+      // 文章導航相關
+      previousArticle: "上一篇",
+      nextArticle: "下一篇",
       
       // 聯絡信息
       enquiryPhone: "查詢電話",

@@ -4,6 +4,7 @@ import SuccessCaseHero from "@/components/successcases/SuccessCaseHero";
 import SuccessCaseBlockRenderer from "@/components/successcases/SuccessCaseBlockRenderer";
 import { notFound } from 'next/navigation';
 import PageSection from "@/components/blocks/PageSection";
+import { getTranslation } from "@/utils/translations";
 
 export default async function E123ElderlyPortalPage({ params }) {
   const resolvedParams = await params;
@@ -47,18 +48,21 @@ export async function generateMetadata({ params }) {
   const successCase = successCases?.find(successCase => successCase.order === 1);
   
   if (!successCase) {
+    const fallbackTitle = getTranslation(locale, 'common', 'successCase', 'Success Case');
     return {
-      title: 'e123 長青網 | NGO App',
-      description: 'e123 長青網成功案例'
+      title: 'e123 Elderly Portal | NGO App',
+      description: `e123 Elderly Portal ${fallbackTitle}`
     };
   }
 
+  const successCaseText = getTranslation(locale, 'common', 'successCase', 'Success Case');
+  
   return {
     title: `${successCase.title} | NGO App`,
-    description: successCase.content ? successCase.content.substring(0, 160) : `${successCase.title}成功案例`,
+    description: successCase.content ? successCase.content.substring(0, 160) : `${successCase.title} ${successCaseText}`,
     openGraph: {
       title: `${successCase.title} | NGO App`,
-      description: successCase.content ? successCase.content.substring(0, 160) : `${successCase.title}成功案例`,
+      description: successCase.content ? successCase.content.substring(0, 160) : `${successCase.title} ${successCaseText}`,
       type: 'website',
       images: successCase.background ? [successCase.background.url] : [],
     },

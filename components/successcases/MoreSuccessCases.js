@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import StrapiImage from '@/components/StrapiImage';
+import { getTranslation } from '@/utils/translations';
 
 // 从菜单数据中获取成功案例的链接
 function getSuccessCaseLink(successCase, menuData, locale) {
@@ -79,10 +80,15 @@ function cleanAndTruncateText(htmlText, maxLength = 120) {
 export default function MoreSuccessCases({ 
   allSuccessCases = [], 
   currentCaseOrder, 
-  locale = 'zh',
+  locale = 'en',
   menuData = null,
   maxDisplay = 2 
 }) {
+  // 使用統一翻譯系統
+  const moreSuccessCasesTitle = getTranslation(locale, 'common', 'moreSuccessCases', 'More Success Cases');
+  const moreSuccessCasesDescription = getTranslation(locale, 'common', 'moreSuccessCasesDescription', 'See if other success cases meet your project needs');
+  const successCaseAlt = getTranslation(locale, 'common', 'successCase', 'Success Case');
+  
   // 过滤掉当前案例，获取其他案例
   const otherCases = allSuccessCases.filter(
     successCase => successCase.order !== currentCaseOrder
@@ -100,9 +106,9 @@ export default function MoreSuccessCases({
       {/* 标题 */}
       <div className="text-center mb-12">
         <h2 className="text-[42px]/[calc(100%+10px)] font-medium mb-5 max-lg:text-4xl max-md:text-3xl">
-          更多成功案例
+          {moreSuccessCasesTitle}
         </h2>
-        <p>看看其他成功案例是否接近您的企劃需要</p>
+        <p>{moreSuccessCasesDescription}</p>
       </div>
 
       {/* 案例网格 */}
@@ -116,7 +122,7 @@ export default function MoreSuccessCases({
               {successCase.background ? (
                 <StrapiImage
                   image={successCase.background}
-                  alt={successCase.title || '成功案例'}
+                  alt={successCase.title || successCaseAlt}
                   width={successCase.background.width}
                   height={successCase.background.height}
                   className="w-[90%] ml-[6%] mr-[4%]"
@@ -125,7 +131,7 @@ export default function MoreSuccessCases({
                 <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
                   <div className="text-white text-center">
                     <div className="text-3xl mb-2">💼</div>
-                    <div className="text-sm font-medium">成功案例</div>
+                    <div className="text-sm font-medium">{successCaseAlt}</div>
                   </div>
                 </div>
               )}                

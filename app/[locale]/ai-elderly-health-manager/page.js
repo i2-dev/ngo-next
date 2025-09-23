@@ -6,6 +6,7 @@ import Card from "@/components/blocks/Card";
 import styles from "@/styles/DigitalSolutions.module.css";
 import { notFound } from 'next/navigation';
 import PageSection from "@/components/blocks/PageSection";
+import { getTranslation } from "@/utils/translations";
 
 export default async function AIElderlyHealthManagerPage({ params }) {
   const resolvedParams = await params;
@@ -49,13 +50,13 @@ export async function generateMetadata({ params }) {
     const plan = plans?.find(plan => plan.order === 6);
 
     return {
-      title: plan ? `${plan.title} - I2NGO` : '「 智康健」AI 長者健康管家 - I2NGO',
-      description: plan?.content || '「 智康健」AI 長者健康管家',
+      title: plan ? `${plan.title} - I2NGO` : 'AI Elderly Health Manager - I2NGO',
+      description: plan?.content || 'AI Elderly Health Manager',
     };
   } catch (error) {
     return {
-      title: '「 智康健」AI 長者健康管家',
-      description: '「 智康健」AI 長者健康管家'
+      title: 'AI Elderly Health Manager',
+      description: 'AI Elderly Health Manager'
     };
   }
 }

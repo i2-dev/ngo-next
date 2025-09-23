@@ -1,6 +1,7 @@
 import StrapiImage from "@/components/StrapiImage";
 import styles from "@/styles/SuccessCases.module.css";
 import SharedButton from "../blocks/Button";
+import { getTranslation } from "@/utils/translations";
 
 export default function SuccessCaseHero({ successCase, locale, bgcolor ="white", variant = "cover" }) {
   if (!successCase) {
@@ -12,20 +13,13 @@ export default function SuccessCaseHero({ successCase, locale, bgcolor ="white",
   // Force use the passed bgcolor prop, ignore successCase.bgcolor completely
   const finalBgcolor = bgcolor;
 
-  // Debug logging to identify the bgcolor issue
-  console.log('=== SuccessCaseHero Debug ===');
-  console.log('bgcolor prop:', bgcolor);
-  console.log('bgcolor prop type:', typeof bgcolor);
-  console.log('successCase.bgcolor:', successCase.bgcolor);
-  console.log('finalBgcolor:', finalBgcolor);
-  console.log('successCase.title:', successCase.title);
-  console.log('successCase.documentId:', successCase.documentId);
-  console.log('==============================');
+  // 使用統一翻譯系統
+  const successCasesTitle = getTranslation(locale, 'common', 'successCases', 'Success Cases');
 
   return (
     <>
       <div className="text-center mb-12">                    
-          <h1 className='text-[42px] font-medium max-lg:text-5xl max-md:text-4xl'>成功案例</h1>
+          <h1 className='text-[42px] font-medium max-lg:text-5xl max-md:text-4xl'>{successCasesTitle}</h1>
       </div>
 
       {/* <div className="bg-[#e5f8fe] bg-[url(/images/success-stories/case_01_bg_image.jpg)] bg-bottom bg-no-repeat bg-size-[130%] mt-30 relative xl:bg-cover"> */}

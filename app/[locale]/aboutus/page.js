@@ -4,6 +4,7 @@ import ClientsSwiper from '@/components/aboutus/ClientsSwiper';
 import styles from '@/styles/AboutUs.module.css';
 import PageContainer from "@/components/blocks/PageContainer";
 import PageSection from "@/components/blocks/PageSection";
+import { getTranslation } from "@/utils/translations";
 
 export default async function AboutUsPage({ params }) {
   // Fix Next.js 15 params async requirement
@@ -19,7 +20,7 @@ export default async function AboutUsPage({ params }) {
   
   // 從API數據中提取具體內容
   const data = aboutPageData?.data || {};
-  const title = data.Title || '關於我們';
+  const title = data.Title || getTranslation(locale, 'pages', 'aboutUs', 'title');
   const Content = data.Content || '';
   const leftImage = data.LeftImage && data.LeftImage.length > 0 ? data.LeftImage[0] : null;
   const ourClients = data.OurClients && data.OurClients.length > 0 ? data.OurClients[0] : null;
@@ -81,7 +82,7 @@ export default async function AboutUsPage({ params }) {
       {isPlaceholder && (
         <div className={`fixed bottom-4 right-4 bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-2 rounded-lg shadow-lg ${styles.placeholderNotice}`}>
           <p className="text-sm">
-            ⚠️ 使用后备数据 - API 暂时不可用
+            {getTranslation(locale, 'common', 'placeholderNotice')}
           </p>
         </div>
       )}    
@@ -89,8 +90,8 @@ export default async function AboutUsPage({ params }) {
   );
 }
 
-// SEO metadata
+// SEO metadata - 需要動態生成，這裡提供默認值
 export const metadata = {
-  title: '關於我們 | NGO 數碼化解決方案',
-  description: '我們致力於為 NGO 組織提供最優質的數碼化解決方案，協助非營利組織更有效地服務社會。',
+  title: 'About Us | NGO Digital Solutions',
+  description: 'We are committed to providing the highest quality digital solutions for NGO organizations, helping non-profit organizations serve society more effectively.',
 };

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { SUPPORTED_LOCALES, getLocaleName } from '@/utils/locales';
+import { getTranslation } from '@/utils/translations';
 
 export default function LanguageSwitcher({ currentLocale = 'en' }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,16 @@ export default function LanguageSwitcher({ currentLocale = 'en' }) {
 
   // 支援的語言：英文和繁體中文(香港)
   const availableLocales = SUPPORTED_LOCALES;
+  
+  // 使用統一翻譯系統獲取語言名稱
+  const getLocalizedLocaleName = (locale) => {
+    if (locale === 'en') {
+      return getTranslation(currentLocale, 'common', 'english', 'English');
+    } else if (locale === 'zh-hant') {
+      return getTranslation(currentLocale, 'common', 'traditionalChinese', '繁體');
+    }
+    return getLocaleName(locale);
+  };
 
   // 關閉下拉選單當點擊外部
   useEffect(() => {
@@ -69,7 +80,7 @@ export default function LanguageSwitcher({ currentLocale = 'en' }) {
         
         {/* 當前語言 */}
         <span className="hidden md:inline">
-          {getLocaleName(currentLocale)}
+          {getLocalizedLocaleName(currentLocale)}
         </span>
         <span className="md:hidden text-xs">
           {currentLocale === 'en' ? 'EN' : '繁'}
@@ -111,7 +122,7 @@ export default function LanguageSwitcher({ currentLocale = 'en' }) {
                 <div className="flex items-center space-x-3">
                   {/* 語言標誌 */}
                   <span className="flex-1">
-                    {locale === 'en' ? 'English' : '繁體'}
+                    {getLocalizedLocaleName(locale)}
                   </span>
                   {locale === currentLocale && (
                     <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">

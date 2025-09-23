@@ -1,5 +1,6 @@
 import { getMenuData } from '@/data/unified-loader';
 import SitemapLink from '@/components/SitemapLink';
+import { getTranslation } from '@/utils/translations';
 
 export default async function SitemapPage({ params }) {
   // Fix Next.js 15 params async requirement
@@ -8,6 +9,10 @@ export default async function SitemapPage({ params }) {
   
   // 獲取菜單數據
   const menuData = await getMenuData(locale);
+  
+  // 使用統一翻譯系統
+  const sitemapTitle = getTranslation(locale, 'common', 'sitemap', 'Site Map');
+  const loadingText = getTranslation(locale, 'common', 'loading', 'Loading...');
   
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-pink-50">
@@ -23,7 +28,7 @@ export default async function SitemapPage({ params }) {
         {/* 標題 */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-800 mb-4">
-            {locale === 'zh-hant' ? '網頁指南' : 'Site Map'}
+            {sitemapTitle}
           </h1>
         </div>
         
@@ -38,10 +43,12 @@ export default async function SitemapPage({ params }) {
 
 // 網站地圖內容組件
 function SitemapContent({ menuData, locale }) {
+  const loadingText = getTranslation(locale, 'common', 'loading', 'Loading...');
+  
   if (!menuData || !menuData.data) {
     return (
       <div className="text-center text-gray-500">
-        {locale === 'zh-hant' ? '載入中...' : 'Loading...'}
+        {loadingText}
       </div>
     );
   }

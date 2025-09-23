@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import Script from 'next/script';
+import { getTranslation } from '@/utils/translations';
 
-export default function ActiveCampaignForm() {
+export default function ActiveCampaignForm({ locale = 'en' }) {
   const [formData, setFormData] = useState({
     fullname: '',
     email: '',
@@ -21,14 +22,17 @@ export default function ActiveCampaignForm() {
   const [recaptchaError, setRecaptchaError] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
-  // 服務選項 - 從原始表單提取
+  // 使用統一翻譯系統
+  const t = (key, fallback = '') => getTranslation(locale, 'common', key, fallback);
+  
+  // 服務選項 - 使用翻譯
   const serviceOptions = [
-    '個案管理平台',
-    'AI 工作流程轉型方案',
-    'AI 熱線系統',
-    '機構網上學習(學院)系統',
-    'NGO 線上服務方案',
-    '其他'
+    t('caseManagementPlatform', 'Case Management Platform'),
+    t('aiWorkflowTransformation', 'AI Workflow Transformation Solution'),
+    t('aiHotlineSystem', 'AI Hotline System'),
+    t('onlineLearningSystem', 'Organization Online Learning (Academy) System'),
+    t('ngoOnlineService', 'NGO Online Service Solution'),
+    t('other', 'Other')
   ];
 
   // 設置客戶端標記
@@ -209,7 +213,7 @@ export default function ActiveCampaignForm() {
     switch (fieldName) {
       case 'fullname':
         if (!value.trim()) {
-          newErrors.fullname = '此字段為必填項目';
+          newErrors.fullname = t('requiredField', 'This field is required');
         } else {
           delete newErrors.fullname;
         }
@@ -217,9 +221,9 @@ export default function ActiveCampaignForm() {
         
       case 'email':
         if (!value.trim()) {
-          newErrors.email = '此字段為必填項目';
+          newErrors.email = t('requiredField', 'This field is required');
         } else if (!/^[\+_a-z0-9-'&=]+(\.[\+_a-z0-9-']+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i.test(value)) {
-          newErrors.email = '請輸入有效的電子郵件地址';
+          newErrors.email = t('invalidEmail', 'Please enter a valid email address');
         } else {
           delete newErrors.email;
         }
@@ -227,7 +231,7 @@ export default function ActiveCampaignForm() {
         
       case 'organization':
         if (!value.trim()) {
-          newErrors.organization = '此字段為必填項目';
+          newErrors.organization = t('requiredField', 'This field is required');
         } else {
           delete newErrors.organization;
         }
@@ -264,29 +268,29 @@ export default function ActiveCampaignForm() {
     
     // 姓名驗證
     if (!formData.fullname.trim()) {
-      newErrors.fullname = '此字段為必填項目';
+      newErrors.fullname = t('requiredField', 'This field is required');
     }
     
     // 電郵驗證
     if (!formData.email.trim()) {
-      newErrors.email = '此字段為必填項目';
+      newErrors.email = t('requiredField', 'This field is required');
     } else if (!/^[\+_a-z0-9-'&=]+(\.[\+_a-z0-9-']+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i.test(formData.email)) {
-      newErrors.email = '請輸入有效的電子郵件地址';
+      newErrors.email = t('invalidEmail', 'Please enter a valid email address');
     }
     
     // 機構名稱驗證
     if (!formData.organization.trim()) {
-      newErrors.organization = '此字段為必填項目';
+      newErrors.organization = t('requiredField', 'This field is required');
     }
     
     // 服務選項驗證
     if (formData.services.length === 0) {
-      newErrors.services = '請選擇至少一項服務';
+      newErrors.services = t('selectAtLeastOne', 'Please select at least one service');
     }
     
     // reCAPTCHA 驗證
     if (!formData.recaptcha) {
-      newErrors.recaptcha = '請完成人機身份驗證';
+      newErrors.recaptcha = t('completeVerification', 'Please complete human-machine verification');
     }
     
     setErrors(newErrors);
@@ -319,7 +323,7 @@ export default function ActiveCampaignForm() {
 
       if (result.success) {
         setSubmitStatus('success');
-        setSubmitMessage(result.message || '查詢已成功提交！我們會盡快回覆您。');
+        setSubmitMessage(result.message || t('submitSuccess', 'Inquiry submitted successfully! We will reply to you soon.'));
         
         // 重置表單
         setFormData({
@@ -345,7 +349,7 @@ export default function ActiveCampaignForm() {
     } catch (error) {
       console.error('提交錯誤:', error);
       setSubmitStatus('error');
-      setSubmitMessage('提交失敗，請稍後重試');
+      setSubmitMessage(t('submitError', 'Submission failed, please try again later'));
     } finally {
       setIsSubmitting(false);
     }
@@ -378,14 +382,14 @@ export default function ActiveCampaignForm() {
       <form onSubmit={handleSubmit} className="space-y-6 font-[IBM_Plex_Sans]">
         {/* 標題和分隔線 */}
         <div>
-          <h2 className="text-xl font-bold text-black mb-4">立即查詢</h2>
+          <h2 className="text-xl font-bold text-black mb-4">{t('inquireNow', 'Inquire Now')}</h2>
           <hr className="h-1 bg-black border-none mb-6" />
         </div>
 
         {/* 姓名 */}
         <div className="relative">
           <label htmlFor="fullname" className="block text-base font-bold text-black mb-2 leading-relaxed">
-            姓名<span className="text-red-500 ml-1">*</span>
+            {t('name', 'Name')}<span className="text-red-500 ml-1">*</span>
           </label>
           <input
             type="text"
@@ -414,7 +418,7 @@ export default function ActiveCampaignForm() {
         {/* 電郵 */}
         <div className="relative">
           <label htmlFor="email" className="block text-base font-bold text-black mb-2 leading-relaxed">
-            電郵<span className="text-red-500 ml-1">*</span>
+            {t('email', 'Email')}<span className="text-red-500 ml-1">*</span>
           </label>
           <input
             type="email"
@@ -443,7 +447,7 @@ export default function ActiveCampaignForm() {
         {/* 機構名稱 */}
         <div className="relative">
           <label htmlFor="organization" className="block text-base font-bold text-black mb-2 leading-relaxed">
-            機構名稱<span className="text-red-500 ml-1">*</span>
+            {t('organizationName', 'Organization Name')}<span className="text-red-500 ml-1">*</span>
           </label>
           <input
             type="text"
@@ -473,7 +477,7 @@ export default function ActiveCampaignForm() {
         <div className="relative">
           <fieldset className="border-0 p-0 m-0">
             <legend className="block text-base font-bold text-black mb-3 leading-relaxed">
-              有興趣的服務<span className="text-red-500 ml-1">*</span>
+              {t('servicesOfInterest', 'Services of Interest')}<span className="text-red-500 ml-1">*</span>
             </legend>
             <div className="space-y-3">
               {serviceOptions.map((service, index) => (
@@ -513,7 +517,7 @@ export default function ActiveCampaignForm() {
         {/* reCAPTCHA */}
         <div className="relative">
           <label className="block text-base font-bold text-black mb-2 leading-relaxed">
-            進行人機身份驗證<span className="text-red-500 ml-1">*</span>
+            {t('performVerification', 'Perform human-machine verification')}<span className="text-red-500 ml-1">*</span>
           </label>
           
           {/* 使用 Next.js Script 組件載入 reCAPTCHA */}
@@ -529,7 +533,7 @@ export default function ActiveCampaignForm() {
             <div className="bg-gray-100 border border-gray-300 rounded p-4 text-center text-gray-500 flex items-center justify-center" style={{ minHeight: '78px', minWidth: '304px' }}>
               <div className="flex items-center space-x-2">
                 <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
-                <span>準備載入 reCAPTCHA...</span>
+                <span>{t('loadingRecaptcha', 'Loading reCAPTCHA...')}</span>
               </div>
             </div>
           ) : recaptchaError ? (
@@ -539,7 +543,7 @@ export default function ActiveCampaignForm() {
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                   </svg>
-                  <span>reCAPTCHA 載入失敗</span>
+                  <span>{t('recaptchaLoadFailed', 'reCAPTCHA load failed')}</span>
                 </div>
                 <div className="flex space-x-2">
                   <button 
@@ -547,14 +551,14 @@ export default function ActiveCampaignForm() {
                     onClick={handleRetryRecaptcha}
                     className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
                   >
-                    重試
+                    {t('retry', 'Retry')}
                   </button>
                   <button 
                     type="button"
                     onClick={handleManualVerification}
                     className="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700"
                   >
-                    手動驗證
+                    {t('manualVerification', 'Manual verification')}
                   </button>
                 </div>
               </div>
@@ -563,7 +567,7 @@ export default function ActiveCampaignForm() {
             <div className="bg-gray-100 border border-gray-300 rounded p-4 text-center text-gray-500 flex items-center justify-center" style={{ minHeight: '78px', minWidth: '304px' }}>
               <div className="flex items-center space-x-2">
                 <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
-                <span>載入 reCAPTCHA...</span>
+                <span>{t('loadingRecaptcha', 'Loading reCAPTCHA...')}</span>
               </div>
             </div>
           ) : (
@@ -576,12 +580,12 @@ export default function ActiveCampaignForm() {
               ></div>
               <div className="mt-2 text-xs text-gray-500 space-y-1">
                 <div>
-                  如果 reCAPTCHA 無法顯示，<button 
+                  {t('clickToVerify', 'Click here for manual verification')}<button 
                     type="button" 
                     onClick={handleManualVerification}
                     className="text-blue-600 underline hover:text-blue-800"
                   >
-                    點擊這裡手動驗證
+                    {t('clickToVerify', 'Click here for manual verification')}
                   </button>
                 </div>
                 <div>
@@ -590,7 +594,7 @@ export default function ActiveCampaignForm() {
                     onClick={handleForceRenderRecaptcha}
                     className="text-green-600 underline hover:text-green-800"
                   >
-                    強制重新渲染 reCAPTCHA
+                    {t('forceRenderRecaptcha', 'Force re-render reCAPTCHA')}
                   </button>
                 </div>
               </div>
@@ -625,7 +629,7 @@ export default function ActiveCampaignForm() {
               </div>
             )}
             <span className={isSubmitting ? 'opacity-0' : 'opacity-100'}>
-              提交
+              {t('submit', 'Submit')}
             </span>
           </button>
         </div>

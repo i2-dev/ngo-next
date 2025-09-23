@@ -4,6 +4,7 @@ import SuccessCaseHero from "@/components/successcases/SuccessCaseHero";
 import SuccessCaseBlockRenderer from "@/components/successcases/SuccessCaseBlockRenderer";
 import { notFound } from 'next/navigation';
 import PageSection from "@/components/blocks/PageSection";
+import { getTranslation } from "@/utils/translations";
 
 export default async function BrainTrainingGamePage({ params }) {
   const resolvedParams = await params;
@@ -57,18 +58,21 @@ export async function generateMetadata({ params }) {
   const successCase = successCases?.find(successCase => successCase.order === 2);
   
   if (!successCase) {
+    const fallbackTitle = getTranslation(locale, 'common', 'successCase', 'Success Case');
     return {
-      title: '「智有腦」健腦遊戲系統 | NGO App',
-      description: '「智有腦」健腦遊戲系統成功案例'
+      title: `Brain Training Game System | NGO App`,
+      description: `${fallbackTitle} - Brain Training Game System`
     };
   }
 
+  const successCaseText = getTranslation(locale, 'common', 'successCase', 'Success Case');
+  
   return {
     title: `${successCase.title} | NGO App`,
-    description: successCase.content ? successCase.content.substring(0, 160) : `${successCase.title}成功案例`,
+    description: successCase.content ? successCase.content.substring(0, 160) : `${successCase.title} ${successCaseText}`,
     openGraph: {
       title: `${successCase.title} | NGO App`,
-      description: successCase.content ? successCase.content.substring(0, 160) : `${successCase.title}成功案例`,
+      description: successCase.content ? successCase.content.substring(0, 160) : `${successCase.title} ${successCaseText}`,
       type: 'website',
       images: successCase.background ? [successCase.background.url] : [],
     },

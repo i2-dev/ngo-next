@@ -1,7 +1,14 @@
+import { getTranslation } from '@/utils/translations';
+
 export default async function AccessibilityPage({ params }) {
   // Fix Next.js 15 params async requirement
   const resolvedParams = await params;
   const locale = resolvedParams?.locale || 'en';
+  
+  // 使用統一翻譯系統
+  const title = getTranslation(locale, 'pages', 'accessibility', 'title');
+  const description1 = getTranslation(locale, 'pages', 'accessibility', 'description1');
+  const description2 = getTranslation(locale, 'pages', 'accessibility', 'description2');
   
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-pink-50">
@@ -17,7 +24,7 @@ export default async function AccessibilityPage({ params }) {
         {/* 標題 */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-800 mb-8">
-            {locale === 'zh-hant' ? '無障礙瀏覽' : 'Accessibility'}
+            {title}
           </h1>
         </div>
         
@@ -25,25 +32,12 @@ export default async function AccessibilityPage({ params }) {
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-lg shadow-lg p-8">
             <div className="text-center space-y-6">
-              {locale === 'zh-hant' ? (
-                <>
-                  <p className="text-lg text-gray-700 leading-relaxed">
-                    為確保終端用戶擁有良好的網頁瀏覽和使用體驗，i2通過編制符合Web無障礙(WCAG 2.0)標準的設計，來提供我們的內容。
-                  </p>
-                  <p className="text-lg text-gray-700 leading-relaxed">
-                    如果您在無障礙性方面發現任何問題，請隨時致電+852 3426 2604與我們聯繫。
-                  </p>
-                </>
-              ) : (
-                <>
-                  <p className="text-lg text-gray-700 leading-relaxed">
-                    To ensure end-users have a good web browsing and usage experience, i2 provides our content through designs that comply with Web Accessibility (WCAG 2.0) standards.
-                  </p>
-                  <p className="text-lg text-gray-700 leading-relaxed">
-                    If you encounter any problems with accessibility, please feel free to call us at +852 3426 2604.
-                  </p>
-                </>
-              )}
+              <p className="text-lg text-gray-700 leading-relaxed">
+                {description1}
+              </p>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                {description2}
+              </p>
             </div>
           </div>
         </div>

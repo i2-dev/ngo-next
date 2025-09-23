@@ -1,30 +1,12 @@
 import Link from "next/link";
 import styles from "@/styles/Footer.module.css";
+import { getCopyrightText, getTranslation } from "@/utils/translations";
 
 export default function Footer({ locale = 'en' }) {
-  // 自动获取当前年份
-  const currentYear = new Date().getFullYear();
-  
-  // 根据语言设置内容
-  const content = {
-    en: {
-      copyright: `I2 COMPANY LIMITED All Rights Reserved © 2006-${currentYear}`,
-      sitemap: "Site Map",
-      accessibility: "Accessibility"
-    },
-    "zh-hant": {
-      copyright: `I2 COMPANY LIMITED 版權所有 © 2006-${currentYear}`,
-      sitemap: "網頁指南", 
-      accessibility: "無障礙瀏覽"
-    },
-    "zh-Hant": {
-      copyright: `I2 COMPANY LIMITED 版權所有 © 2006-${currentYear}`,
-      sitemap: "網頁指南", 
-      accessibility: "無障礙瀏覽"
-    }
-  };
-
-  const currentContent = content[locale] || content.en;
+  // 使用統一翻譯系統
+  const copyrightText = getCopyrightText(locale);
+  const sitemapText = getTranslation(locale, 'common', 'sitemap');
+  const accessibilityText = getTranslation(locale, 'common', 'accessibility');
 
   return (
     <footer className="bg-gray-100 border-t border-gray-200 py-5.5 mt-auto">
@@ -32,7 +14,7 @@ export default function Footer({ locale = 'en' }) {
         <div className="flex flex-col-reverse justify-between items-start gap-4 md:flex-row md:items-center md:gap-0">
           {/* Copyright Information */}
           <div className="text-sm text-gray-600">
-            {currentContent.copyright}
+            {copyrightText}
           </div>
           
           {/* Links and Social Media */}
@@ -43,13 +25,13 @@ export default function Footer({ locale = 'en' }) {
                 href={`/${locale}/sitemap`} 
                 className="text-gray-600 hover:text-gray-900 transition-colors"
               >
-                {currentContent.sitemap}
+                {sitemapText}
               </Link>
               <Link 
                 href={`/${locale}/accessibility`} 
                 className="text-gray-600 hover:text-gray-900 transition-colors"
               >
-                {currentContent.accessibility}
+                {accessibilityText}
               </Link>
             </div>
             

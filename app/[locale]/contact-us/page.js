@@ -4,6 +4,7 @@ import StrapiImage from "@/components/StrapiImage";
 import PageContainer from "@/components/blocks/PageContainer";
 import PageSection from "@/components/blocks/PageSection";
 import GoogleMap from "@/components/contactus/GoogleMap";
+import { getTranslation } from "@/utils/translations";
 
 export default async function ContactUsPage({ params }) {
   // Fix Next.js 15 params async requirement
@@ -17,12 +18,17 @@ export default async function ContactUsPage({ params }) {
   const contactPageData = pageData['contact-us'];
   const isPlaceholder = contactPageData?.meta?.isPlaceholder;
   
+  // 使用統一翻譯系統
+  const contactUsTitle = getTranslation(locale, 'common', 'contactUs', 'Contact Us');
+  const enquiryPhoneTitle = getTranslation(locale, 'common', 'enquiryPhone', 'Enquiry Phone');
+  const addressTitle = getTranslation(locale, 'common', 'address', 'Address');
+  
 
   return (
     <PageContainer>
       {/* 主标题 */}
       <PageSection className={'text-center'}>
-        <h1 className='text-[42px] font-medium max-lg:text-5xl max-md:text-4xl'>{contactPageData?.data?.Title || '聯絡我們'}</h1>
+        <h1 className='text-[42px] font-medium max-lg:text-5xl max-md:text-4xl'>{contactPageData?.data?.Title || contactUsTitle}</h1>
       </PageSection> 
 
       <PageSection className={'pt-0'} delay={300}>                
@@ -32,14 +38,14 @@ export default async function ContactUsPage({ params }) {
             {/* 聯絡信息內容 */}                            
             {contactPageData?.data?.EnquiryPhone && (
               <div>
-                <h2 className="text-[#454176] text-[22px]">查詢電話</h2>
+                <h2 className="text-[#454176] text-[22px]">{enquiryPhoneTitle}</h2>
                 <p>{contactPageData.data.EnquiryPhone}</p>
               </div>
             )}
             
             {contactPageData?.data?.Address && (
               <div className="mt-12">
-                <h2 className="text-[#454176] text-[22px]">地址</h2>
+                <h2 className="text-[#454176] text-[22px]">{addressTitle}</h2>
                 <p className="mb-4">{contactPageData.data.Address}</p>
                 
                 {/* Google Map */}
@@ -71,7 +77,7 @@ export default async function ContactUsPage({ params }) {
           
           {/* 右側：聯絡表單 */}
           <div className="bg-white p-10">
-            <ActiveCampaignForm />
+            <ActiveCampaignForm locale={locale} />
           </div>
         </div>        
       </PageSection>            
@@ -79,8 +85,8 @@ export default async function ContactUsPage({ params }) {
   );
 }
 
-// SEO metadata
+// SEO metadata - 需要動態生成，這裡提供默認值
 export const metadata = {
-  title: '聯絡我們 | NGO 數碼化解決方案',
-  description: '聯絡我們了解更多關於 NGO 數碼化解決方案。我們提供個案管理系統、AI 客服機械人等服務。',
+  title: 'Contact Us | NGO Digital Solutions',
+  description: 'Contact us to learn more about NGO digital solutions. We provide case management systems, AI customer service robots and other services.',
 };

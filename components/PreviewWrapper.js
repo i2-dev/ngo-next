@@ -28,11 +28,8 @@ export default function PreviewWrapper({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white">
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-          <span className="ml-3 text-lg">正在加载预览数据...</span>
-        </div>
+      <div className="fixed inset-0 z-50 flex h-screen items-center justify-center bg-gray-100 bg-opacity-90">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600"></div>
       </div>
     );
   }

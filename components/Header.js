@@ -56,7 +56,7 @@ export default function Header({ locale = 'en', menuData = null }) {
           </Link>
           
           {/* Menu and Social Icons */}
-          <div className="flex items-center lg:space-x-10">
+          <div className="flex items-center lg:space-x-5">
             <MenuWrapper 
               menuData={menuData} 
               locale={locale} 

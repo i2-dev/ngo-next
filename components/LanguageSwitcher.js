@@ -59,12 +59,12 @@ export default function LanguageSwitcher({ currentLocale = 'en' }) {
       {/* 語言切換按鈕 */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 border border-transparent hover:border-gray-200"
+        className="text-[#3a4148] hover:text-[#2a7115] font-medium cursor-pointer flex items-center space-x-2 px-3 transition-all duration-200"
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
         {/* 地球圖標 */}
-        <svg 
+        {/* <svg 
           className="w-4 h-4" 
           fill="none" 
           stroke="currentColor" 
@@ -76,13 +76,13 @@ export default function LanguageSwitcher({ currentLocale = 'en' }) {
             strokeWidth={2} 
             d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9" 
           />
-        </svg>
+        </svg> */}
         
         {/* 當前語言 */}
         <span className="hidden md:inline">
           {getLocalizedLocaleName(currentLocale)}
         </span>
-        <span className="md:hidden text-xs">
+        <span className="md:hidden">
           {currentLocale === 'en' ? 'EN' : '繁'}
         </span>
         

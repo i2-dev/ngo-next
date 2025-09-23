@@ -14,14 +14,14 @@ export default function MenuWrapper({ menuData = null, locale = 'en', fallbackTo
     return <MenuClient menuData={menuData} locale={locale} />;
   }
   
-  // 如果沒有菜單數據且不允許回退到API，顯示佔位符
+  // 如果沒有菜單數據且不允許回退到API，返回 null 避免顯示框架
   if (!fallbackToApi) {
-    return <MenuPlaceholder />;
+    return null;
   }
   
   // 回退到獨立的API調用（舊版兼容）- 使用 ClientOnly 確保只在客戶端渲染
   return (
-    <ClientOnly fallback={<MenuPlaceholder />}>
+    <ClientOnly fallback={null}>
       <MenuWithFallback locale={locale} />
     </ClientOnly>
   );
@@ -69,11 +69,11 @@ function MenuWithFallback({ locale }) {
   }, [locale]);
 
   if (loading) {
-    return <MenuPlaceholder />;
+    return null;
   }
 
   if (error || !menuData) {
-    return <MenuPlaceholder />;
+    return null;
   }
 
   return <MenuClient menuData={menuData} locale={locale} />;

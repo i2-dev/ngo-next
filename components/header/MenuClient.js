@@ -38,22 +38,9 @@ export default function MenuClient({ menuData, locale = 'en' }) {
     };
   }, []);
 
-  // 防止 Hydration 錯誤：服務端先渲染空的 nav
+  // 防止 Hydration 錯誤：服務端渲染時返回 null，避免顯示空框架
   if (!isClient) {
-    return (
-      <nav className="bg-transparent relative">
-        <div className="relative lg:static">
-          <ul className="hidden lg:flex items-center space-x-6"></ul>
-          <div className="lg:hidden">
-            <button className="text-gray-600 hover:text-gray-900 focus:outline-none">
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </nav>
-    );
+    return null;
   }
 
   if (!menuData || !menuData.data) {
@@ -65,8 +52,13 @@ export default function MenuClient({ menuData, locale = 'en' }) {
     if (!url) return url;
     
     // 如果URL已經包含語言前綴，直接返回
-    if (url.startsWith(`/${locale}/`) || url === '/') {
+    if (url.startsWith(`/${locale}/`)) {
       return url;
+    }
+    
+    // 如果URL是根路徑，返回當前語言的根路徑
+    if (url === '/') {
+      return `/${locale}`;
     }
     
     // 如果URL以/開頭但沒有語言前綴，添加語言前綴

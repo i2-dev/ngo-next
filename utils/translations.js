@@ -25,7 +25,7 @@ export const translations = {
       freeNgoChatbot: "Free NGO AI Chatbot for One Year!",
       
       // 語言切換
-      english: "English",
+      english: "Eng",
       traditionalChinese: "繁體",
       
       // 錯誤和提示信息
@@ -93,7 +93,7 @@ export const translations = {
       
       // 按鈕和操作
       inquireNow: "請即查詢",
-      visitMainSite: "Visit Our i2 Main Website >",
+      visitMainSite: "訪問我們的 i2 主網站 >",
       getFreeChatbot: "獲取免費AI聊天機器人",
       exploreServices: "探索我們的服務",
       
@@ -102,7 +102,7 @@ export const translations = {
       freeNgoChatbot: "NGO可免費用 AI Chatbot 一年！",
       
       // 語言切換
-      english: "English",
+      english: "Eng",
       traditionalChinese: "繁體",
       
       // 錯誤和提示信息

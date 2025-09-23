@@ -12,7 +12,7 @@ export function isValidLocale(locale) {
 // 获取语言名称
 export function getLocaleName(locale) {
   const names = {
-    'en': 'English',
+    'en': 'Eng',
     'zh-hant': '繁體'
   };
   return names[locale] || names[DEFAULT_LOCALE];

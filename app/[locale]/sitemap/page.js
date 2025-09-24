@@ -1,5 +1,7 @@
 import { getMenuData } from '@/data/unified-loader';
 import SitemapLink from '@/components/SitemapLink';
+import PageContainer from "@/components/blocks/PageContainer";
+import PageSection from "@/components/blocks/PageSection";
 import { getTranslation } from '@/utils/translations';
 
 export default async function SitemapPage({ params }) {
@@ -15,29 +17,22 @@ export default async function SitemapPage({ params }) {
   const loadingText = getTranslation(locale, 'common', 'loading', 'Loading...');
   
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-pink-50">
-      {/* 背景水印 */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="text-[20rem] font-bold text-gray-200 opacity-20 select-none">
-          NGO
-        </div>
-      </div>
-      
-      {/* 主要內容 */}
-      <div className="relative z-10 container mx-auto px-4 py-16">
+    <PageContainer>
+      <PageSection>      
+        {/* 主要內容 */}        
         {/* 標題 */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">
+          <h1 className='text-[42px] font-medium max-lg:text-5xl max-md:text-4xl'>
             {sitemapTitle}
           </h1>
         </div>
         
         {/* 網站地圖內容 */}
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-lg mx-auto">
           <SitemapContent menuData={menuData} locale={locale} />
-        </div>
-      </div>
-    </div>
+        </div>        
+      </PageSection>      
+    </PageContainer>
   );
 }
 
@@ -47,7 +42,7 @@ function SitemapContent({ menuData, locale }) {
   
   if (!menuData || !menuData.data) {
     return (
-      <div className="text-center text-gray-500">
+      <div className="text-center text-[#3a4148]">
         {loadingText}
       </div>
     );
@@ -56,16 +51,14 @@ function SitemapContent({ menuData, locale }) {
   // 按照 Order 排序，與 MenuClient 保持一致
   const menuItems = menuData.data.sort((a, b) => (a.Order || 0) - (b.Order || 0));
   
-  return (
-    <div className="bg-white rounded-lg shadow-lg p-8">
-      <div className="space-y-8">
-        {menuItems.map((item, index) => (
-          <div key={index} className="border-b border-gray-200 pb-8 last:border-b-0">
-            <SitemapItem item={item} locale={locale} />
-          </div>
-        ))}
-      </div>
-    </div>
+  return (    
+    <ul className='ml-5'>
+      {menuItems.map((item, index) => (
+        <li key={index} className="list-disc mb-3.5 marker:text-[#3a4148]">
+          <SitemapItem item={item} locale={locale} />
+        </li>
+      ))}
+    </ul>   
   );
 }
 
@@ -107,13 +100,13 @@ function SitemapItem({ item, locale }) {
         {item.URL ? (
           <SitemapLink 
             href={formatUrl(item.URL)} 
-            className="text-2xl font-bold text-gray-800 hover:text-blue-600 transition-colors"
+            className="text-[#3a4148] hover:text-[#2a7115] transition-colors"
             target={item.Target || '_self'}
           >
             {item.title}
           </SitemapLink>
         ) : (
-          <h2 className="text-2xl font-bold text-gray-800">
+          <h2 className="text-[#3a4148] font-normal mb-0">
             {item.title}
           </h2>
         )}
@@ -121,27 +114,27 @@ function SitemapItem({ item, locale }) {
       
       {/* 子項目 */}
       {hasChildren && (
-        <div className="ml-8 space-y-3">
+        <ul className='ml-5'>
           {item.items
             .sort((a, b) => (a.Order || 0) - (b.Order || 0))
             .map((subItem, subIndex) => (
-            <div key={subIndex} className="flex items-center">
+            <li key={subIndex} className="list-disc mb-3.5 marker:text-[#3a4148]">
               {subItem.url ? (
                 <SitemapLink 
                   href={formatUrl(subItem.url)} 
-                  className="text-lg text-gray-700 hover:text-blue-600 transition-colors"
+                  className="text-[#3a4148] hover:text-[#2a7115] transition-colors"
                   target={subItem.Target || '_self'}
                 >
                   {subItem.Label}
                 </SitemapLink>
               ) : (
-                <span className="text-lg text-gray-700">
+                <span className="text-[#3a4148]">
                   {subItem.Label}
                 </span>
               )}
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );

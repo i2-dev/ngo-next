@@ -78,6 +78,7 @@ export default function HomepageBlockRendererPreview({ blocks, locale, newsData 
                   autoplay={true}
                   navigation={true}
                   pagination={true}
+                  locale={locale}
                 />
               </FadeUp>
             );

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
-import StrapiImage from '@/components/StrapiImage';
+import SimpleImage from '@/components/SimpleImage';
 import { getStrapiMedia } from '@/utils/get-strapi-media';
 import styles from '@/styles/Homepage.module.css';
 import SharedButton from '../blocks/Button';
@@ -15,7 +15,8 @@ const HomepageSwiper = ({
     navigation = true,
     pagination = true,
     className = "",
-    swiperConfig = {}
+    swiperConfig = {},
+    locale = 'en'
 }) => {
     const [isClient, setIsClient] = useState(false);
 
@@ -87,21 +88,18 @@ const HomepageSwiper = ({
                                         <div className={styles.homeBannerCardBodyShadow}></div>
                                         <div className={styles.homeBannerCardBody}>                                       
                                             {slide.icon && (                                             
-                                                <StrapiImage
+                                                <SimpleImage
                                                     image={slide.icon}
                                                     className={`${styles.homeBannerCardIcon} animate-fade-in-up`}
                                                     style={{animationDelay: '0.4s'}}
-                                                    width={135}
-                                                    height={110}
                                                     alt={slide.title}
-                                                    priority={isFirstSlide}
                                                 />                                          
                                             )}
-                                            <h2 className="text-[#3e3978] text-[46px]/[1.2] font-medium mb-[15px] max-lg:text-[28px] animate-fade-in-left" style={{animationDelay: '0.6s'}}>
-                                                <span className="block text-2xl font-normal mb-[15px] max-lg:text-base max-lg:mb-2.5">{slide.subtitle}</span>
+                                            <h2 className={`text-[#3e3978] font-medium mb-[15px] animate-fade-in-left ${locale === 'en' ? 'text-[32px]/[1.2] max-lg:text-[28px]' : 'text-[46px]/[1.2] max-lg:text-[28px]'}`} style={{animationDelay: '0.6s'}}>
+                                                <span className={`block ${locale === 'en' ? 'text-xl' : 'text-2xl'} font-normal mb-[15px] max-lg:text-base max-lg:mb-2.5`}>{slide.subtitle}</span>
                                                 {slide.title}
                                             </h2>
-                                            <p className="text-[#ff6800] text-2xl/[1.23] mb-auto max-md:mb-[50px] animate-fade-in-up" style={{animationDelay: '0.8s'}}><strong className="font-medium">{slide.content}</strong></p>                                                      
+                                            <p className={`text-[#ff6800] ${locale === 'en' ? 'text-xl/[1.23]' : 'text-2xl/[1.23]'} mb-auto max-md:mb-[50px] animate-fade-in-up`} style={{animationDelay: '0.8s'}}><strong className="font-medium">{slide.content}</strong></p>                                                      
                                             <div className="animate-fade-in-up" style={{animationDelay: '1s'}}>
                                                 <SharedButton {...slide}/>                                                                              
                                             </div>
@@ -110,12 +108,9 @@ const HomepageSwiper = ({
                                             {/* Background Image or Default Background */}                                            
                                             {slide.image? (
                                                 <Link href={slide.buttonLink} className="animate-fade-in-right" style={{animationDelay: '0.3s'}}> 
-                                                    <StrapiImage
+                                                    <SimpleImage
                                                         image={slide.image}                                                    
-                                                        width={slide.image.width}
-                                                        height={slide.image.height}
                                                         alt={slide.title}
-                                                        priority={isFirstSlide}
                                                         className="hover:scale-105 transition-transform duration-500"
                                                     />
                                                 </Link> 

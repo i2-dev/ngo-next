@@ -77,6 +77,7 @@ export default function HomepageBlockRenderer({ blocks, locale }) {
                   autoplay={true}
                   navigation={true}
                   pagination={true}
+                  locale={locale}
                 />
               </FadeUp>
             );

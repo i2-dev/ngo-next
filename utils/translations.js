@@ -193,12 +193,21 @@ export const translations = {
 export function getTranslation(locale, category, key, fallback = '') {
   const normalizedLocale = normalizeLocale(locale);
   
+  // 支持點號分隔的路徑 (例如: 'pages.accessibility')
+  let targetObject = translations;
+  const categoryPath = category.split('.');
+  
+  for (const pathSegment of categoryPath) {
+    targetObject = targetObject?.[pathSegment];
+    if (!targetObject) break;
+  }
+  
   // 嘗試獲取翻譯
-  const translation = translations[category]?.[normalizedLocale]?.[key];
+  const translation = targetObject?.[normalizedLocale]?.[key];
   
   // 如果找不到翻譯，嘗試使用英文作為後備
   if (!translation && normalizedLocale !== 'en') {
-    const fallbackTranslation = translations[category]?.['en']?.[key];
+    const fallbackTranslation = targetObject?.['en']?.[key];
     if (fallbackTranslation) {
       return fallbackTranslation;
     }

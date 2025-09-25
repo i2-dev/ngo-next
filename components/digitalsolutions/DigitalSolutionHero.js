@@ -49,7 +49,7 @@ export default function DigitalSolutionHero({ plan, locale, bgcolor, bgGradient,
               width={plan.image.width}
               height={plan.image.height}
               alt={plan.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover max-w-[1244px] mx-auto"
             />            
           )}
         </div>
@@ -104,7 +104,7 @@ export default function DigitalSolutionHero({ plan, locale, bgcolor, bgGradient,
             <SimpleImage
               image={plan.image}
               alt={plan.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover max-w-[1244px] mx-auto"
             />
           </div>
         )}

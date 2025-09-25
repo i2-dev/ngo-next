@@ -28,7 +28,7 @@ export default function FeatureCard({ card, index }) {
       </h3>
 
       {card.Text && card.Text.length > 0 && (
-        <ul className="ml-5">
+        <ul className="ml-6">
           {card.Text.map((textItem, textIndex) => (
             <li key={textIndex} className="list-disc mb-3.5">              
               {textItem.Text}

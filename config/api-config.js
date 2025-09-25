@@ -47,6 +47,7 @@ export const PREVIEW_ROUTE_MAPPING = {
 export const DOCUMENT_ID_PREVIEW_MAPPING = {
   'bv6ixplvqu6d9bfkmib5ro51': '/preview/ai-solution',
   'r42zk86ouqoly2l8jpg82psl': '/preview/ai-case-management-platform',
+  'v2g53jmhqaja22ulrhgbxr0g': '/preview/ai-workflow-transformation-solutions',
   'drsd1m8p9bf2qg1ho1qe4gt4': '/preview/e123-elderly-portal',
   'voascdjb6gheje5o6v47hgqz': '/preview/brain-training-game',
   'd03bkqtezbu70bm2ez8vuhot': '/preview/e72-elderly-recruitment-system',

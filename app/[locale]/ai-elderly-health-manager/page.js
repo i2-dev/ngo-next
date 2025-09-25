@@ -1,12 +1,10 @@
-import { getDigitalSolutionsData, getHomepageData } from "@/data/unified-loader";
+import { getDigitalSolutionsData } from "@/data/unified-loader";
 import PageContainer from "@/components/blocks/PageContainer";
 import DigitalSolutionHero from "@/components/digitalsolutions/DigitalSolutionHero";
 import BlockRenderer from "@/components/digitalsolutions/BlockRenderer";
-import Card from "@/components/blocks/Card";
 import styles from "@/styles/DigitalSolutions.module.css";
 import { notFound } from 'next/navigation';
 import PageSection from "@/components/blocks/PageSection";
-import { getTranslation } from "@/utils/translations";
 
 export default async function AIElderlyHealthManagerPage({ params }) {
   const resolvedParams = await params;

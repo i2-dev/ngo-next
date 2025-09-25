@@ -1,8 +1,7 @@
-import { getDigitalSolutionsData, getHomepageData } from "@/data/unified-loader";
+import { getDigitalSolutionsData } from "@/data/unified-loader";
 import PageContainer from "@/components/blocks/PageContainer";
 import DigitalSolutionHero from "@/components/digitalsolutions/DigitalSolutionHero";
 import BlockRenderer from "@/components/digitalsolutions/BlockRenderer";
-import Card from "@/components/blocks/Card";
 import styles from "@/styles/DigitalSolutions.module.css";
 import { notFound } from 'next/navigation';
 import PageSection from "@/components/blocks/PageSection";
@@ -13,15 +12,6 @@ export default async function AIHotlineSystemPage({ params }) {
 
   const pageData = await getDigitalSolutionsData(locale);
   const { plans } = pageData.processedData || {};
-
-  // 獲取首頁數據以獲取各種組件數據
-  const homepageData = await getHomepageData(locale);
-  const homepageBlocks = homepageData.blocks || [];
-  
-  // 从区块中提取需要的组件数据
-  const cardData = homepageBlocks.find(block => 
-    block.__component === 'public.card'
-  );
   
   // 根據Order找到AI熱線系統方案 (data[3])
   const plan = plans?.find(plan => plan.order === 3);
@@ -42,18 +32,6 @@ export default async function AIHotlineSystemPage({ params }) {
 
         {plan.blocks && plan.blocks.length > 0 && (          
           <BlockRenderer blocks={plan.blocks} locale={locale} />          
-        )}
-
-        {/* AI² Card Section */}
-        {cardData && (
-          <PageSection className={'pb-50'}>
-            <Card
-              Title={cardData.Title}
-              Content={cardData.Content}
-              icon={cardData.icon}
-              Button={cardData.Button}
-            />
-          </PageSection>
         )}
       </PageContainer>
     </>

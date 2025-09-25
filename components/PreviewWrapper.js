@@ -55,8 +55,9 @@ export default function PreviewWrapper({
 
   return (
     <>
-      {/* 预览横幅 */}
-      {/* {isVisible && (
+      {/* 预览横幅 - 已禁用，生产环境不会显示 */}
+      {/* 预览横幅仅在开发环境或明确启用时显示 */}
+      {/* {isVisible && process.env.NODE_ENV !== 'production' && (
         <div className="fixed top-0 left-0 right-0 bg-blue-600 text-white px-4 py-2 text-center z-50">
           <div className="flex items-center justify-between max-w-7xl mx-auto">
             <div className="flex items-center space-x-4">

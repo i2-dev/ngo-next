@@ -55,7 +55,7 @@ export default function Solution({ locale = 'en', styles, solutionData }) {
               <hr className='w-5 h-0.5 border-t-[#286e11] my-3 mx-auto' />
               {/* 功能列表 */}
               {solution.CardList && solution.CardList.length > 0 && (
-                <ul className='ml-5'>
+                <ul className='ml-6'>
                   {solution.CardList.map((feature, featureIndex) => (
                     <li key={featureIndex} className='list-disc mb-3.5'>
                       {feature.Title && (

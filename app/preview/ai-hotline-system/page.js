@@ -11,9 +11,9 @@ import styles from "@/styles/DigitalSolutions.module.css";
 import { buildPreviewApiUrl } from '@/utils/get-strapi-url';
 
 // 直接获取特定计划的预览数据
-async function getPreviewPlanData(documentId, status = 'draft', pLevel = 3) {
+async function getPreviewPlanData(documentId, status = 'draft', pLevel = 3, locale = 'en') {
   try {
-    const apiUrl = buildPreviewApiUrl('plans', documentId, { status, pLevel });
+    const apiUrl = buildPreviewApiUrl('plans', documentId, { status, pLevel, locale });
     
     const response = await fetch(apiUrl, {
       method: 'GET',
@@ -80,7 +80,7 @@ export default function AICaseManagementPlatformPreview() {
       setLoading(true);
       setError(null);
 
-      const planResult = await getPreviewPlanData(documentId, status, pLevel);
+      const planResult = await getPreviewPlanData(documentId, status, pLevel, locale);
 
       if (planResult.data) {
         const formattedPlanData = formatPlanData(planResult.data);

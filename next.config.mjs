@@ -1,5 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // 生产环境优化
+  ...(process.env.NODE_ENV === 'production' && {
+    output: 'standalone',
+    compress: true,
+    poweredByHeader: false,
+  }),
+
   images: {
     remotePatterns: [
       {

@@ -52,7 +52,7 @@ function SitemapContent({ menuData, locale }) {
   const menuItems = menuData.data.sort((a, b) => (a.Order || 0) - (b.Order || 0));
   
   return (    
-    <ul className='ml-5'>
+    <ul className='ml-6'>
       {menuItems.map((item, index) => (
         <li key={index} className="list-disc mb-3.5 marker:text-[#3a4148]">
           <SitemapItem item={item} locale={locale} />
@@ -114,7 +114,7 @@ function SitemapItem({ item, locale }) {
       
       {/* 子項目 */}
       {hasChildren && (
-        <ul className='ml-5'>
+        <ul className='ml-6'>
           {item.items
             .sort((a, b) => (a.Order || 0) - (b.Order || 0))
             .map((subItem, subIndex) => (

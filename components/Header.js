@@ -50,13 +50,12 @@ export default function Header({ locale = 'en', menuData = null }) {
               width={245}
               height={106}
               alt="I2NGO Logo"
-              priority={true}
               className="logo max-w-[162px] h-auto transition-[all_.3s_cubic-bezier(.2,1,.2,1)]"
             />
           </Link>
           
           {/* Menu and Social Icons */}
-          <div className="flex items-center lg:space-x-5">
+          <div className="flex items-center lg:space-x-5 max-lg:flex-row-reverse">
             <MenuWrapper 
               menuData={menuData} 
               locale={locale} 

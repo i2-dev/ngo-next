@@ -33,6 +33,12 @@ const PREVIEW_ROUTE_MAPPING = {
 const DOCUMENT_ID_PREVIEW_MAPPING = {
   'bv6ixplvqu6d9bfkmib5ro51': '/preview/ai-solution', // AI Solution
   'r42zk86ouqoly2l8jpg82psl': '/preview/ai-case-management-platform', // AI Case Management Platform
+  'v2g53jmhqaja22ulrhgbxr0g': '/preview/ai-workflow-transformation-solutions', // AI Workflow Transformation Solutions
+  // 其他數碼方案頁面 - 需要您提供正確的 documentId
+  // 'DOCUMENT_ID_HERE': '/preview/ai-hotline-system', // AI Hotline System
+  // 'DOCUMENT_ID_HERE': '/preview/ai-elderly-health-manager', // AI Elderly Health Manager
+  // 'DOCUMENT_ID_HERE': '/preview/ngo-digital-solutions-2', // NGO Digital Solutions 2
+  // 'DOCUMENT_ID_HERE': '/preview/institutional-online-learning-system', // Institutional Online Learning System
   // 成功案例的 documentId 映射
   'drsd1m8p9bf2qg1ho1qe4gt4': '/preview/e123-elderly-portal', // e123 長青網
   'voascdjb6gheje5o6v47hgqz': '/preview/brain-training-game', // 智有腦健腦遊戲系統

@@ -79,7 +79,6 @@ const HomepageSwiper = ({
                 {slidesToShow.map((slide, index) => {
                     // 获取正确的 Strapi 图片 URL
                     //const backgroundImageUrl = slide.image ? getStrapiMedia(slide.image) : null;
-                    const isFirstSlide = index === 0; // First slide should load with priority
                     return (
                         <SwiperSlide key={slide.id}>
                             <div className="relative w-full h-full">                                

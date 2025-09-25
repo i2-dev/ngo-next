@@ -106,29 +106,29 @@ export default function LanguageSwitcher({ currentLocale = 'en' }) {
 
       {/* 下拉選單 */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-xl ring-1 ring-black ring-opacity-5 z-50 border border-gray-100 animate-in fade-in-0 zoom-in-95 duration-200">
-          <div className="py-1" role="menu" aria-orientation="vertical">
+        <div className="w-17 absolute right-0 top-8 lg:top-15.5 bg-white shadow-[0_19px_35px_rgba(0,0,0,.11)] border-t-[#eee_1px_soild] z-50 animate-in fade-in-0 zoom-in-95 duration-200">
+          <div className="py-2.5 px-2" role="menu" aria-orientation="vertical">
             {availableLocales.map((locale) => (
               <button
                 key={locale}
                 onClick={() => handleLanguageChange(locale)}
-                className={`w-full text-left px-4 py-3 text-sm transition-all duration-200 first:rounded-t-lg last:rounded-b-lg ${
+                className={`w-full text-left px-1.5 py-2.5 transition-all duration-200 first:rounded-t-lg last:rounded-b-lg ${
                   locale === currentLocale
-                    ? 'bg-blue-50 text-blue-700 font-medium border-l-2 border-blue-500'
-                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                    ? 'text-[#2a7115]'
+                    : 'text-[#3a4148] hover:text-[#2a7115] cursor-pointer'
                 }`}
                 role="menuitem"
               >
                 <div className="flex items-center space-x-3">
                   {/* 語言標誌 */}
-                  <span className="flex-1">
+                  <span className="flex-[0_0_auto]">
                     {getLocalizedLocaleName(locale)}
                   </span>
-                  {locale === currentLocale && (
+                  {/* {locale === currentLocale && (
                     <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                  )}
+                  )} */}
                 </div>
               </button>
             ))}

@@ -6,17 +6,22 @@ import PageContainer from "@/components/blocks/PageContainer";
 import PageSection from "@/components/blocks/PageSection";
 import DigitalSolutionHero from "@/components/digitalsolutions/DigitalSolutionHero";
 import BlockRenderer from "@/components/digitalsolutions/BlockRenderer";
-import HomepageBlockRendererPreview from "@/components/homepage/HomepageBlockRendererPreview";
+import ClientLogoSection from "@/components/homepage/ClientLogoSection";
+import InformationSectionWrapper from "@/components/homepage/InformationSectionWrapper";
+import AwardsSwiper from "@/components/homepage/AwardsSwiper";
+import Card from "@/components/blocks/Card";
 import PreviewWrapper from '@/components/PreviewWrapper';
 import { buildPreviewApiUrl } from '@/utils/get-strapi-url';
 import styles from "@/styles/DigitalSolutions.module.css";
+import homepageStyles from "@/styles/Homepage.module.css";
 
 // 直接获取特定计划的预览数据
-async function getPreviewPlanData(documentId, status = 'draft', pLevel = 4) {
+async function getPreviewPlanData(documentId, status = 'draft', pLevel = 4, locale = 'en') {
   try {
     const queryParams = new URLSearchParams();
     queryParams.append('status', status);
     queryParams.append('pLevel', pLevel);
+    queryParams.append('locale', locale);
     queryParams.append('populate[0]', 'icon');
     queryParams.append('populate[1]', 'Image');
     queryParams.append('populate[2]', 'Button');
@@ -59,6 +64,41 @@ function extractContentFromRichText(contentArray) {
     }
     return '';
   }).join(' ').trim();
+}
+
+// 获取首页数据
+async function getPreviewHomepageData(locale = 'en', status = 'draft') {
+  try {
+    const queryParams = new URLSearchParams();
+    queryParams.append('status', status);
+    queryParams.append('locale', locale);
+    queryParams.append('pLevel', '4');
+    queryParams.append('populate[0]', 'Blocks');
+    queryParams.append('populate[1]', 'Blocks.icon');
+    queryParams.append('populate[2]', 'Blocks.Button');
+    
+    const apiUrl = buildPreviewApiUrl('homepage', null, Object.fromEntries(queryParams));
+    
+    const response = await fetch(apiUrl, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      cache: 'no-store',
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch preview homepage data: ${response.status} ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    return result;
+
+  } catch (error) {
+    console.error('Error fetching preview homepage data:', error);
+    throw error;
+  }
 }
 
 // 获取新闻数据
@@ -119,6 +159,21 @@ async function getPreviewNewsData(locale = 'en', status = 'draft') {
   }
 }
 
+// 格式化首页数据
+function formatHomepageData(data) {
+  if (!data) return null;
+
+  if (data.Blocks) {
+    return {
+      blocks: data.Blocks
+    };
+  }
+  
+  return {
+    blocks: []
+  };
+}
+
 // 格式化计划数据
 function formatPlanData(data) {
   if (!data) return null;
@@ -140,21 +195,6 @@ function formatPlanData(data) {
   };
 }
 
-// 格式化首页数据 - 使用 BlockRenderer 方式
-function formatHomepageData(data) {
-  if (!data) return null;
-
-  // 使用 BlockRenderer 方式处理数据
-  if (data.Blocks) {
-    return {
-      blocks: data.Blocks
-    };
-  }
-  
-  return {
-    blocks: []
-  };
-}
 
 export default function AICaseManagementPlatformPreview() {
   const searchParams = useSearchParams();
@@ -168,6 +208,9 @@ export default function AICaseManagementPlatformPreview() {
   const locale = searchParams.get('locale') || 'en';
   const pLevel = searchParams.get('pLevel') || '5';
   const documentId = searchParams.get('documentId') || searchParams.get('slug');
+  
+  // 定義哪些 documentId 需要首頁組件
+  const needsHomepageComponents = ['bv6ixplvqu6d9bfkmib5ro51']; // 只有 ai-solution 需要首頁組件
 
   const fetchPreviewData = async () => {
     if (!documentId) {
@@ -180,27 +223,41 @@ export default function AICaseManagementPlatformPreview() {
       setLoading(true);
       setError(null);
 
-      // 并行获取计划数据、首页数据和新闻数据
-      const [planResult, homepageResult, newsResult] = await Promise.all([
-        getPreviewPlanData(documentId, status, pLevel),
-        getPreviewNewsData(locale, status)
-      ]);
+      // 获取计划数据
+      const planResult = await getPreviewPlanData(documentId, status, pLevel, locale);
+      
+      // 尝试获取首页数据，如果失败则使用空数据
+      let homepageResult = null;
+      try {
+        homepageResult = await getPreviewHomepageData(locale, status);
+      } catch (homepageError) {
+        console.warn('Failed to fetch homepage data:', homepageError);
+        homepageResult = { data: null };
+      }
+      
+      // 尝试获取新闻数据，如果失败则使用空数据
+      let newsResult = null;
+      try {
+        newsResult = await getPreviewNewsData(locale, status);
+      } catch (newsError) {
+        console.warn('Failed to fetch news data:', newsError);
+        newsResult = { data: null };
+      }
 
-      // console.log('AI Solution preview raw data:', planResult);
-      // console.log('Homepage preview raw data:', homepageResult);
-      // console.log('News preview raw data:', newsResult);
+      console.log('Preview data results:', {
+        planResult: planResult?.data ? 'Success' : 'Failed',
+        homepageResult: homepageResult?.data ? 'Success' : 'Failed',
+        newsResult: newsResult?.data ? 'Success' : 'Failed'
+      });
 
       if (planResult.data) {
         const formattedPlanData = formatPlanData(planResult.data);
         const formattedHomepageData = formatHomepageData(homepageResult?.data);
         
-        // console.log('AI Solution preview formatted data:', formattedPlanData);
-        // console.log('Homepage preview formatted data:', formattedHomepageData);
-        // console.log('Client Logo Data:', formattedHomepageData?.clientLogoData);
-        // console.log('Information Data:', formattedHomepageData?.informationData);
-        // console.log('Awards Data:', formattedHomepageData?.awardsData);
-        // console.log('Card Data:', formattedHomepageData?.cardData);
-        // console.log('News Data:', newsResult);
+        console.log('Formatted data:', {
+          planData: formattedPlanData ? 'Success' : 'Failed',
+          homepageData: formattedHomepageData ? 'Success' : 'Failed'
+        });
         
         setData(formattedPlanData);
         setHomepageData(formattedHomepageData);
@@ -228,36 +285,103 @@ export default function AICaseManagementPlatformPreview() {
       loading={loading}
       error={error}
     >
-      {data && (
-        <PageContainer>
-          {/* 方案標題區域 */}
-          <PageSection>        
-            <DigitalSolutionHero
-              plan={data}
-              locale={locale}
-              bgcolor="gray"
-              bgGradient="linear-gradient(to bottom, rgba(151,151,151,1) 80%, rgba(151,151,151,0) 100%)"
-            />
-          </PageSection>
+      {data && (() => {
+        // 從首頁數據中提取需要的組件數據
+        const homepageBlocks = homepageData?.blocks || [];
+        
+        console.log('Rendering with data:', {
+          hasData: !!data,
+          hasHomepageData: !!homepageData,
+          homepageBlocksCount: homepageBlocks.length,
+          homepageBlocks: homepageBlocks
+        });
+        
+        const clientLogoData = homepageBlocks.find(block => 
+          block.__component === 'home-page.client-logo'
+        );
+        
+        const informationData = homepageBlocks.find(block => 
+          block.__component === 'home-page.information-section'
+        );
+        
+        const awardsData = homepageBlocks.find(block => 
+          block.__component === 'home-page.awards-section'
+        );
+        
+        const cardData = homepageBlocks.find(block => 
+          block.__component === 'public.card'
+        );
+        
+        console.log('Extracted data:', {
+          clientLogoData: !!clientLogoData,
+          informationData: !!informationData,
+          awardsData: !!awardsData,
+          cardData: !!cardData
+        });
 
-          {/* 方案內容區塊 */}
-          {data.blocks && data.blocks.length > 0 && (        
-            <BlockRenderer
-              blocks={data.blocks}
-              locale={locale}
-            />        
-          )}
+        return (
+          <PageContainer>
+            {/* 方案標題區域 */}
+            <PageSection>        
+              <DigitalSolutionHero
+                plan={data}
+                locale={locale}
+                bgcolor="gray"
+                bgGradient="linear-gradient(to bottom, rgba(151,151,151,1) 80%, rgba(151,151,151,0) 100%)"
+              />
+            </PageSection>
 
-          {/* 使用 HomepageBlockRendererPreview 渲染首页区块 */}
-          {homepageData?.blocks && homepageData.blocks.length > 0 && (
-            <HomepageBlockRendererPreview 
-              blocks={homepageData.blocks} 
-              locale={locale} 
-              newsData={newsData}
-            />
-          )}
-        </PageContainer>
-      )}
+            {/* 方案內容區塊 */}
+            {data.blocks && data.blocks.length > 0 && (        
+              <BlockRenderer
+                blocks={data.blocks}
+                locale={locale}
+              />        
+            )}
+
+            {/* 只有特定的 documentId 才顯示首頁組件 */}
+            {needsHomepageComponents.includes(documentId) && (
+              <>
+                {/* Client Logo Section */}
+                <PageSection className={'pt-0'}>
+                  <ClientLogoSection
+                    logoData={clientLogoData}
+                  />
+                </PageSection>
+
+                {/* Information Section */}
+                <PageSection className={'bg-[rgba(247,242,244,0.5)] backdrop-filter-[blur(10px)]'}>
+                  <InformationSectionWrapper 
+                    locale={locale} 
+                    styles={homepageStyles} 
+                    informationData={informationData}
+                    newsData={newsData}
+                  />
+                </PageSection>
+
+                {/* Awards Swiper Section */}
+                <PageSection>
+                  <AwardsSwiper
+                    awardsData={awardsData}
+                  />
+                </PageSection>
+
+                {/* AI² Card Section */}
+                {cardData && (
+                  <PageSection>
+                    <Card
+                      Title={cardData.Title}
+                      Content={cardData.Content}
+                      icon={cardData.icon}
+                      Button={cardData.Button}
+                    />
+                  </PageSection>
+                )}
+              </>
+            )}
+          </PageContainer>
+        );
+      })()}
     </PreviewWrapper>
   );
 }

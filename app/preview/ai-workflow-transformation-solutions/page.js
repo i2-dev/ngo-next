@@ -10,10 +10,19 @@ import PreviewWrapper from '@/components/PreviewWrapper';
 import { buildPreviewApiUrl } from '@/utils/get-strapi-url';
 import styles from "@/styles/DigitalSolutions.module.css";
 
-// 直接获取特定计划的预览数据
-async function getPreviewPlanData(documentId, status = 'draft', pLevel = 3) {
+// 获取所有计划的预览数据，然后根据order找到对应的计划
+async function getPreviewPlansData(status = 'draft', pLevel = 3, locale = 'en') {
   try {
-    const apiUrl = buildPreviewApiUrl('plans', documentId, { status, pLevel });
+    const queryParams = new URLSearchParams();
+    queryParams.append('status', status);
+    queryParams.append('locale', locale);
+    queryParams.append('pLevel', pLevel);
+    queryParams.append('populate[0]', 'icon');
+    queryParams.append('populate[1]', 'Image');
+    queryParams.append('populate[2]', 'Button');
+    queryParams.append('populate[3]', 'Blocks');
+    
+    const apiUrl = buildPreviewApiUrl('plans', null, Object.fromEntries(queryParams));
     
     const response = await fetch(apiUrl, {
       method: 'GET',
@@ -25,17 +34,18 @@ async function getPreviewPlanData(documentId, status = 'draft', pLevel = 3) {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch preview data: ${response.status} ${response.statusText}`);
+      throw new Error(`Failed to fetch preview plans data: ${response.status} ${response.statusText}`);
     }
 
     const result = await response.json();
     return result;
 
   } catch (error) {
-    console.error('Error fetching preview plan data:', error);
+    console.error('Error fetching preview plans data:', error);
     throw error;
   }
 }
+
 
 // 格式化计划数据
 function formatPlanData(data) {
@@ -70,21 +80,28 @@ export default function AICaseManagementPlatformPreview() {
   const documentId = searchParams.get('documentId') || searchParams.get('slug');
 
   const fetchPreviewData = async () => {
-    if (!documentId) {
-      setError('Document ID is required');
-      setLoading(false);
-      return;
-    }
-
     try {
       setLoading(true);
       setError(null);
 
-      const planResult = await getPreviewPlanData(documentId, status, pLevel);
+      const plansResult = await getPreviewPlansData(status, pLevel, locale);
 
-      if (planResult.data) {
-        const formattedPlanData = formatPlanData(planResult.data);
-        setData(formattedPlanData);
+      if (plansResult.data) {
+        // 根據Order找到AI工作流程轉型方案 (data[2])
+        const plan = plansResult.data.find(plan => plan.Order === 2);
+        
+        if (plan) {
+          const formattedPlanData = formatPlanData(plan);
+          console.log('AI Workflow Transformation Solutions plan data:', {
+            plan: plan,
+            formattedPlanData: formattedPlanData,
+            blocks: formattedPlanData.blocks,
+            blockComponents: formattedPlanData.blocks?.map(block => block.__component)
+          });
+          setData(formattedPlanData);
+        } else {
+          throw new Error('AI Workflow Transformation Solutions plan not found');
+        }
       } else {
         throw new Error('No data received from API');
       }
@@ -99,14 +116,14 @@ export default function AICaseManagementPlatformPreview() {
 
   useEffect(() => {
     fetchPreviewData();
-  }, [documentId, status, locale, pLevel]);
+  }, [status, locale, pLevel]);
 
   const heroBg= "blue";
   const heroGradient="linear-gradient(to bottom, rgba(0,22,123,1) 88%, rgba(0,22,123,0) 100%)";
 
   return (
     <PreviewWrapper
-      contentType="ai-case-management-platform"
+      contentType="ai-workflow-transformation-solutions"
       data={data}
       loading={loading}
       error={error}

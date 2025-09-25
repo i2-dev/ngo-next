@@ -38,7 +38,6 @@ export default function SuccessCaseHero({ successCase, locale, bgcolor ="white",
                 height={successCase.background.height}
                 alt={successCase.title}
                 className="w-full h-auto mt-auto origin-bottom scale-130 lg:scale-115"
-                priority
               />
             </div>
           </>

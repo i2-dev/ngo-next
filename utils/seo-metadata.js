@@ -17,7 +17,8 @@ function normalizeLocale(locale) {
     'zhhkhk': 'zh-Hant-HK', // 兼容舊格式
     'zh': 'zh-Hant-HK', // 默認中文為香港繁體
     'hk': 'zh-Hant-HK',
-    'tc': 'zh-Hant-HK'
+    'tc': 'zh-Hant-HK',
+    'zh-hant-hk': 'zh-Hant-HK' // 處理 URL 中的 zh-Hant-HK 格式
   };
   
   const normalized = locale.toLowerCase();

@@ -19,7 +19,8 @@ export function normalizeLocaleForStrapi(locale) {
     'zhhkhk': 'zh-Hant-HK', // Compatible with old format
     'zh': 'zh-Hant-HK', // Default Chinese to Hong Kong Traditional
     'hk': 'zh-Hant-HK',
-    'tc': 'zh-Hant-HK'
+    'tc': 'zh-Hant-HK',
+    'zh-hant-hk': 'zh-Hant-HK' // Handle zh-Hant-HK format from URL
   };
   
   const normalized = locale.toLowerCase();

@@ -222,7 +222,7 @@ function normalizeLocale(locale) {
   if (!locale) return 'en';
   
   // 處理不同的中文語言代碼變體
-  if (locale === 'zh' || locale === 'zh-Hant' || locale === 'zh-hant') {
+  if (locale === 'zh' || locale === 'zh-Hant' || locale === 'zh-hant' || locale === 'zh-Hant-HK' || locale === 'zh-hant-hk') {
     return 'zh-hant';
   }
   

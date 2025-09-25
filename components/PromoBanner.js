@@ -28,7 +28,7 @@ export default function PromoBanner({
           title={chatbotTitle}
         >
           {/* 促銷標籤 */}
-          <span className="bg-white text-[#4ac36d] text-base font-bold p-2.5 rounded-full flex justify-center items-center w-13.5 h-13.5 -mt-8.5 mb-0.5 md:text-2xl md:w-17 md:h-17">
+          <span className={`bg-white text-[#4ac36d] text-base font-bold p-2.5 rounded-full flex justify-center items-center w-13.5 h-13.5 -mt-8.5 mb-0.5 ${locale === 'en' ? 'md:text-xl' : 'md:text-2xl pr-0.5'} md:w-17 md:h-17`}>
             {promo}
           </span>          
           <span className="font-bold leading-tight">
@@ -42,7 +42,7 @@ export default function PromoBanner({
           href="https://www.i2hk.com/"
           target="_blank"
           rel="noopener noreferrer"
-          className="group bg-linear-[#7d73f3_0%,#b379d2_50%,#e777af_100%] text-white text-sm text-center rounded-full px-3 py-3 transition-all duration-300 transform hover:scale-105 md:text-base md:px-6 md:py-4"
+          className="group bg-linear-[#7d73f3_0%,#b379d2_50%,#e777af_100%] text-white text-[16px] text-center rounded-full px-2.5 py-3 transition-all duration-300 transform hover:scale-105 md:text-base md:px-4 md:py-4"
           title={mainSiteTitle}
         >          
           {mainSite}          

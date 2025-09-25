@@ -57,7 +57,6 @@ export default async function AboutUsPage({ params }) {
                     width={leftImage.width}
                     height={leftImage.height}
                     className="w-full"
-                    priority={true}
                   />
                 ) : ( null ) }
               </div>

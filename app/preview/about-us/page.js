@@ -77,7 +77,6 @@ export default function AboutUsPreview() {
                   width={leftImage.width}
                   height={leftImage.height}
                   className="w-full"
-                  priority={true}
                 />
               ) : (
                 <div className="bg-gray-100 rounded-lg p-8 text-center text-gray-500">
